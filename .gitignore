@@ -1,0 +1,8 @@
+node_modules/
+.vercel/
+.env
+.env.*
+!.env.example
+Validacion_Expertos_Startup_*.html
+validacion_*.json
+respuestas*.json
