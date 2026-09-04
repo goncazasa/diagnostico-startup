@@ -44,7 +44,7 @@ function doPost(e) {
     if (!equal_(signature, envelope.signature)) return json_({ok:false});
     // Full validation happens in the trusted Vercel function before signing.
     const payload = JSON.parse(envelope.payload), response = payload.response;
-    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/1.8') return json_({ok:false});
+    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/1.9') return json_({ok:false});
     const receiptId = 'sheets-' + digest_(envelope.payload);
     lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) return json_({ok:false});

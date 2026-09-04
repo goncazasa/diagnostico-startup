@@ -2,7 +2,7 @@
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v1.8';
+  const STORAGE_KEY = 'startup-expert-validation-v1.9';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const email = instrument.researcherEmail;
@@ -34,7 +34,7 @@
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
-    T1: 'Capacidades disponibles', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades',
+    T1: 'Capacidades disponibles', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
     PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Condiciones de adopción',
     VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
     C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente',
@@ -112,13 +112,13 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return heading('Ayúdenos a revisar 20 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como usted.') +
+    return heading('Ayúdenos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como usted.') +
       `<section class="surface"><p class="intro-lead">Le mostraremos seis temas, uno por página. En cada pregunta solo tendrá que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
       <p><strong>Usted evalúa el instrumento; no está puntuando una startup.</strong></p>
       <p>Los comentarios son opcionales. Puede saltar lo que no pueda valorar y continuar más tarde.</p>
-      <p class="fine">Son 20 preguntas agrupadas en seis dimensiones. Puede hacer pausas: guardamos sus avances en este navegador.</p>
+      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puede hacer pausas: guardamos sus avances en este navegador.</p>
       <p class="subtle">Al terminar, pulse «Enviar revisión». No tendrá que abrir su correo ni adjuntar archivos.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veinte preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puede cuestionar esta delimitación en el resumen.</p></details>
+      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puede cuestionar esta delimitación en el resumen.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puede dejar de cumplimentar el formulario en cualquier momento.</p>
       <p>El borrador se guarda en este navegador cuando este lo permite. No incluya nombres de clientes, datos confidenciales ni información que no quiera compartir. El almacenamiento local no sustituye una copia descargada.</p>
@@ -148,7 +148,7 @@
       <h2 style="margin-top:24px">Lo que le pedimos a usted</h2><p>Valore del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
       <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indíquelo en Observaciones.</td></tr></tbody></table>
       <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoce suficientemente un tema, puede dejarlo sin valorar.</p>${codeGuide()}</section>
-      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veinte preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puede cuestionar esta delimitación en la valoración final.</li><li>Juzgue la adecuación a la fase y al modelo. Señale cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de su experiencia, puede omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detecte un problema, indique el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
+      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puede cuestionar esta delimitación en la valoración final.</li><li>Juzgue la adecuación a la fase y al modelo. Señale cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de su experiencia, puede omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detecte un problema, indique el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
   }
   function glossary(item) {
     const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ')).toLowerCase();
@@ -224,7 +224,7 @@
     }).join('')}</div>`;
   }
   function review() {
-    return heading('Resumen de sus respuestas', 'Las seis dimensiones y sus veinte preguntas, reunidas en una sola vista. Compruebe sus valoraciones antes de pasar a las conclusiones finales.') +
+    return heading('Resumen de sus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Compruebe sus valoraciones antes de pasar a las conclusiones finales.') +
       `<section class="summary-intro"><p><strong>Los números son sus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
       <p class="fine">Pulse el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verá la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
@@ -401,7 +401,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V1_8_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V1_9_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -436,10 +436,10 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de sus respuestas</h1><p class="print-note">Validación de expertos V1.8 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de sus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Validación de expertos · V1.8</h1><p>Diagnóstico para startups en fase temprana</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y mirada inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Mirada inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Validación de expertos · V1.9</h1><p>Diagnóstico para startups en fase temprana</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y mirada inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Mirada inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

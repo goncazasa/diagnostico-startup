@@ -57,7 +57,7 @@ test('analysis uses latest revision, preserves numeric scores and missingness, e
   const x=boot();assert.equal(x.post(payload(2)).ok,true);assert.equal(x.post(payload(1)).ok,true);
   assert.equal(x.tables.get('Entregas').length,3);
   const rows=x.tables.get('Valoraciones'), header=rows[0];
-  assert.equal(rows.length,27);
+  assert.equal(rows.length,28);
   const t1=rows.find(r=>r[header.indexOf('elemento_id')]==='T1');
   assert.equal(t1[header.indexOf('revision')],2);
   assert.equal(t1[header.indexOf('relevancia')],4);
@@ -71,7 +71,7 @@ test('archive survives analysis failure and retry repairs derived tables',()=>{
   const x=boot(),p=payload();x.setFailAnalysis(true);
   assert.equal(x.post(p).ok,true);assert.equal(x.props.ANALYSIS_PENDING,'true');
   x.setFailAnalysis(false);assert.equal(x.post(p).ok,true);
-  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,27);
+  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,28);
   assert.equal(x.props.ANALYSIS_PENDING,undefined);
 });
 test('large unicode observations round trip across archive cells',()=>{
