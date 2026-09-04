@@ -45,13 +45,13 @@ test('final page has one optional question and confirms only an acknowledged sub
   assert.equal(ui.document.querySelectorAll('#app textarea[data-path]').length,1);
   assert.equal(ui.document.querySelector('[data-delivery-email]'),null);
   let request;
-  ui.dom.window.fetch=async (url, options) => { request={url,options}; return {ok:true,json:async()=>({ok:true,receiptId:'receipt-01'})}; };
+  ui.dom.window.fetch=async (url, options) => { request={url,options}; return {ok:true,json:async()=>({ok:true,receiptId:'sheets-'+'a'.repeat(64)})}; };
   ui.input('[data-path="final.v9"]','Última observación');
   ui.click('[data-action="submit"]');
   await until(()=>!!ui.stored().submission);
   assert.equal(request.url,'/api/submit');
   assert.equal(JSON.parse(request.options.body).response.final.v9,'Última observación');
-  assert.equal(ui.stored().submission.id,'receipt-01');
+  assert.equal(ui.stored().submission.id,'sheets-'+'a'.repeat(64));
   assert.equal(ui.document.querySelector('[data-action="submit"]').disabled,true);
   ui.input('[data-path="final.v9"]','Corrección posterior');
   await new Promise(resolve=>setTimeout(resolve,550));

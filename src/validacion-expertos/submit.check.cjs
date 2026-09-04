@@ -1,5 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const { createHash, createHmac } = require('node:crypto');
 const instrument = require('./instrument.js');
 const model = require('./core.js').createModel(instrument);
 function payload() {
@@ -17,34 +18,36 @@ async function run(body, options = {}, request = {}) {
   await handler({ method: 'POST', headers: { 'content-type': 'application/json', host: 'panel.example.org', origin: 'https://panel.example.org' }, body, ...request }, res);
   return result;
 }
-const env = { RESEND_API_KEY: 'test-key', RESEND_FROM: 'Panel <panel@example.org>' };
-test('missing mail configuration fails without claiming receipt', async () => {
+const env = { GOOGLE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/test/exec', GOOGLE_SHEETS_SECRET: 'test-secret-not-a-real-credential' };
+test('missing Sheets configuration fails without claiming receipt', async () => {
   const result = await run(payload(), { env: {} });
   assert.equal(result.statusCode, 503); assert.equal(result.body.ok, false);
 });
-test('server validates consent and scores before contacting the mail provider', async () => {
+test('server validates consent and scores before contacting Sheets', async () => {
   for (const edit of [p => p.response.consent=false, p => p.response.items.T2.usability=8]) {
     const p = payload(); edit(p);
     const result = await run(p, { env, fetchImpl: async () => { assert.fail('Must not send invalid data'); } });
     assert.equal(result.statusCode, 400);
   }
 });
-test('delivery uses the fixed recipient, validated attachment and stable retry key', async () => {
+test('delivery signs validated data and verifies a stable content receipt', async () => {
   const sent=[];
-  const options={env, fetchImpl: async (url, request) => { sent.push({url, ...request}); return {ok:true, json:async()=>({id:'mail-receipt-01'})}; }};
+  const options={env, fetchImpl: async (url, request) => { sent.push({url, ...request}); const data=JSON.parse(request.body); return {ok:true, json:async()=>({ok:true,receiptId:'sheets-'+createHash('sha256').update(data.payload).digest('hex')})}; }};
   const p=payload(); p.to='attacker@example.org'; p.instrument={fake:true};
   const first=await run(p,options);
   p.exportedAt='2027-01-01T00:00:00.000Z'; p.response.step=9;
   const second=await run(p,options);
-  assert.equal(first.statusCode,200); assert.equal(first.body.receiptId,'mail-receipt-01'); assert.equal(second.body.ok,true);
-  const mail=JSON.parse(sent[0].body);
-  assert.deepEqual(mail.to,['luis.gonzalezc@urjc.es']); assert.equal(mail.reply_to,'expert@example.org');
-  const attached=JSON.parse(Buffer.from(mail.attachments[0].content,'base64').toString('utf8'));
+  assert.equal(first.statusCode,200); assert.match(first.body.receiptId,/^sheets-[a-f0-9]{64}$/); assert.equal(second.body.ok,true);
+  const envelope=JSON.parse(sent[0].body);
+  assert.equal(sent[0].url,env.GOOGLE_SHEETS_WEBHOOK_URL);
+  assert.equal(envelope.signature,createHmac('sha256',env.GOOGLE_SHEETS_SECRET).update(envelope.payload).digest('hex'));
+  const attached=JSON.parse(envelope.payload);
   assert.equal(attached.instrument.items.length,20); assert.equal(attached.response.items.T1.relevance,null);
-  assert.equal(sent[0].headers['Idempotency-Key'],sent[1].headers['Idempotency-Key']);
+  assert.equal(sent[0].body,sent[1].body);
+  assert.equal(attached.response.profile.email,'expert@example.org');
 });
 test('provider failure or invalid acknowledgment never becomes a success', async () => {
-  for (const fetchImpl of [async()=>({ok:false}), async()=>({ok:true,json:async()=>({})}), async()=>{throw new Error('Timeout');}]) {
+  for (const fetchImpl of [async()=>({ok:false}), async()=>({ok:true,json:async()=>({})}), async()=>({ok:true,json:async()=>({ok:true,receiptId:'sheets-wrong'})}), async()=>{throw new Error('Timeout');}]) {
     const result=await run(payload(),{env,fetchImpl}); assert.equal(result.statusCode,502); assert.equal(result.body.ok,false);
   }
 });

@@ -1,68 +1,47 @@
-# Diagnóstico startup · Panel de expertos V1.8
+# Diagnóstico startup · Panel de expertos
 
-Formulario de revisión por expertos, con una dimensión por página, 20 preguntas y 52 valoraciones posibles. El cierre contiene una única observación opcional y el botón **Enviar revisión**.
+Formulario con una dimensión por página, veinte preguntas, 52 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
 
-## Estado
+## Configuración
 
-La interfaz y el servidor de envío están implementados. Para que el botón envíe correos reales, hay que desplegar en Vercel y configurar Resend. **Sin esa configuración, la API devuelve un error y la página no confirma un envío.** No se ha efectuado una prueba con correo real.
+El código incluye la integración. Su activación requiere desplegar el receptor en una cuenta de Google y añadir dos variables privadas en Vercel; sin ellas, el formulario conserva el borrador y no confirma el envío. Ver [instrucciones de conexión](google-apps-script/LEEME.md).
 
-El repositorio contiene código y un formulario vacío. Las respuestas de los participantes no se guardan en GitHub. El navegador mantiene un borrador local; al pulsar Enviar, el servidor remite la revisión como adjunto JSON a `luis.gonzalezc@urjc.es`. No es necesario abrir un cliente de correo. El participante puede descargar una copia de seguridad de manera opcional.
+Importar `goncazasa/diagnostico-startup` en Vercel, manteniendo la raíz del repositorio. `vercel.json` ejecuta el generador, sirve `public/` y despliega `api/submit.mjs`. No elegir `public` como raíz. GitHub Pages y abrir el HTML local permiten revisar la encuesta, pero no ejecutan la API de envío.
 
-## Desplegar desde GitHub en Vercel
+## Datos para analizar
 
-1. Entrar en [Vercel](https://vercel.com/new), seleccionar **Add New → Project** e importar `goncazasa/diagnostico-startup`.
-2. Mantener el directorio raíz del repositorio. **No seleccionar `public` como raíz**: dejaría fuera `api/submit.mjs`, que recibe las respuestas.
-3. La configuración incluida elige **Other**, ejecuta `node src/validacion-expertos/build.mjs` y publica `public/`, además de la función del directorio `api/`. No necesita dependencias de producción.
-4. Crear una cuenta de [Resend](https://resend.com), verificar un dominio remitente que se controle y crear una clave con permiso para enviar. La dirección del destinatario URJC no tiene que ser la misma que la del remitente verificado. El modo de prueba de Resend tiene restricciones sobre los destinatarios.
-5. Añadir en **Settings → Environment Variables**, para el entorno que se vaya a usar:
+| Pestaña | Contenido |
+|---|---|
+| Valoraciones | Una fila por participante y elemento: seis dimensiones y veinte preguntas; puntuaciones numéricas, omisiones y observaciones. |
+| Respuestas | Una fila por participante y versión: opinión inicial, respuestas globales, observación final y número de juicios contestados. |
+| Participantes | Contacto y perfil, separados de las puntuaciones mediante un identificador. |
+| Diccionario | Texto exacto del instrumento, niveles y criterios de cada versión. |
+| Entregas | Historial original íntegro; permite reconstruir las tablas y auditar cambios. No editar. |
 
-   | Variable | Valor |
-   |---|---|
-   | `RESEND_API_KEY` | Clave privada de Resend. |
-   | `RESEND_FROM` | Remitente de un dominio verificado, por ejemplo `Panel de expertos <panel@dominio-verificado.example>`. Sustituir el ejemplo por el dominio real. |
+Las tablas de análisis muestran la revisión más alta de cada identificador y versión. Si llegan dos contenidos diferentes con igual revisión, prevalece el último recibido; ambos quedan archivados. Los reintentos idénticos no añaden entregas. La deduplicación depende de conservar `Entregas` intacta. Un nuevo navegador o un borrador reiniciado genera otro identificador: revisar posibles participantes repetidos mediante el correo antes del análisis; no se fusionan automáticamente.
 
-6. Desplegar o volver a desplegar después de añadir las variables. Hacer una entrega de prueba y comprobar tanto el identificador de aceptación como la llegada del adjunto al buzón del investigador. Compartir después la URL de Vercel.
+Las omisiones se exportan vacías, nunca como cero. `claridad_y_respuestas` es un juicio conjunto, no dos variables independientes. Las puntuaciones 1–4 son valoraciones de los expertos sobre el instrumento; no confundirlas con los niveles 0–3 propuestos a los emprendedores. No se calculan indicadores de validez sin definir antes el procedimiento analítico. Exportar las pestañas como CSV o el libro como XLSX permite usar Excel, R, SPSS o Python.
 
-Las claves se guardan solo en Vercel; no deben ponerse en el repositorio, el HTML ni un mensaje de chat. `.env.example` solo enumera las variables. [Funciones Node.js de Vercel](https://vercel.com/docs/functions/runtimes/node-js), [API de Resend](https://resend.com/docs/api-reference/emails/send-email).
+## Guardado y privacidad
 
-GitHub Pages puede mostrar el HTML, pero no ejecuta esta función de envío. Para el flujo completo usar Vercel con el proyecto entero.
+- La API valida consentimiento, correo, versión y puntuaciones; utiliza el instrumento del servidor y firma la entrega con HMAC-SHA256. El navegador nunca recibe la clave ni la dirección del receptor.
+- Google comprueba la firma y bloquea escrituras simultáneas. El justificante es la huella del contenido original; la API exige que coincida antes de confirmar éxito.
+- El original se conserva como JSON codificado en Base64 y dividido entre celdas. **Base64 no cifra los datos**. Las tablas derivadas protegen el texto libre frente a su interpretación como fórmulas.
+- Una entrega solo se confirma después de guardar y vaciar las escrituras pendientes. Si falla la actualización de las tablas, el original permanece; el siguiente reintento o el menú **Validación de expertos → Actualizar tablas de análisis** reconstruye los datos. La propiedad `ANALYSIS_PENDING` indica una actualización pendiente.
+- El libro y el proyecto de Apps Script deben ser privados. Separar contactos en otra pestaña no crea permisos separados: quien acceda al libro puede ver todos sus datos. Las observaciones también pueden identificar personas. Compartir únicamente exportaciones revisadas de las tablas necesarias.
+- El identificador del navegador no autentica a un experto. La comprobación de origen no impide bots; la API pública sigue consumiendo cuota. Esta integración está pensada para un panel acotado, no para una encuesta masiva. Apps Script tiene [cuotas de ejecución](https://developers.google.com/apps-script/guides/services/quotas); se reconstruyen las tablas al recibir cambios.
+- Concretar la información del estudio, conservación y tratamiento de datos antes de la recogida formal. Las preguntas y el consentimiento siguen siendo candidatos para pilotaje.
 
-## Comportamiento del envío
+## Desarrollo y verificación
 
-- La API admite POST JSON, valida la versión, el consentimiento, el contacto y las valoraciones, y limita el tamaño a 1 MB. Admite revisiones parciales.
-- El destinatario está fijado en el servidor. El remitente lo configura el propietario; la dirección del experto se usa como `reply_to`. Los datos del navegador no eligen destinatarios ni el banco de preguntas adjunto.
-- El servicio recibe texto plano y un JSON con los datos normalizados. Las puntuaciones omitidas siguen siendo `null`.
-- Se envía una clave de idempotencia derivada del contenido. Reintentar una misma revisión genera la misma clave; Resend conserva estas claves durante su ventana de 24 horas. No se afirma deduplicación permanente. [Idempotencia de Resend](https://resend.com/docs/dashboard/emails/idempotency-keys).
-- Mientras se envía, el botón queda deshabilitado. Una aceptación válida produce un justificante local; editar después permite enviar una revisión actualizada.
-- La aceptación del proveedor confirma que el correo se ha aceptado para envío, no que el destinatario lo haya leído ni que haya llegado a su bandeja de entrada. Revisar entregas y rebotes en Resend.
-- Sin credenciales, ante un error o un tiempo de espera agotado no se confirma éxito. El borrador se conserva y el experto puede reintentar o descargar una copia.
-- La ruta comprueba el origen de las peticiones de navegador. Eso no es autenticación ni protección completa frente a bots. Antes de una difusión abierta, configurar límites de solicitudes en Vercel y supervisar la cuota de Resend.
-
-No se configura una base de datos ni un archivo central de respuestas. La conservación depende del buzón de investigación y del servicio de correo: concretarla en la hoja del estudio. El nombre y correo identifican al participante. La información sobre el tratamiento, los proveedores y la hoja del estudio debe completarse antes de una recogida formal; el consentimiento mostrado es todavía una redacción candidata.
-
-## Desarrollo
-
-Node.js 22. Para generar el HTML no se necesita instalar paquetes:
+Node.js 22. El generador no necesita dependencias de producción:
 
 ```sh
 node src/validacion-expertos/build.mjs
-```
-
-Produce `Validacion_Expertos_Startup_V1_8.html` y `public/index.html`. La copia `file://` sirve para revisar y descargar; para enviar se necesita la URL de la aplicación desplegada.
-
-Para ejecutar las pruebas:
-
-```sh
 npm install
 npm test
 ```
 
-JSDOM es exclusivamente una dependencia de pruebas. Las pruebas de servidor sustituyen el transporte de correo, de modo que no envían mensajes reales ni necesitan claves. Se comprueban los datos adjuntos, destinatario fijo, idempotencia, errores, límites, navegación, campos, guardado, resumen y envío del cliente.
+Genera `Validacion_Expertos_Startup_V1_8.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
 
-## Datos y versiones
-
-Instrumento `1.8.0`; esquema `expert-validation/1.8`. Mantiene los criterios `relevance` y `usability` por pregunta, y relevancia/cobertura por dimensión. `usability` es el juicio conjunto sobre claridad y respuestas, no dos medidas independientes.
-
-El bloque global conserva solo `v2` y `v3` en el resumen y `v9` como observación final. Se retiran las otras seis preguntas globales. `submission` guarda el identificador y la revisión aceptada, separado de `exportedRevision`, que solo registra la descarga. Los registros de navegador pueden ser alterados por el usuario; la API no confía en sus justificantes, resúmenes ni copia del instrumento.
-
-Las versiones anteriores no se convierten automáticamente. Las formulaciones siguen siendo candidatas: se necesita pilotaje con expertos y emprendedores. Las pruebas DOM no sustituyen la revisión visual en navegador ni verifican la entrega real del correo.
+Aplicación `1.8.1`; instrumento `1.8.0`; esquema `expert-validation/1.8`. El cambio de transporte conserva los borradores de V1.8. Un justificante antiguo de correo no cuenta como un guardado en Sheets. Los HTML de versiones anteriores se conservan localmente como antecedentes.

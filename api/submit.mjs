@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, createHmac } from 'node:crypto';
 import core from '../src/validacion-expertos/core.js';
 import instrument from '../src/validacion-expertos/instrument.js';
 
@@ -26,33 +26,25 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
       if (incoming.format !== 'expert-validation/1.8' || incoming.instrumentVersion !== instrument.version) return fail(400, 'Versión de formulario no compatible.');
       const state = model.validateState(incoming.response);
       if (!state.initial.lockedAt) return fail(400, 'Complete el inicio del formulario.');
-      // Only validated answers and the server's instrument enter the email.
+      // Only validated answers and the server's instrument enter the archive.
       // Navigation, client receipts and export time must not change a retry key.
       state.step = 10; state.focusId = null; state.submission = null;
       payload = model.exportPayload(state, state.updatedAt);
     } catch { return fail(400, 'Revise el formato y los campos de su respuesta.'); }
-    if (!env.RESEND_API_KEY || !env.RESEND_FROM) return fail(503, 'El envío aún no está configurado. Sus respuestas siguen en este navegador.');
-    const attachment = JSON.stringify(payload, null, 2);
-    const mail = {
-      from: env.RESEND_FROM,
-      to: [instrument.researcherEmail],
-      reply_to: payload.response.profile.email,
-      subject: `Validación V1.8 · ${payload.response.responseId}`,
-      text: `Nueva revisión del diagnóstico para startups.\n\nNombre: ${payload.response.profile.name || 'No indicado'}\nCorreo: ${payload.response.profile.email}\nIdentificador: ${payload.response.responseId}\nRevisión: ${payload.response.revision}\n\nEl archivo adjunto contiene las respuestas y el instrumento evaluado.`,
-      attachments: [{ filename: `validacion_${payload.response.responseId}.json`, content: Buffer.from(attachment).toString('base64') }]
-    };
-    const body = JSON.stringify(mail);
-    const key = 'validation-' + createHash('sha256').update(body).digest('hex');
+    if (!env.GOOGLE_SHEETS_SECRET || !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(env.GOOGLE_SHEETS_WEBHOOK_URL || '')) return fail(503, 'El envío aún no está configurado. Sus respuestas siguen en este navegador.');
+    const serialized = JSON.stringify(payload);
+    const receiptId = 'sheets-' + createHash('sha256').update(serialized).digest('hex');
+    const body = JSON.stringify({ payload: serialized, signature: createHmac('sha256', env.GOOGLE_SHEETS_SECRET).update(serialized).digest('hex') });
     try {
-      const response = await fetchImpl('https://api.resend.com/emails', {
+      const response = await fetchImpl(env.GOOGLE_SHEETS_WEBHOOK_URL, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json', 'Idempotency-Key': key },
+        headers: { 'Content-Type': 'application/json' },
         body, signal: AbortSignal.timeout(15000)
       });
       if (!response.ok) return fail(502, 'No se ha podido confirmar el envío. Puede reintentarlo.');
       const data = await response.json();
-      if (typeof data.id !== 'string' || !data.id.length || data.id.length > 200) return fail(502, 'No se ha recibido confirmación del servicio de correo.');
-      return res.status(200).json({ ok: true, receiptId: data.id });
+      if (data.ok !== true || data.receiptId !== receiptId) return fail(502, 'No se ha recibido confirmación del guardado.');
+      return res.status(200).json({ ok: true, receiptId });
     } catch { return fail(502, 'No se ha podido confirmar el envío. Puede reintentarlo.'); }
   };
 }

@@ -1,12 +1,12 @@
 {
   "name": "diagnostico-startup-expertos",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "engines": { "node": "22.x" },
   "scripts": {
     "build": "node src/validacion-expertos/build.mjs",
     "pretest": "npm run build",
-    "test": "node --test src/validacion-expertos/core.check.cjs src/validacion-expertos/app.check.cjs src/validacion-expertos/submit.check.cjs"
+    "test": "node --test src/validacion-expertos/core.check.cjs src/validacion-expertos/app.check.cjs src/validacion-expertos/submit.check.cjs src/validacion-expertos/sheets.check.cjs"
   },
   "devDependencies": { "jsdom": "26.1.0" }
 }

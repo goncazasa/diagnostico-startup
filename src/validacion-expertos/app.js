@@ -52,7 +52,7 @@
   let printMode = 'full';
   let sending = false;
   let submissionError = '';
-  const currentSubmission = () => state.submission && state.submission.revision === state.revision;
+  const currentSubmission = () => state.submission && /^sheets-[a-f0-9]{64}$/.test(state.submission.id) && state.submission.revision === state.revision;
   let textTimer;
   const pendingText = new Map();
   const restored = repository.load();
@@ -122,7 +122,7 @@
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puede dejar de cumplimentar el formulario en cualquier momento.</p>
       <p>El borrador se guarda en este navegador cuando este lo permite. No incluya nombres de clientes, datos confidenciales ni información que no quiera compartir. El almacenamiento local no sustituye una copia descargada.</p>
-      <p>Solicitamos su correo para identificar su revisión y poder contactar con usted sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», sus datos y respuestas se remiten al investigador mediante el servicio de correo Resend. Puede guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar su nombre o correo.</p>
+      <p>Solicitamos su correo para identificar su revisión y poder contactar con usted sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», sus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puede guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar su nombre o correo.</p>
       <p>Antes de entregar respuestas, solicite la hoja de información del estudio a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>: debe concretar responsable del tratamiento, base jurídica, conservación, destinatarios y derechos. Esta versión candidata no incorpora todavía esa hoja. Para consultar una retirada, indique su identificador de respuesta; su posibilidad y condiciones deben explicarse en la hoja. Tras una anonimización irreversible puede no ser posible localizarla.</p></details>
       <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído esta información y acepto participar voluntariamente y el uso académico de las respuestas que decida entregar.</span></label>
       ${nav('Empezar la revisión')}</section>`;
@@ -385,7 +385,7 @@
     try {
       const response = await fetch('/api/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: controller.signal });
       const result = await response.json();
-      if (!response.ok || result.ok !== true || typeof result.receiptId !== 'string' || !result.receiptId || result.receiptId.length > 200) throw new Error(response.status === 503 ? 'not-configured' : 'failed');
+      if (!response.ok || result.ok !== true || typeof result.receiptId !== 'string' || !/^sheets-[a-f0-9]{64}$/.test(result.receiptId)) throw new Error(response.status === 503 ? 'not-configured' : 'failed');
       if (state.responseId === payload.response.responseId) {
         state = model.validateState({ ...state, submission: { id: result.receiptId, revision: payload.response.revision, at: new Date().toISOString() } });
         persist();
