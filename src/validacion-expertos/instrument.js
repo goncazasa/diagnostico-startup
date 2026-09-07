@@ -86,18 +86,7 @@
         levels: ['No se conoce qué evidencias de confianza necesita el cliente o socio.', 'Se conocen esas necesidades, pero solo hay afirmaciones o señales informales.', 'Hay referencias, resultados u otras evidencias verificables pertinentes para esas necesidades.', 'Esas evidencias han facilitado acuerdos, acceso o colaboración en casos concretos.'] }
     ],
     glossary: [
-      { term: 'vesting', label: 'Vesting', definition: 'Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas.' },
-      { term: 'burn', label: 'Burn neto (consumo de caja)', definition: 'Caja que consume la empresa en un periodo: salidas menos entradas. Si no hay consumo neto, el runway simple no se calcula de la misma manera.' },
-      { term: 'runway', label: 'Runway (meses de caja)', definition: 'Meses de caja disponibles al ritmo de consumo actual. Es una estimación dependiente de los supuestos, no una fecha garantizada.' },
-      { term: 'cac', label: 'CAC (coste de adquisición)', definition: 'Lo que cuesta conseguir un cliente nuevo. Debe especificarse qué costes incluye, por qué canal y en qué periodo.' },
-      { term: 'ltv', label: 'LTV (valor del cliente)', definition: 'Estimación de lo que aporta un cliente durante toda su relación con la empresa. Conviene explicitar margen, permanencia y limitaciones de los datos.' },
-      { term: 'loi', label: 'LOI (carta de intenciones)', definition: 'Documento en el que un cliente expresa por escrito su intención de compra y las condiciones preliminares, sin obligarse todavía. Su fuerza como evidencia depende del contenido y de los compromisos asumidos.' },
-      { term: 'gtm', label: 'GTM (llegada al mercado)', definition: 'Go-to-market: cómo se llega al segmento, se comunica el valor y se convierte el interés en una relación comercial.' },
-      { term: 'de abajo arriba', label: 'Estimación de abajo arriba', definition: 'Estimación construida a partir de clientes identificables, precio y frecuencia de compra, en lugar de partir de una cifra global del sector y recortarla con porcentajes.' },
-      { term: 'hito', label: 'Hito', definition: 'Objetivo verificable que la startup quiere alcanzar antes de dar el paso siguiente: por ejemplo, cerrar los primeros clientes de pago o completar una prueba con usuarios.' },
-      { term: 'legitimidad', label: 'Legitimidad', definition: 'Reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva y sin historial.' },
-      { term: 'coachability', label: 'Coachability', definition: 'Disposición del equipo fundador a escuchar y a revisar su criterio con evidencia u opiniones externas, sin renunciar a liderar.' },
-      { term: 'workarounds', label: 'Workarounds', definition: 'Soluciones improvisadas o combinaciones de herramientas que el cliente ya utiliza para resolver el problema.' }
+      { term: 'vesting', label: 'Vesting', definition: 'Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas.' }
     ]
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = instrument;

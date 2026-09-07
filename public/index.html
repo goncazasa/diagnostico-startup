@@ -175,18 +175,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
         levels: ['No se conoce qué evidencias de confianza necesita el cliente o socio.', 'Se conocen esas necesidades, pero solo hay afirmaciones o señales informales.', 'Hay referencias, resultados u otras evidencias verificables pertinentes para esas necesidades.', 'Esas evidencias han facilitado acuerdos, acceso o colaboración en casos concretos.'] }
     ],
     glossary: [
-      { term: 'vesting', label: 'Vesting', definition: 'Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas.' },
-      { term: 'burn', label: 'Burn neto (consumo de caja)', definition: 'Caja que consume la empresa en un periodo: salidas menos entradas. Si no hay consumo neto, el runway simple no se calcula de la misma manera.' },
-      { term: 'runway', label: 'Runway (meses de caja)', definition: 'Meses de caja disponibles al ritmo de consumo actual. Es una estimación dependiente de los supuestos, no una fecha garantizada.' },
-      { term: 'cac', label: 'CAC (coste de adquisición)', definition: 'Lo que cuesta conseguir un cliente nuevo. Debe especificarse qué costes incluye, por qué canal y en qué periodo.' },
-      { term: 'ltv', label: 'LTV (valor del cliente)', definition: 'Estimación de lo que aporta un cliente durante toda su relación con la empresa. Conviene explicitar margen, permanencia y limitaciones de los datos.' },
-      { term: 'loi', label: 'LOI (carta de intenciones)', definition: 'Documento en el que un cliente expresa por escrito su intención de compra y las condiciones preliminares, sin obligarse todavía. Su fuerza como evidencia depende del contenido y de los compromisos asumidos.' },
-      { term: 'gtm', label: 'GTM (llegada al mercado)', definition: 'Go-to-market: cómo se llega al segmento, se comunica el valor y se convierte el interés en una relación comercial.' },
-      { term: 'de abajo arriba', label: 'Estimación de abajo arriba', definition: 'Estimación construida a partir de clientes identificables, precio y frecuencia de compra, en lugar de partir de una cifra global del sector y recortarla con porcentajes.' },
-      { term: 'hito', label: 'Hito', definition: 'Objetivo verificable que la startup quiere alcanzar antes de dar el paso siguiente: por ejemplo, cerrar los primeros clientes de pago o completar una prueba con usuarios.' },
-      { term: 'legitimidad', label: 'Legitimidad', definition: 'Reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva y sin historial.' },
-      { term: 'coachability', label: 'Coachability', definition: 'Disposición del equipo fundador a escuchar y a revisar su criterio con evidencia u opiniones externas, sin renunciar a liderar.' },
-      { term: 'workarounds', label: 'Workarounds', definition: 'Soluciones improvisadas o combinaciones de herramientas que el cliente ya utiliza para resolver el problema.' }
+      { term: 'vesting', label: 'Vesting', definition: 'Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas.' }
     ]
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = instrument;
@@ -585,7 +574,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
     return heading('Resumen de tus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Comprueba tus valoraciones antes de pasar a las conclusiones finales.') +
       `<section class="summary-intro"><p><strong>Los números son tus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
-      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
+      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}</section>
       ${summaryMap()}
       <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si quieres, señala qué sobra o qué falta. Puedes cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>

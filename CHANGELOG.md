@@ -16,7 +16,8 @@ Bloque de revisión aplicado sobre V1.9, centrado en comprensión y trato.
   después de responder, y se explica que los resultados se publicarán de forma
   agregada y anonimizada.
 - **Comprensión de términos:** LOI, burn neto, runway, CAC, LTV, GTM e «hito»
-  se explican en castellano dentro de la aclaración y del glosario.
+  se explican en castellano dentro de la aclaración. El glosario no los
+  repite; se reserva para términos que no están explicados en ese texto.
 - **Contenido:** T1 explicita la complementariedad técnica y comercial; T3
   nombra la coachability sin dejar de medir conducta; T5 menciona el pacto de
   socios; PM2 distingue un problema real de una mejora deseable; PM3 sustituye

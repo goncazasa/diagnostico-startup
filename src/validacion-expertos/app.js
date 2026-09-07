@@ -230,7 +230,7 @@
     return heading('Resumen de tus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Comprueba tus valoraciones antes de pasar a las conclusiones finales.') +
       `<section class="summary-intro"><p><strong>Los números son tus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
-      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
+      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}</section>
       ${summaryMap()}
       <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si quieres, señala qué sobra o qué falta. Puedes cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
