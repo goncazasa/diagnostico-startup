@@ -123,7 +123,7 @@ function rebuild_(book) {
   });
   const base = ['participante_id','version','revision','entrega_id','recibida_utc'];
   const ratings = [base.concat(['tipo','dimension_id','elemento_id','texto','relevancia','claridad_y_respuestas','cobertura','motivo_omision','observaciones'])];
-  const contacts = [base.concat(['correo','nombre','roles','anos_experiencia','numero_proyectos','experiencia_pivote','sectores','conflicto_interes','fases'])];
+  const contacts = [base.concat(['correo','nombre','roles','anos_experiencia','numero_proyectos','experiencia_pivote','sectores','conflicto_interes','fases','fases_otra'])];
   const responses = [base.concat(['consentimiento','creada_utc','actualizada_utc','opinion_inicial','opinion_bloqueada_utc','global_v2','global_v3','observacion_final','juicios_contestados','juicios_posibles'])];
   const dictionary = [['version','tipo','dimension_id','elemento_id','texto','nota','aplicabilidad','niveles_emprendedor','criterios_experto']];
   Object.keys(latest).sort().forEach(key => {
@@ -142,7 +142,7 @@ function rebuild_(book) {
       answered += Number(rel !== null) + Number(usability !== null);
       ratings.push(common.concat(['pregunta',item.dim,item.id,item.q,rel,usability,null,a.skipReason,a.comment]));
     });
-    contacts.push(common.concat([profile.email,profile.name,profile.roles.join(' | '),profile.years,profile.ventures,profile.pivot,profile.sectors,profile.conflict,profile.phases.join(' | ')]));
+    contacts.push(common.concat([profile.email,profile.name,profile.roles.join(' | '),profile.years,profile.ventures,profile.pivot,profile.sectors,profile.conflict,profile.phases.join(' | '),profile.phasesOther||'']));
     responses.push(common.concat([s.consent,s.createdAt,s.updatedAt,s.initial.text,s.initial.lockedAt,s.final.v2,s.final.v3,s.final.v9,answered,2*(ins.dimensions.length+ins.items.length)]));
   });
   Object.keys(instruments).sort().forEach(version => {

@@ -14,9 +14,9 @@
     usability: ['La pregunta o sus respuestas necesitan replantearse', 'Necesitan cambios importantes', 'Necesitan ajustes menores', 'La pregunta es clara y sus respuestas son adecuadas']
   };
   const finalQuestions = [
-    ['v2', '¿Eliminaría alguna dimensión? ¿Por qué?', 'Puede responder «Ninguna».'],
-    ['v3', '¿Falta alguna dimensión o área importante?', 'Piense en el propósito y las fases del diagnóstico.'],
-    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puede dejarlo en blanco.']
+    ['v2', '¿Eliminarías alguna dimensión? ¿Por qué?', 'Puedes responder «Ninguna».'],
+    ['v3', '¿Falta alguna dimensión o área importante?', 'Piensa en el propósito y las fases del diagnóstico.'],
+    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puedes dejarlo en blanco.']
   ];
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
@@ -58,10 +58,10 @@
   const restored = repository.load();
   if (restored.ok && restored.value) {
     try { state = model.validateState(restored.value); }
-    catch (error) { writeBlocked = true; message('No se pudo recuperar la respuesta anterior: ' + error.message + ' No se ha reemplazado. Puede importar una copia o comenzar otra respuesta.'); }
+    catch (error) { writeBlocked = true; message('No se pudo recuperar la respuesta anterior: ' + error.message + ' No se ha reemplazado. Puedes importar una copia o comenzar otra respuesta.'); }
   } else if (!restored.ok) {
     writeBlocked = true;
-    message('No se pudo leer el guardado local. Puede completar la revisión y descargar sus respuestas; no cierre esta ventana antes de hacerlo.');
+    message('No se pudo leer el guardado local. Puedes completar la revisión y descargar tus respuestas; no cierres esta ventana antes de hacerlo.');
   }
   if (!model.canVisit(state, state.step)) state.step = state.consent ? 1 : 0;
 
@@ -104,7 +104,7 @@
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Si no conoce suficientemente ${kind === 'dimensions' ? 'el tema de esta dimensión' : 'el tema de esta pregunta'}, no es necesario que opine.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Quiero dar mi opinión</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No conozco suficientemente este tema</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero dejarlo sin valorar</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
+    return `<div class="omission"><label for="${idFor(path)}">Si no conoces suficientemente ${kind === 'dimensions' ? 'el tema de esta dimensión' : 'el tema de esta pregunta'}, no es necesario que opines.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Quiero dar mi opinión</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No conozco suficientemente este tema</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero dejarlo sin valorar</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
@@ -112,91 +112,94 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return heading('Ayúdenos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como usted.') +
-      `<section class="surface"><p class="intro-lead">Le mostraremos seis temas, uno por página. En cada pregunta solo tendrá que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
-      <p><strong>Usted evalúa el instrumento; no está puntuando una startup.</strong></p>
-      <p>Los comentarios son opcionales. Puede saltar lo que no pueda valorar y continuar más tarde.</p>
-      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puede hacer pausas: guardamos sus avances en este navegador.</p>
-      <p class="subtle">Al terminar, pulse «Enviar revisión». No tendrá que abrir su correo ni adjuntar archivos.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puede cuestionar esta delimitación en el resumen.</p></details>
+    return heading('Ayúdanos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como tú.') +
+      `<section class="surface"><p class="intro-lead">Te mostraremos seis temas, uno por página. En cada pregunta solo tienes que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
+      <p><strong>Estás evaluando el instrumento, no puntuando una startup.</strong></p>
+      <p>Los comentarios son opcionales. Puedes saltar lo que no puedas valorar y continuar más tarde.</p>
+      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puedes hacer pausas: guardamos tus avances en este navegador.</p>
+      <p class="subtle">Al terminar, pulsa «Enviar revisión». No tienes que abrir tu correo ni adjuntar archivos.</p>
+      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puedes cuestionar esta delimitación en el resumen.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
-      <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puede dejar de cumplimentar el formulario en cualquier momento.</p>
-      <p>El borrador se guarda en este navegador cuando este lo permite. No incluya nombres de clientes, datos confidenciales ni información que no quiera compartir. El almacenamiento local no sustituye una copia descargada.</p>
-      <p>Solicitamos su correo para identificar su revisión y poder contactar con usted sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», sus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puede guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar su nombre o correo.</p>
-      <p>Antes de entregar respuestas, solicite la hoja de información del estudio a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>: debe concretar responsable del tratamiento, base jurídica, conservación, destinatarios y derechos. Esta versión candidata no incorpora todavía esa hoja. Para consultar una retirada, indique su identificador de respuesta; su posibilidad y condiciones deben explicarse en la hoja. Tras una anonimización irreversible puede no ser posible localizarla.</p></details>
+      <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puedes dejar de cumplimentar el formulario en cualquier momento.</p>
+      <p>El borrador se guarda en este navegador cuando este lo permite. No incluyas nombres de clientes, datos confidenciales ni información que no quieras compartir. El almacenamiento local no sustituye una copia descargada.</p>
+      <p>Te pedimos el correo para identificar tu revisión y poder contactar contigo sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», tus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puedes guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar tu nombre o tu correo.</p>
+      <p>Puedes pedir la hoja de información del estudio —responsable del tratamiento, base jurídica, conservación, destinatarios y derechos— escribiendo a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>, antes o después de responder. Los resultados se publicarán de forma agregada y anonimizada: tu nombre y tu correo no aparecerán. Si más adelante quieres retirar tu respuesta, basta con ese mismo correo indicando tu identificador de respuesta; una vez anonimizada de forma irreversible puede que ya no sea posible localizarla.</p></details>
       <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído esta información y acepto participar voluntariamente y el uso académico de las respuestas que decida entregar.</span></label>
       ${nav('Empezar la revisión')}</section>`;
   }
   function profile() {
-    return heading('Antes de empezar', 'Primero, su criterio sin haber visto el modelo. Después, un breve perfil.') +
-      `<section class="surface"><h2>¿Qué miraría usted?</h2>
-      ${field('initial.text', 'Si dispusiera de diez minutos para diagnosticar una startup temprana, ¿qué evaluaría?', state.initial.lockedAt ? 'Su respuesta inicial ya está registrada. Puede añadir nuevas ideas en el resumen o al final.' : 'Unas pocas ideas bastan. Nos ayudan a detectar aspectos que el modelo podría haber pasado por alto. Puede dejarlo en blanco; al continuar quedará registrado sin cambios.')}</section>` +
-      `<section class="surface">${field('profile.email', 'Correo electrónico', 'Para identificar su revisión y poder contactar con usted sobre sus respuestas.', 'email')}${field('profile.name', 'Nombre', '', 'text')}${checks('profile.roles', 'Perfiles desde los que participa', model.roles)}
+    return heading('Antes de empezar', 'Primero, tu criterio sin haber visto el modelo. Después, un breve perfil.') +
+      `<section class="surface"><h2>¿Qué mirarías tú?</h2>
+      ${field('initial.text', 'Si tuvieras diez minutos para diagnosticar una startup temprana, ¿qué evaluarías?', state.initial.lockedAt ? 'Tu respuesta inicial ya está registrada. Puedes añadir nuevas ideas en el resumen o al final.' : 'Unas pocas ideas bastan. Nos ayudan a detectar aspectos que el modelo podría haber pasado por alto. Puedes dejarlo en blanco; al continuar quedará registrado sin cambios.')}</section>` +
+      `<section class="surface">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y poder contactar contigo sobre tus respuestas.', 'email')}${field('profile.name', 'Nombre', '', 'text')}${checks('profile.roles', 'Perfiles desde los que participas', model.roles)}
       ${field('profile.years', 'Años de experiencia relevante', '', 'number')}
-      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Añadir más detalles sobre su experiencia (opcional)</summary>
+      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Añadir más detalles sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
-      <div class="field" style="margin-top:20px">${checks('profile.phases', 'Fases con las que tiene experiencia', model.phases)}</div>
+      <div class="field" style="margin-top:20px">${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}</div>
+      ${state.profile.phases.includes('Otra') ? field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: Serie A, crecimiento internacional o consolidación.', 'text') : ''}
       ${field('profile.sectors', 'Sectores o modelos con mayor experiencia', 'Por ejemplo: SaaS B2B, servicios, hardware o actividad regulada.', 'text')}
       ${field('profile.pivot', 'Experiencia personal de pivote, cierre o fracaso', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
-      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'Puede describirlos sin identificar personas o empresas.')}</details>
+      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'Puedes describirlos sin identificar personas o empresas.')}</details>
       ${nav('Empezar con las preguntas')}</section>`;
   }
   function guide() {
-    return heading('Dos escalas, dos tareas diferentes', 'Usted evalúa el instrumento; no está puntuando una startup.') +
-      `<section class="surface"><h2>Lo que verá el emprendedor</h2><p>Cada pregunta tiene cuatro niveles candidatos, del <strong>0 al 3</strong>. Describen evidencias o prácticas observables, ordenadas para ese aspecto.</p>
+    return heading('Dos escalas, dos tareas diferentes', 'Estás evaluando el instrumento, no puntuando una startup.') +
+      `<section class="surface"><h2>Lo que verá la persona emprendedora</h2><p>Cada pregunta tiene cuatro niveles candidatos, del <strong>0 al 3</strong>. Describen evidencias o prácticas observables, ordenadas para ese aspecto.</p>
       <p class="subtle">Los niveles no son intervalos equivalentes ni una puntuación de éxito. En la aplicación futura habrá que distinguir falta de evidencia, desconocimiento, «No aplica todavía» y preferencia por no responder.</p>
-      <h2 style="margin-top:24px">Lo que le pedimos a usted</h2><p>Valore del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
-      <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indíquelo en Observaciones.</td></tr></tbody></table>
-      <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoce suficientemente un tema, puede dejarlo sin valorar.</p>${codeGuide()}</section>
-      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puede cuestionar esta delimitación en la valoración final.</li><li>Juzgue la adecuación a la fase y al modelo. Señale cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de su experiencia, puede omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detecte un problema, indique el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
+      <h2 style="margin-top:24px">Lo que te pedimos a ti</h2><p>Valora del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
+      <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indícalo en Observaciones.</td></tr></tbody></table>
+      <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoces suficientemente un tema, puedes dejarlo sin valorar.</p>${codeGuide()}</section>
+      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puedes cuestionar esta delimitación en la valoración final.</li><li>Juzga la adecuación a la fase y al modelo. Señala cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de tu experiencia, puedes omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detectes un problema, indica el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
   }
   function glossary(item) {
-    const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ')).toLowerCase();
-    const terms = instrument.glossary.filter(g => text.includes(g.term));
-    return terms.length ? `<details class="help"><summary>Consultar términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
+    const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
+    const words = new Set(text.split(/[^0-9a-zà-ÿ]+/).filter(Boolean));
+    const matches = term => term.split(' ').every(part => words.has(part) || words.has(part + 's') || words.has(part + 'es'));
+    const terms = instrument.glossary.filter(g => matches(g.term));
+    return terms.length ? `<details class="help" open><summary>Términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
   }
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
-      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help"><summary>Aclaración de esta pregunta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
-      <p class="level-caption">Estas son las respuestas que podría elegir el emprendedor. Léalas para valorar la pregunta.</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
-      ${item.conditional ? `<aside class="conditional-note"><strong>Opción adicional propuesta para el emprendedor</strong><p>${esc(item.conditional)}</p><p class="fine">Valore también esta opción al juzgar las respuestas. Si no conoce suficientemente este tema, puede dejarlo sin valorar al final de la pregunta.</p></aside>` : ''}
+      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help" open><summary>Aclaración de esta pregunta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
+      <p class="level-caption">Estas son las respuestas que podría elegir la persona emprendedora. Léelas para valorar la pregunta.</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
+      ${item.conditional ? `<aside class="conditional-note"><strong>Opción adicional propuesta para la persona emprendedora</strong><p>${esc(item.conditional)}</p><p class="fine">Valora también esta opción al juzgar las respuestas. Si no conoces suficientemente este tema, puedes dejarlo sin valorar al final de la pregunta.</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
-      <div data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Ahora, su opinión como experto</p>
+      <div data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Ahora, tu opinión como experto</p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
-      ${field(base + '.comment', 'Observaciones', 'Si algo no está claro o cambiaría alguna respuesta, puede explicarlo aquí.')}</div>
+      ${field(base + '.comment', 'Observaciones', 'Si algo no está claro o cambiarías alguna respuesta, puedes explicarlo aquí.')}</div>
       ${omission('items', item.id)}
-      <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Sus puntuaciones no se incluirán en el análisis.</p></article>`;
+      <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Tus puntuaciones no se incluirán en el análisis.</p></article>`;
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return heading(dimensionLabel(id) + ' · ' + dim.short, items.length + ' preguntas sobre este tema. Revise la página y continúe a la siguiente dimensión.') +
+    return heading(dimensionLabel(id) + ' · ' + dim.short, items.length + ' preguntas sobre este tema. Revisa la página y continúa a la siguiente dimensión.') +
       `<section class="dimension-intro" id="dimension-${id}"><p>${esc(dim.desc)}</p>${omission('dimensions', id)}</section>
-      <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Ha dejado esta dimensión sin valorar. Pulse «Continuar» para seguir.</p>
+      <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
-      <section class="surface dimension-top"><h2>Su opinión sobre esta dimensión</h2>
+      <section class="surface dimension-top"><h2>Tu opinión sobre esta dimensión</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
-      ${field(base + '.comment', 'Observaciones', 'Puede indicar qué falta o qué cambiaría en el conjunto de esta dimensión.')}</section></div>
+      ${field(base + '.comment', 'Observaciones', 'Puedes indicar qué falta o qué cambiarías en el conjunto de esta dimensión.')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de respuestas</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {
-    return heading('Último paso', 'Puede añadir una observación y enviar su revisión.') +
+    return heading('Último paso', 'Puedes añadir una observación y enviar tu revisión.') +
       `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>`;
   }
   function scoreText(record, criteria) { return criteria.map(key => criteriaLabels[key] + ': ' + (record[key] ?? 'sin respuesta')).join(' · '); }
   function delivery() {
     const counts = model.summary(state);
-    return `<p class="fine">${counts.pending + counts.partial ? 'Puede enviar su revisión aunque haya dejado preguntas sin responder.' : 'Su revisión está lista para enviar.'}</p>
+    return `<p class="fine">${counts.pending + counts.partial ? 'Puedes enviar tu revisión aunque hayas dejado preguntas sin responder.' : 'Tu revisión está lista para enviar.'}</p>
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
-      <p class="fine">Puede descargar una copia de seguridad de sus respuestas.</p>
+      <p class="fine">Puedes descargar una copia de seguridad de tus respuestas.</p>
       <div class="actions"><button type="button" class="button secondary" data-action="export">Descargar respuestas (.json)</button><button type="button" class="button secondary" data-action="print">Imprimir resumen</button><button type="button" class="text-button" data-action="copy">Copiar respuestas</button></div>
       <p class="response-id">Identificador: ${esc(state.responseId)}<br><span data-last-change></span></p>
       <p id="copy-status" role="status"></p><div id="manual-copy-wrapper" hidden></div>
-      <div class="notice" id="export-receipt" role="status" hidden>Se ha solicitado la descarga de su copia. Descargar no equivale a enviar.</div>
-      <div class="notice" id="export-stale" hidden>Ha cambiado respuestas desde la última copia descargada.</div>
+      <div class="notice" id="export-receipt" role="status" hidden>Se ha solicitado la descarga de tu copia. Descargar no equivale a enviar.</div>
+      <div class="notice" id="export-stale" hidden>Has cambiado respuestas desde la última copia descargada.</div>
       <details><summary>Consultar progreso</summary>${reviewCounts()}</details></details>
       <div class="nav-row"><button type="button" class="button secondary" data-action="back">Volver al resumen</button></div>`;
   }
@@ -224,12 +227,12 @@
     }).join('')}</div>`;
   }
   function review() {
-    return heading('Resumen de sus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Compruebe sus valoraciones antes de pasar a las conclusiones finales.') +
-      `<section class="summary-intro"><p><strong>Los números son sus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
+    return heading('Resumen de tus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Comprueba tus valoraciones antes de pasar a las conclusiones finales.') +
+      `<section class="summary-intro"><p><strong>Los números son tus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
-      <p class="fine">Pulse el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verá la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
+      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
       ${summaryMap()}
-      <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si lo desea, señale qué sobra o qué falta. Puede cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
+      <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si quieres, señala qué sobra o qué falta. Puedes cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
       ${nav('Continuar a la valoración final')}`;
   }
@@ -265,7 +268,7 @@
       const button = app.querySelector('[data-action="submit"]');
       button.disabled = sending || !!currentSubmission();
       button.textContent = sending ? 'Enviando…' : currentSubmission() ? 'Revisión enviada' : state.submission ? 'Enviar cambios' : 'Enviar revisión';
-      document.getElementById('submit-status').textContent = sending ? 'Enviando su revisión…' : submissionError || (currentSubmission() ? 'Su revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Ha cambiado respuestas después del envío. Puede enviar la versión actualizada.' : '');
+      document.getElementById('submit-status').textContent = sending ? 'Enviando tu revisión…' : submissionError || (currentSubmission() ? 'Tu revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Has cambiado respuestas después del envío. Puedes enviar la versión actualizada.' : '');
       document.querySelector('[data-last-change]').textContent = 'Último cambio: ' + new Date(state.updatedAt).toLocaleString('es-ES');
       const currentExport = model.hasCurrentExport(state);
       document.getElementById('export-receipt').hidden = !currentExport;
@@ -372,7 +375,7 @@
       if (action === 'export') exportResponses();
       if (action === 'copy') copyResponses();
       if (action === 'print' || action === 'print-map') { printMode = action === 'print-map' ? 'map' : 'full'; renderPrint(); window.print(); }
-    } catch (error) { message(error.message || 'No se pudo completar la acción. Puede volver a intentarlo.'); }
+    } catch (error) { message(error.message || 'No se pudo completar la acción. Puedes volver a intentarlo.'); }
   });
   async function submitResponses() {
     flushText();
@@ -391,7 +394,7 @@
         persist();
       }
     } catch (error) {
-      if (state.responseId === payload.response.responseId) submissionError = error.message === 'not-configured' ? 'El envío todavía no está disponible. Sus respuestas se conservan; puede guardar una copia y volver más tarde.' : 'No se ha podido confirmar el envío. Sus respuestas se conservan. Pulse «Enviar revisión» para reintentarlo.';
+      if (state.responseId === payload.response.responseId) submissionError = error.message === 'not-configured' ? 'El envío todavía no está disponible. Tus respuestas se conservan; puedes guardar una copia y volver más tarde.' : 'No se ha podido confirmar el envío. Tus respuestas se conservan. Pulsa «Enviar revisión» para reintentarlo.';
     } finally { clearTimeout(timer); sending = false; refresh(); }
   }
   function exportResponses() {
@@ -423,7 +426,7 @@
       await navigator.clipboard.writeText(raw);
       status.textContent = stillCurrent() ? 'Respuestas copiadas. Abra el correo y péguelas en el mensaje. Todavía no se han enviado.' : 'Las respuestas han cambiado durante la copia. Vuelva a copiarlas antes de enviarlas.';
     } catch {
-      if (!stillCurrent()) { status.textContent = 'Las respuestas han cambiado. Pulse de nuevo «Copiar respuestas».'; return; }
+      if (!stillCurrent()) { status.textContent = 'Las respuestas han cambiado. Pulsa de nuevo «Copiar respuestas».'; return; }
       status.textContent = 'El navegador no permite copiar automáticamente. Copie el texto seleccionado o descargue el archivo.';
       const label = document.createElement('label'); label.htmlFor = 'manual-copy'; label.textContent = 'Respuestas para copiar y pegar en el correo';
       const textarea = document.createElement('textarea'); textarea.id = 'manual-copy'; textarea.readOnly = true; textarea.value = raw;
@@ -436,7 +439,7 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de sus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
     document.getElementById('print-view').innerHTML = `<h1>Validación de expertos · V1.9</h1><p>Diagnóstico para startups en fase temprana</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y mirada inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Mirada inicial sin respuesta')}</p>
@@ -487,5 +490,5 @@
   render();
   if (writeBlocked) setSaveStatus(false);
   else if (restored.value) setSaveStatus(true);
-  else document.getElementById('save-state').textContent = 'El guardado local comienza cuando responde. También puede descargar una copia.';
+  else document.getElementById('save-state').textContent = 'El guardado local comienza cuando respondes. También puedes descargar una copia.';
 })();

@@ -101,88 +101,91 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       { id: 'D1', short: 'Equipo', name: 'Equipo y gobernanza', desc: 'Capacidades disponibles, aprendizaje, dedicación y acuerdos para ejecutar el siguiente hito.' },
       { id: 'D2', short: 'Mercado', name: 'Problema y mercado', desc: 'Segmento prioritario, evidencia del problema, mercado accesible y condiciones de adopción.' },
       { id: 'D3', short: 'Propuesta de valor', name: 'Propuesta de valor y modelo de negocio', desc: 'Ventaja percibida, hipótesis de monetización y resultados de las pruebas de la solución.' },
-      { id: 'D4', short: 'Evidencia comercial', name: 'Evidencia comercial', desc: 'Compromisos verificables y pruebas de adquisición de clientes en el segmento elegido.' },
+      { id: 'D4', short: 'Evidencia comercial', name: 'Evidencia comercial (tracción y go-to-market)', desc: 'Compromisos verificables y pruebas de adquisición de clientes en el segmento elegido. Mide la evidencia obtenida, no el plan comercial previsto.' },
       { id: 'D5', short: 'Finanzas', name: 'Evidencia financiera', desc: 'Control de caja, previsión, recursos para el siguiente hito y economía del cliente cuando sea aplicable.' },
-      { id: 'D6', short: 'Recursos y confianza', name: 'Recursos estratégicos y legitimidad', desc: 'Relaciones y evidencias de confianza que facilitan recursos, acceso al mercado o acuerdos.' }
+      { id: 'D6', short: 'Recursos y confianza', name: 'Recursos estratégicos y legitimidad', desc: 'Relaciones, legitimidad y evidencias de confianza que facilitan recursos, acceso al mercado o acuerdos. La legitimidad es el reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva.' }
     ],
     items: [
       { id: 'T1', dim: 'D1', q: '¿Están cubiertos los perfiles que exige este modelo de negocio: quién construye o entrega la solución y quién vende y accede al cliente?',
-        note: 'Los perfiles pueden estar dentro del equipo o cubiertos con colaboradores estables. Externalizar no penaliza, pero un perfil crítico sin compromiso estable es una dependencia, no una cobertura. El conocimiento del sector se valora en T2.',
+        note: 'Se busca complementariedad: perfil técnico o de producto y perfil comercial o de acceso al cliente, más los que exija el modelo (por ejemplo, regulatorio u operaciones). Pueden estar dentro del equipo o cubiertos con colaboradores estables. Externalizar no penaliza, pero un perfil crítico sin compromiso estable es una dependencia, no una cobertura. El conocimiento del sector se valora en T2.',
         levels: ['No se ha analizado qué perfiles exige este modelo de negocio.', 'Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.', 'Los perfiles críticos están cubiertos y hay un responsable identificado para cada uno.', 'Esa combinación ya ha permitido cumplir hitos comparables y las piezas cubiertas desde fuera tienen un compromiso estable.'] },
       { id: 'T2', dim: 'D1', q: '¿El equipo dispone de conocimiento directo del cliente, sector o problema para tomar decisiones?',
-        note: 'Puede proceder de experiencia previa, investigación directa o colaboración continuada con personas conocedoras del contexto. Distinga el conocimiento técnico del sector del conocimiento comercial: quién compra, cómo compra y con qué ciclos.',
+        note: 'Puede proceder de experiencia previa, investigación directa o colaboración continuada con personas conocedoras del contexto. Distingue el conocimiento técnico del sector del conocimiento comercial: quién compra, cómo compra y con qué ciclos.',
         levels: ['Las decisiones se apoyan principalmente en supuestos sin contraste directo.', 'Hay conocimiento indirecto o contactos puntuales, con lagunas relevantes.', 'El equipo dispone de conocimiento directo sobre el cliente y su contexto.', 'Ese conocimiento ha permitido corregir supuestos y fundamentar decisiones concretas.'] },
       { id: 'T3', dim: 'D1', q: '¿El equipo convierte la evidencia y los aprendizajes en decisiones sobre el proyecto?',
-        note: 'Considere un ejemplo reciente de una decisión confirmada o modificada a partir de una prueba. No se exige haber fundado antes otra empresa.',
+        note: 'Es la conducta que en el ecosistema se llama «coachability»: liderar sin dejar de escuchar y de revisar el criterio propio con evidencia o con opiniones externas. Se pregunta por hechos y no por autopercepción. Piensa en un ejemplo reciente de una decisión confirmada o modificada a partir de una prueba. No se exige haber fundado antes otra empresa.',
         levels: ['No se identifican hipótesis ni aprendizajes concretos.', 'Se comentan aprendizajes, pero no se relacionan con decisiones.', 'Se registran pruebas o experiencias y las decisiones que se toman a partir de ellas.', 'Se revisan sistemáticamente los resultados y se ajustan prioridades cuando la evidencia contradice la hipótesis inicial o cuando el criterio procede de fuera del equipo.'] },
       { id: 'T4', dim: 'D1', q: '¿La dedicación disponible permite ejecutar las prioridades de esta fase?',
-        note: 'Valore las últimas cuatro semanas o, si el proyecto es más reciente, el periodo desde su inicio. No se exige dedicación exclusiva; valore la continuidad, también ante contratiempos.',
+        note: 'Valora las últimas cuatro semanas o, si el proyecto es más reciente, el periodo desde su inicio. No se exige dedicación exclusiva; valora la continuidad, también ante contratiempos.',
         levels: ['La falta de tiempo bloquea las prioridades principales.', 'Hay tiempo disponible, pero se incumplen repetidamente las tareas prioritarias.', 'La dedicación permite ejecutar las tareas principales del periodo.', 'La dedicación se planifica y se sostiene ante contratiempos, cumpliendo los hitos comprometidos de forma consistente.'] },
       { id: 'T5', dim: 'D1', q: '¿Están claros y documentados los acuerdos necesarios para tomar decisiones y distribuir responsabilidades?',
-        note: 'Adapte al equipo: responsabilidades, forma de tomar decisiones importantes y delegación en colaboradores. La estructura de propiedad se valora por separado en T6.',
+        note: 'Adáptalo al equipo: responsabilidades, forma de tomar decisiones importantes y delegación en colaboradores. Con varios socios, el instrumento habitual es el pacto de socios; con fundador único, basta con acuerdos escritos con los colaboradores. La estructura de propiedad se valora por separado en T6.',
         levels: ['No están claros los responsables ni cómo se toman decisiones importantes.', 'Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.', 'Los acuerdos relevantes para la estructura actual están documentados y son conocidos.', 'Se revisan ante cambios del equipo y contemplan cómo resolver desacuerdos, ausencias o salidas.'] },
       { id: 'T6', dim: 'D1', q: '¿La estructura de propiedad permite decidir con agilidad y no compromete etapas futuras?',
-        note: 'Valore el efecto del reparto sobre la toma de decisiones y sobre la capacidad de incorporar personas clave o inversores más adelante. El vesting solo se considera si procede.',
+        note: 'Valora el efecto del reparto sobre la toma de decisiones y sobre la capacidad de incorporar personas clave o inversores más adelante. El vesting solo se considera si procede.',
         conditional: 'No aplica todavía: si no hay sociedad constituida ni socios o inversores con participación. Se registraría aparte, nunca como 0. Si existe reparto pero no se ha revisado, corresponde el nivel 0.',
         levels: ['No se ha revisado cómo afecta el reparto a la toma de decisiones.', 'Se conoce el reparto, pero no se han valorado sus efectos sobre decisiones o incorporaciones futuras.', 'El reparto permite decidir sin bloqueos y no hay participaciones relevantes en manos de personas ajenas a la actividad.', 'Existen mecanismos previstos para salidas, incorporaciones y desbloqueo de decisiones, y se revisan cuando cambia el equipo.'] },
       { id: 'PM1', dim: 'D2', q: '¿Está definido el segmento prioritario al que se dirigen las pruebas y acciones comerciales?',
-        note: 'Cuando sean diferentes, distinga usuario, comprador y pagador.',
+        note: 'Cuando sean diferentes, distingue usuario, comprador y pagador.',
         levels: ['El mercado objetivo es amplio y no hay un segmento concreto.', 'Se han identificado segmentos posibles, sin prioridad justificada.', 'Existe un segmento prioritario descrito con criterios que permiten identificar clientes.', 'Las pruebas y acciones se concentran en ese segmento y la elección se revisa con evidencia.'] },
       { id: 'PM2', dim: 'D2', q: '¿Hay evidencia directa de que el problema es suficientemente importante para que el cliente actúe?',
-        note: 'La importancia puede provenir del coste, frecuencia, riesgo o urgencia. Un problema infrecuente también puede ser relevante.',
-        levels: ['No hay evidencia directa del problema.', 'Hay opiniones o interés declarado, sin ejemplos concretos de sus consecuencias.', 'Personas del segmento, también fuera del círculo cercano, describen casos y consecuencias concretas.', 'En distintos casos se observan gasto, tiempo o soluciones improvisadas dedicados hoy a resolverlo con las alternativas disponibles.'] },
+        note: 'La importancia puede provenir del coste, frecuencia, riesgo o urgencia. Distingue un problema que ya cuesta dinero o tiempo, y que el cliente intenta resolver, de una mejora que simplemente estaría bien tener. Un problema infrecuente también puede ser relevante.',
+        levels: ['No hay evidencia directa del problema.', 'Hay opiniones o interés declarado, sin ejemplos concretos de sus consecuencias.', 'Se ha hablado directamente con personas del segmento, también fuera del círculo cercano, y describen casos y consecuencias concretas.', 'En distintos casos se observan gasto, tiempo o soluciones improvisadas dedicados hoy a resolverlo con las alternativas disponibles.'] },
       { id: 'PM3', dim: 'D2', q: '¿La estimación del mercado accesible se apoya en supuestos y datos contrastables?',
-        note: 'Construya la estimación desde clientes identificables, precio y frecuencia; una cifra agregada de mercado sirve solo como contraste. Valore la trazabilidad y los límites de los supuestos.',
+        note: 'La estimación debe construirse de abajo arriba: desde clientes identificables, precio y frecuencia de compra. Partir de una cifra global del sector y recortarla con porcentajes sirve solo como contraste. Valora la trazabilidad y los límites de los supuestos.',
         levels: ['No existe una estimación útil del mercado accesible.', 'Hay una cifra general, sin supuestos claros sobre clientes o acceso.', 'La estimación explicita clientes alcanzables, precios o frecuencia y restricciones de acceso.', 'Los supuestos se contrastan con datos del segmento y se conoce la estructura competitiva: si el mercado está dominado por pocos actores o fragmentado, y qué barreras de entrada existen.'] },
       { id: 'PM4', dim: 'D2', q: '¿Puede explicarse, con datos, por qué este es el momento y qué facilita o dificulta hoy la adopción?',
-        note: 'Incluya hábitos, costes de cambio, tecnología, regulación o ciclos de compra. Un mercado estable puede ser adecuado; no se exige un sector en auge.',
+        note: 'Incluye hábitos, costes de cambio, tecnología, regulación o ciclos de compra. Un mercado estable puede ser adecuado; no se exige un sector en auge.',
         levels: ['No se ha analizado qué hace que este sea el momento ni qué condiciona la adopción.', 'Se mencionan facilitadores o barreras, principalmente por intuición.', 'Se identifica algún cambio verificable (regulatorio, tecnológico, de coste, de hábito o de canal) y las barreras se han contrastado con personas o datos del segmento.', 'Las pruebas de adopción permiten ajustar la propuesta, el momento o la vía de entrada, y se sostiene con datos por qué no antes.'] },
       { id: 'VB1', dim: 'D3', q: '¿El cliente reconoce una ventaja concreta frente a las alternativas que utiliza hoy?',
-        note: 'Incluya competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.',
+        note: 'Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.',
         levels: ['No se conocen suficientemente las alternativas actuales.', 'La ventaja propuesta es principalmente una hipótesis interna.', 'Personas del segmento reconocen una ventaja específica frente a sus alternativas.', 'Esa ventaja explica decisiones observadas de uso, elección o compra en distintos casos.'] },
       { id: 'VB2', dim: 'D3', q: '¿Está contrastado quién pagaría, por qué concepto y bajo qué condiciones?',
-        note: 'Evalúe la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.',
+        note: 'Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.',
         levels: ['No se identifica con claridad quién pagaría ni por qué concepto.', 'Existe una hipótesis de pagador, precio y forma de cobro.', 'La hipótesis se ha contrastado con posibles pagadores y se conocen sus objeciones.', 'Las pruebas de oferta o negociación han permitido ajustar precio y condiciones, y el precio es coherente con el coste y la duración del ciclo de venta.'] },
       { id: 'VB3', dim: 'D3', q: '¿Las pruebas con usuarios reales muestran que la solución produce el resultado que promete?',
-        applicabilityNote: 'Si el uso es puntual, no se exige repetición: valore si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».',
-        note: 'El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapte continuidad, repetición o retención al modelo.',
+        applicabilityNote: 'Si el uso es puntual, no se exige repetición: valora si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».',
+        note: 'El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapta continuidad, repetición o retención al modelo.',
         levels: ['La solución todavía no se ha probado con usuarios del segmento.', 'Se ha mostrado un concepto o demo, sin observar el resultado de uso.', 'Usuarios del segmento han probado la solución y se ha observado el resultado obtenido.', 'El resultado se confirma en distintos casos y hay continuidad o repetición de uso cuando corresponde.'] },
       { id: 'C1', dim: 'D4', q: '¿Qué grado de compromiso comercial verificable ha obtenido la startup?',
-        note: 'Diferencie interés, LOI, piloto con recursos comprometidos y pago. Un pago aislado no demuestra repetibilidad; anote contexto y condiciones.',
+        note: 'Diferencia el interés declarado, la carta de intenciones (LOI, un documento en el que el cliente expresa por escrito su intención de compra sin obligarse aún), el piloto con recursos comprometidos y el pago. Un pago aislado no demuestra repetibilidad; anota contexto y condiciones.',
         levels: ['No hay señales comerciales documentadas.', 'Hay interés o conversaciones documentadas, sin recursos comprometidos.', 'Hay compromisos verificables de tiempo, acceso, recursos o compra, con alcance y condiciones explícitas.', 'Hay pagos o contratos verificables con soporte documental identificable (contrato, pedido o factura), con importe, alcance y condiciones.'] },
       { id: 'C2', dim: 'D4', q: '¿Se ha probado una forma de llegar y vender al segmento prioritario?',
         applicabilityNote: 'En ciclos comerciales largos pueden utilizarse avances verificables del proceso, aunque todavía no haya ventas. No haber probado el canal es una brecha de evidencia, no un «No aplica».',
-        note: 'GTM: estrategia de llegada al mercado. Valore pruebas y resultados en relación con la duración del ciclo comercial.',
+        note: 'GTM: estrategia de llegada al mercado. Valora pruebas y resultados en relación con la duración del ciclo comercial.',
         levels: ['No hay una hipótesis concreta de canal o proceso comercial.', 'Existe una hipótesis de canal, mensaje y forma de venta para el segmento.', 'Se ha probado con clientes reales y se registran contactos, conversiones u otros resultados pertinentes.', 'Pruebas sucesivas muestran resultados comparables y se conoce cuánto tiempo y cuánto coste requiere conseguir un cliente por ese canal.'] },
       { id: 'F1', dim: 'D5', q: '¿Se conoce la caja disponible y cómo evoluciona con los cobros y pagos previstos?',
-        note: 'Incluya burn neto y runway cuando exista consumo neto de caja. Si los cobros cubren los pagos, no fuerce un runway finito.',
+        note: 'Cuando la empresa consume caja, incluye el consumo neto mensual (burn neto: lo que sale menos lo que entra) y los meses de caja que quedan a ese ritmo (runway). Si los cobros cubren los pagos, no fuerces un runway finito.',
         levels: ['No se conoce la caja disponible o los principales cobros y pagos.', 'Hay estimaciones aproximadas, sin conciliación con los movimientos reales.', 'La caja y los movimientos se registran y se conoce la necesidad de financiación a corto plazo.', 'La información se actualiza al menos mensualmente y se utiliza para decidir gastos y compromisos.'] },
       { id: 'F2', dim: 'D5', q: '¿Existe una previsión de caja que permita anticipar las necesidades de los próximos meses?',
-        note: 'Como referencia, considere los próximos seis meses o el horizonte del siguiente hito cuando resulte más adecuado.',
+        note: 'Como referencia, considera los próximos seis meses o el horizonte del siguiente hito cuando resulte más adecuado.',
         levels: ['No existe una previsión.', 'Hay una estimación informal de entradas y salidas.', 'Existe una previsión con supuestos explícitos sobre cobros, pagos y saldo de caja.', 'Se revisa frente a los datos reales y contempla escenarios para anticipar decisiones.'] },
       { id: 'F3', dim: 'D5', q: '¿Se conocen los recursos necesarios y su financiación para alcanzar el siguiente hito?',
-        note: 'Incluya recursos propios, ingresos, ayudas u otras fuentes. No se presupone la necesidad de inversión externa.',
+        note: 'El siguiente hito es el objetivo verificable que la startup quiere alcanzar antes de dar el paso siguiente: por ejemplo, cerrar los primeros clientes de pago o completar una prueba con usuarios. Incluye recursos propios, ingresos, ayudas u otras fuentes. No se presupone la necesidad de inversión externa.',
         levels: ['No está definido el siguiente hito o los recursos que requiere.', 'Hay una estimación de recursos sin conexión suficiente con las tareas del hito.', 'Se relacionan tareas, costes y recursos disponibles, identificando la posible brecha de financiación.', 'Se ajustan los recursos y el plan de financiación según el avance y la evidencia obtenida.'] },
       { id: 'F4', dim: 'D5', q: '¿Se conoce lo que cuesta conseguir y atender a un cliente y el margen que deja?',
-        note: 'CAC y LTV son opciones cuando el modelo y los datos permiten estimarlos con sentido. Juzgue también si está clara la distinción entre una estimación preliminar y la falta de base para estimar.',
+        note: 'El coste de conseguir un cliente (CAC) y el valor que aporta a lo largo de la relación (LTV) son opciones cuando el modelo y los datos permiten estimarlos con sentido. Juzga también si está clara la distinción entre una estimación preliminar y la falta de base para estimar.',
         conditional: 'No aplica todavía: si la fase del proyecto no permite una estimación fundamentada con datos o supuestos explícitos. Se registraría aparte, nunca como 0. Si hay datos suficientes pero no se analizan, corresponde el nivel 0.',
         levels: ['No se han analizado los costes de adquirir y servir al cliente ni el margen que aporta.', 'Existen estimaciones preliminares con supuestos y limitaciones identificados.', 'Se calculan costes y margen con datos reales para un segmento o grupo de clientes comparable.', 'Se revisan los cálculos y su incertidumbre para orientar precios, adquisición o servicio.'] },
       { id: 'SA1', dim: 'D6', q: '¿Las relaciones externas aportan recursos u oportunidades necesarios para el siguiente hito?',
-        note: 'Valore contribuciones, no prestigio ni tamaño de la red. Incluya proveedores, clientes, comunidades, especialistas y colaboradores.',
+        note: 'Valora contribuciones, no prestigio ni tamaño de la red. Incluye proveedores, clientes, comunidades, especialistas y colaboradores.',
         levels: ['No se han identificado las relaciones externas necesarias.', 'Hay contactos posibles, sin una contribución concreta acordada.', 'Existen contribuciones verificables vinculadas a necesidades del proyecto.', 'Las contribuciones se mantienen y facilitan avances concretos, gestionando dependencias.'] },
       { id: 'SA2', dim: 'D6', q: '¿Existen evidencias de confianza adecuadas a lo que necesitan clientes o socios para colaborar?',
-        note: 'Pueden ser referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el aval de un cliente o institución de referencia. No se exige tener inversores ni apoyos prestigiosos.',
+        note: 'Es la legitimidad de una empresa nueva: lo que hace que la otra parte se atreva a dar el paso. Pueden ser referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el aval de un cliente o institución de referencia. No se exige tener inversores ni apoyos prestigiosos.',
         levels: ['No se conoce qué evidencias de confianza necesita el cliente o socio.', 'Se conocen esas necesidades, pero solo hay afirmaciones o señales informales.', 'Hay referencias, resultados u otras evidencias verificables pertinentes para esas necesidades.', 'Esas evidencias han facilitado acuerdos, acceso o colaboración en casos concretos.'] }
     ],
     glossary: [
       { term: 'vesting', label: 'Vesting', definition: 'Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas.' },
-      { term: 'burn', label: 'Burn neto', definition: 'Consumo neto de caja durante un periodo: salidas menos entradas. Si no hay consumo neto positivo, el runway simple no se calcula de la misma manera.' },
-      { term: 'runway', label: 'Runway', definition: 'Meses de caja disponibles bajo un escenario de consumo neto. Es una estimación dependiente de los supuestos, no una fecha garantizada.' },
-      { term: 'cac', label: 'CAC', definition: 'Coste de adquisición de un cliente. Debe especificar qué costes incluye, el canal y el periodo considerado.' },
-      { term: 'ltv', label: 'LTV', definition: 'Estimación de la contribución económica de un cliente durante su relación. Conviene explicitar margen, permanencia y limitaciones de los datos.' },
-      { term: 'loi', label: 'LOI', definition: 'Carta de intención que expresa interés o condiciones preliminares. Su fuerza como evidencia depende del contenido y de los compromisos asumidos.' },
-      { term: 'gtm', label: 'GTM', definition: 'Go-to-market: cómo se llega al segmento, se comunica el valor y se convierte el interés en una relación comercial.' },
-      { term: 'top-down', label: 'Top-down', definition: 'Estimación que parte de cifras generales de mercado y acota la parte accesible mediante supuestos.' },
+      { term: 'burn', label: 'Burn neto (consumo de caja)', definition: 'Caja que consume la empresa en un periodo: salidas menos entradas. Si no hay consumo neto, el runway simple no se calcula de la misma manera.' },
+      { term: 'runway', label: 'Runway (meses de caja)', definition: 'Meses de caja disponibles al ritmo de consumo actual. Es una estimación dependiente de los supuestos, no una fecha garantizada.' },
+      { term: 'cac', label: 'CAC (coste de adquisición)', definition: 'Lo que cuesta conseguir un cliente nuevo. Debe especificarse qué costes incluye, por qué canal y en qué periodo.' },
+      { term: 'ltv', label: 'LTV (valor del cliente)', definition: 'Estimación de lo que aporta un cliente durante toda su relación con la empresa. Conviene explicitar margen, permanencia y limitaciones de los datos.' },
+      { term: 'loi', label: 'LOI (carta de intenciones)', definition: 'Documento en el que un cliente expresa por escrito su intención de compra y las condiciones preliminares, sin obligarse todavía. Su fuerza como evidencia depende del contenido y de los compromisos asumidos.' },
+      { term: 'gtm', label: 'GTM (llegada al mercado)', definition: 'Go-to-market: cómo se llega al segmento, se comunica el valor y se convierte el interés en una relación comercial.' },
+      { term: 'de abajo arriba', label: 'Estimación de abajo arriba', definition: 'Estimación construida a partir de clientes identificables, precio y frecuencia de compra, en lugar de partir de una cifra global del sector y recortarla con porcentajes.' },
+      { term: 'hito', label: 'Hito', definition: 'Objetivo verificable que la startup quiere alcanzar antes de dar el paso siguiente: por ejemplo, cerrar los primeros clientes de pago o completar una prueba con usuarios.' },
+      { term: 'legitimidad', label: 'Legitimidad', definition: 'Reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva y sin historial.' },
+      { term: 'coachability', label: 'Coachability', definition: 'Disposición del equipo fundador a escuchar y a revisar su criterio con evidencia u opiniones externas, sin renunciar a liderar.' },
       { term: 'workarounds', label: 'Workarounds', definition: 'Soluciones improvisadas o combinaciones de herramientas que el cliente ya utiliza para resolver el problema.' }
     ]
   };
@@ -195,7 +198,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
   const SCHEMA = 'expert-validation/1.9';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
-  const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial'];
+  const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
   const clone = value => JSON.parse(JSON.stringify(value));
   const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   function check(condition, message) { if (!condition) throw new Error(message); }
@@ -215,7 +218,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
         schemaVersion: SCHEMA, instrumentVersion: instrument.version,
         responseId: id, createdAt: now, updatedAt: now, revision: 0, exportedRevision: -1,
         consent: false, step: 0, focusId: null, submission: null,
-        profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [] },
+        profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [], phasesOther: '' },
         initial: { text: '', lockedAt: null },
         dimensions: Object.fromEntries(dimIds.map(id => [id, { relevance: null, coverage: null, skipReason: '', comment: '' }])),
         items: Object.fromEntries(itemIds.map(id => [id, { relevance: null, usability: null, skipReason: '', comment: '' }])),
@@ -242,14 +245,15 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       }
       check(plain(candidate.profile) && plain(candidate.initial) && plain(candidate.dimensions) && plain(candidate.items) && plain(candidate.final), 'Faltan secciones en el archivo.');
       const p = candidate.profile;
-      check(text(p.email, 254) && (p.email === '' || validEmail(p.email)), 'Introduzca un correo electrónico válido.');
+      check(text(p.email, 254) && (p.email === '' || validEmail(p.email)), 'Introduce un correo electrónico válido.');
       check(text(p.name, 200), 'El nombre no es válido o supera 200 caracteres.');
       check(list(p.roles, ROLES) && list(p.phases, PHASES), 'El perfil contiene opciones desconocidas.');
+      check(text(p.phasesOther, 200), 'El perfil contiene un texto demasiado largo.');
       check(p.years === '' || (typeof p.years === 'string' && /^\d{1,3}$/.test(p.years) && Number(p.years) <= 100), 'Los años de experiencia deben estar entre 0 y 100.');
       check(['', '0–10', '11–25', '26–50', '51–100', '>100'].includes(p.ventures), 'El número de startups no es válido.');
       check(['', 'Sí', 'No', 'Prefiero no responder'].includes(p.pivot), 'La experiencia de pivote no es válida.');
       for (const key of ['sectors', 'conflict']) check(text(p[key]), 'El texto del perfil es demasiado largo.');
-      out.profile = { email: p.email, name: p.name, roles: [...p.roles], phases: [...p.phases], years: p.years, ventures: p.ventures, pivot: p.pivot, sectors: p.sectors, conflict: p.conflict };
+      out.profile = { email: p.email, name: p.name, roles: [...p.roles], phases: [...p.phases], phasesOther: p.phasesOther, years: p.years, ventures: p.ventures, pivot: p.pivot, sectors: p.sectors, conflict: p.conflict };
       check(text(candidate.initial.text) && (candidate.initial.lockedAt === null || date(candidate.initial.lockedAt)), 'La mirada inicial no es válida.');
       out.initial = { text: candidate.initial.text, lockedAt: candidate.initial.lockedAt };
       for (const [kind, ids, criteria] of [['dimensions', dimIds, dimCriteria], ['items', itemIds, itemCriteria]]) {
@@ -288,8 +292,8 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       return validateState(next);
     }
     function sealInitial(state) {
-      check(state.consent, 'Acepte la participación antes de continuar.');
-      check(validEmail(state.profile.email), 'Introduzca su correo electrónico para continuar.');
+      check(state.consent, 'Acepta la participación antes de continuar.');
+      check(validEmail(state.profile.email), 'Introduce tu correo electrónico para continuar.');
       if (state.initial.lockedAt) return state;
       const next = clone(state);
       next.initial.lockedAt = new Date().toISOString();
@@ -316,8 +320,8 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       return out;
     }
     function exportPayload(state, now = new Date().toISOString()) {
-      check(state.consent, 'Acepte la participación antes de exportar sus respuestas.');
-      check(validEmail(state.profile.email), 'Introduzca su correo electrónico en el perfil antes de entregar sus respuestas.');
+      check(state.consent, 'Acepta la participación antes de exportar tus respuestas.');
+      check(validEmail(state.profile.email), 'Introduce tu correo electrónico en el perfil antes de entregar tus respuestas.');
       const response = validateState(state);
       for (const id of dimIds) if (response.dimensions[id].skipReason) for (const key of dimCriteria) response.dimensions[id][key] = null;
       for (const item of instrument.items) {
@@ -365,9 +369,9 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
     usability: ['La pregunta o sus respuestas necesitan replantearse', 'Necesitan cambios importantes', 'Necesitan ajustes menores', 'La pregunta es clara y sus respuestas son adecuadas']
   };
   const finalQuestions = [
-    ['v2', '¿Eliminaría alguna dimensión? ¿Por qué?', 'Puede responder «Ninguna».'],
-    ['v3', '¿Falta alguna dimensión o área importante?', 'Piense en el propósito y las fases del diagnóstico.'],
-    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puede dejarlo en blanco.']
+    ['v2', '¿Eliminarías alguna dimensión? ¿Por qué?', 'Puedes responder «Ninguna».'],
+    ['v3', '¿Falta alguna dimensión o área importante?', 'Piensa en el propósito y las fases del diagnóstico.'],
+    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puedes dejarlo en blanco.']
   ];
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
@@ -409,10 +413,10 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
   const restored = repository.load();
   if (restored.ok && restored.value) {
     try { state = model.validateState(restored.value); }
-    catch (error) { writeBlocked = true; message('No se pudo recuperar la respuesta anterior: ' + error.message + ' No se ha reemplazado. Puede importar una copia o comenzar otra respuesta.'); }
+    catch (error) { writeBlocked = true; message('No se pudo recuperar la respuesta anterior: ' + error.message + ' No se ha reemplazado. Puedes importar una copia o comenzar otra respuesta.'); }
   } else if (!restored.ok) {
     writeBlocked = true;
-    message('No se pudo leer el guardado local. Puede completar la revisión y descargar sus respuestas; no cierre esta ventana antes de hacerlo.');
+    message('No se pudo leer el guardado local. Puedes completar la revisión y descargar tus respuestas; no cierres esta ventana antes de hacerlo.');
   }
   if (!model.canVisit(state, state.step)) state.step = state.consent ? 1 : 0;
 
@@ -455,7 +459,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Si no conoce suficientemente ${kind === 'dimensions' ? 'el tema de esta dimensión' : 'el tema de esta pregunta'}, no es necesario que opine.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Quiero dar mi opinión</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No conozco suficientemente este tema</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero dejarlo sin valorar</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
+    return `<div class="omission"><label for="${idFor(path)}">Si no conoces suficientemente ${kind === 'dimensions' ? 'el tema de esta dimensión' : 'el tema de esta pregunta'}, no es necesario que opines.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Quiero dar mi opinión</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No conozco suficientemente este tema</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero dejarlo sin valorar</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
@@ -463,91 +467,94 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return heading('Ayúdenos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como usted.') +
-      `<section class="surface"><p class="intro-lead">Le mostraremos seis temas, uno por página. En cada pregunta solo tendrá que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
-      <p><strong>Usted evalúa el instrumento; no está puntuando una startup.</strong></p>
-      <p>Los comentarios son opcionales. Puede saltar lo que no pueda valorar y continuar más tarde.</p>
-      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puede hacer pausas: guardamos sus avances en este navegador.</p>
-      <p class="subtle">Al terminar, pulse «Enviar revisión». No tendrá que abrir su correo ni adjuntar archivos.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puede cuestionar esta delimitación en el resumen.</p></details>
+    return heading('Ayúdanos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como tú.') +
+      `<section class="surface"><p class="intro-lead">Te mostraremos seis temas, uno por página. En cada pregunta solo tienes que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
+      <p><strong>Estás evaluando el instrumento, no puntuando una startup.</strong></p>
+      <p>Los comentarios son opcionales. Puedes saltar lo que no puedas valorar y continuar más tarde.</p>
+      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puedes hacer pausas: guardamos tus avances en este navegador.</p>
+      <p class="subtle">Al terminar, pulsa «Enviar revisión». No tienes que abrir tu correo ni adjuntar archivos.</p>
+      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puedes cuestionar esta delimitación en el resumen.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
-      <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puede dejar de cumplimentar el formulario en cualquier momento.</p>
-      <p>El borrador se guarda en este navegador cuando este lo permite. No incluya nombres de clientes, datos confidenciales ni información que no quiera compartir. El almacenamiento local no sustituye una copia descargada.</p>
-      <p>Solicitamos su correo para identificar su revisión y poder contactar con usted sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», sus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puede guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar su nombre o correo.</p>
-      <p>Antes de entregar respuestas, solicite la hoja de información del estudio a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>: debe concretar responsable del tratamiento, base jurídica, conservación, destinatarios y derechos. Esta versión candidata no incorpora todavía esa hoja. Para consultar una retirada, indique su identificador de respuesta; su posibilidad y condiciones deben explicarse en la hoja. Tras una anonimización irreversible puede no ser posible localizarla.</p></details>
+      <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puedes dejar de cumplimentar el formulario en cualquier momento.</p>
+      <p>El borrador se guarda en este navegador cuando este lo permite. No incluyas nombres de clientes, datos confidenciales ni información que no quieras compartir. El almacenamiento local no sustituye una copia descargada.</p>
+      <p>Te pedimos el correo para identificar tu revisión y poder contactar contigo sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», tus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puedes guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar tu nombre o tu correo.</p>
+      <p>Puedes pedir la hoja de información del estudio —responsable del tratamiento, base jurídica, conservación, destinatarios y derechos— escribiendo a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>, antes o después de responder. Los resultados se publicarán de forma agregada y anonimizada: tu nombre y tu correo no aparecerán. Si más adelante quieres retirar tu respuesta, basta con ese mismo correo indicando tu identificador de respuesta; una vez anonimizada de forma irreversible puede que ya no sea posible localizarla.</p></details>
       <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído esta información y acepto participar voluntariamente y el uso académico de las respuestas que decida entregar.</span></label>
       ${nav('Empezar la revisión')}</section>`;
   }
   function profile() {
-    return heading('Antes de empezar', 'Primero, su criterio sin haber visto el modelo. Después, un breve perfil.') +
-      `<section class="surface"><h2>¿Qué miraría usted?</h2>
-      ${field('initial.text', 'Si dispusiera de diez minutos para diagnosticar una startup temprana, ¿qué evaluaría?', state.initial.lockedAt ? 'Su respuesta inicial ya está registrada. Puede añadir nuevas ideas en el resumen o al final.' : 'Unas pocas ideas bastan. Nos ayudan a detectar aspectos que el modelo podría haber pasado por alto. Puede dejarlo en blanco; al continuar quedará registrado sin cambios.')}</section>` +
-      `<section class="surface">${field('profile.email', 'Correo electrónico', 'Para identificar su revisión y poder contactar con usted sobre sus respuestas.', 'email')}${field('profile.name', 'Nombre', '', 'text')}${checks('profile.roles', 'Perfiles desde los que participa', model.roles)}
+    return heading('Antes de empezar', 'Primero, tu criterio sin haber visto el modelo. Después, un breve perfil.') +
+      `<section class="surface"><h2>¿Qué mirarías tú?</h2>
+      ${field('initial.text', 'Si tuvieras diez minutos para diagnosticar una startup temprana, ¿qué evaluarías?', state.initial.lockedAt ? 'Tu respuesta inicial ya está registrada. Puedes añadir nuevas ideas en el resumen o al final.' : 'Unas pocas ideas bastan. Nos ayudan a detectar aspectos que el modelo podría haber pasado por alto. Puedes dejarlo en blanco; al continuar quedará registrado sin cambios.')}</section>` +
+      `<section class="surface">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y poder contactar contigo sobre tus respuestas.', 'email')}${field('profile.name', 'Nombre', '', 'text')}${checks('profile.roles', 'Perfiles desde los que participas', model.roles)}
       ${field('profile.years', 'Años de experiencia relevante', '', 'number')}
-      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Añadir más detalles sobre su experiencia (opcional)</summary>
+      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Añadir más detalles sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
-      <div class="field" style="margin-top:20px">${checks('profile.phases', 'Fases con las que tiene experiencia', model.phases)}</div>
+      <div class="field" style="margin-top:20px">${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}</div>
+      ${state.profile.phases.includes('Otra') ? field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: Serie A, crecimiento internacional o consolidación.', 'text') : ''}
       ${field('profile.sectors', 'Sectores o modelos con mayor experiencia', 'Por ejemplo: SaaS B2B, servicios, hardware o actividad regulada.', 'text')}
       ${field('profile.pivot', 'Experiencia personal de pivote, cierre o fracaso', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
-      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'Puede describirlos sin identificar personas o empresas.')}</details>
+      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'Puedes describirlos sin identificar personas o empresas.')}</details>
       ${nav('Empezar con las preguntas')}</section>`;
   }
   function guide() {
-    return heading('Dos escalas, dos tareas diferentes', 'Usted evalúa el instrumento; no está puntuando una startup.') +
-      `<section class="surface"><h2>Lo que verá el emprendedor</h2><p>Cada pregunta tiene cuatro niveles candidatos, del <strong>0 al 3</strong>. Describen evidencias o prácticas observables, ordenadas para ese aspecto.</p>
+    return heading('Dos escalas, dos tareas diferentes', 'Estás evaluando el instrumento, no puntuando una startup.') +
+      `<section class="surface"><h2>Lo que verá la persona emprendedora</h2><p>Cada pregunta tiene cuatro niveles candidatos, del <strong>0 al 3</strong>. Describen evidencias o prácticas observables, ordenadas para ese aspecto.</p>
       <p class="subtle">Los niveles no son intervalos equivalentes ni una puntuación de éxito. En la aplicación futura habrá que distinguir falta de evidencia, desconocimiento, «No aplica todavía» y preferencia por no responder.</p>
-      <h2 style="margin-top:24px">Lo que le pedimos a usted</h2><p>Valore del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
-      <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indíquelo en Observaciones.</td></tr></tbody></table>
-      <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoce suficientemente un tema, puede dejarlo sin valorar.</p>${codeGuide()}</section>
-      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puede cuestionar esta delimitación en la valoración final.</li><li>Juzgue la adecuación a la fase y al modelo. Señale cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de su experiencia, puede omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detecte un problema, indique el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
+      <h2 style="margin-top:24px">Lo que te pedimos a ti</h2><p>Valora del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
+      <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indícalo en Observaciones.</td></tr></tbody></table>
+      <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoces suficientemente un tema, puedes dejarlo sin valorar.</p>${codeGuide()}</section>
+      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puedes cuestionar esta delimitación en la valoración final.</li><li>Juzga la adecuación a la fase y al modelo. Señala cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de tu experiencia, puedes omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detectes un problema, indica el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
   }
   function glossary(item) {
-    const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ')).toLowerCase();
-    const terms = instrument.glossary.filter(g => text.includes(g.term));
-    return terms.length ? `<details class="help"><summary>Consultar términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
+    const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
+    const words = new Set(text.split(/[^0-9a-zà-ÿ]+/).filter(Boolean));
+    const matches = term => term.split(' ').every(part => words.has(part) || words.has(part + 's') || words.has(part + 'es'));
+    const terms = instrument.glossary.filter(g => matches(g.term));
+    return terms.length ? `<details class="help" open><summary>Términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
   }
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
-      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help"><summary>Aclaración de esta pregunta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
-      <p class="level-caption">Estas son las respuestas que podría elegir el emprendedor. Léalas para valorar la pregunta.</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
-      ${item.conditional ? `<aside class="conditional-note"><strong>Opción adicional propuesta para el emprendedor</strong><p>${esc(item.conditional)}</p><p class="fine">Valore también esta opción al juzgar las respuestas. Si no conoce suficientemente este tema, puede dejarlo sin valorar al final de la pregunta.</p></aside>` : ''}
+      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help" open><summary>Aclaración de esta pregunta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
+      <p class="level-caption">Estas son las respuestas que podría elegir la persona emprendedora. Léelas para valorar la pregunta.</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
+      ${item.conditional ? `<aside class="conditional-note"><strong>Opción adicional propuesta para la persona emprendedora</strong><p>${esc(item.conditional)}</p><p class="fine">Valora también esta opción al juzgar las respuestas. Si no conoces suficientemente este tema, puedes dejarlo sin valorar al final de la pregunta.</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
-      <div data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Ahora, su opinión como experto</p>
+      <div data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Ahora, tu opinión como experto</p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
-      ${field(base + '.comment', 'Observaciones', 'Si algo no está claro o cambiaría alguna respuesta, puede explicarlo aquí.')}</div>
+      ${field(base + '.comment', 'Observaciones', 'Si algo no está claro o cambiarías alguna respuesta, puedes explicarlo aquí.')}</div>
       ${omission('items', item.id)}
-      <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Sus puntuaciones no se incluirán en el análisis.</p></article>`;
+      <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Tus puntuaciones no se incluirán en el análisis.</p></article>`;
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return heading(dimensionLabel(id) + ' · ' + dim.short, items.length + ' preguntas sobre este tema. Revise la página y continúe a la siguiente dimensión.') +
+    return heading(dimensionLabel(id) + ' · ' + dim.short, items.length + ' preguntas sobre este tema. Revisa la página y continúa a la siguiente dimensión.') +
       `<section class="dimension-intro" id="dimension-${id}"><p>${esc(dim.desc)}</p>${omission('dimensions', id)}</section>
-      <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Ha dejado esta dimensión sin valorar. Pulse «Continuar» para seguir.</p>
+      <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
-      <section class="surface dimension-top"><h2>Su opinión sobre esta dimensión</h2>
+      <section class="surface dimension-top"><h2>Tu opinión sobre esta dimensión</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
-      ${field(base + '.comment', 'Observaciones', 'Puede indicar qué falta o qué cambiaría en el conjunto de esta dimensión.')}</section></div>
+      ${field(base + '.comment', 'Observaciones', 'Puedes indicar qué falta o qué cambiarías en el conjunto de esta dimensión.')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de respuestas</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {
-    return heading('Último paso', 'Puede añadir una observación y enviar su revisión.') +
+    return heading('Último paso', 'Puedes añadir una observación y enviar tu revisión.') +
       `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>`;
   }
   function scoreText(record, criteria) { return criteria.map(key => criteriaLabels[key] + ': ' + (record[key] ?? 'sin respuesta')).join(' · '); }
   function delivery() {
     const counts = model.summary(state);
-    return `<p class="fine">${counts.pending + counts.partial ? 'Puede enviar su revisión aunque haya dejado preguntas sin responder.' : 'Su revisión está lista para enviar.'}</p>
+    return `<p class="fine">${counts.pending + counts.partial ? 'Puedes enviar tu revisión aunque hayas dejado preguntas sin responder.' : 'Tu revisión está lista para enviar.'}</p>
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
-      <p class="fine">Puede descargar una copia de seguridad de sus respuestas.</p>
+      <p class="fine">Puedes descargar una copia de seguridad de tus respuestas.</p>
       <div class="actions"><button type="button" class="button secondary" data-action="export">Descargar respuestas (.json)</button><button type="button" class="button secondary" data-action="print">Imprimir resumen</button><button type="button" class="text-button" data-action="copy">Copiar respuestas</button></div>
       <p class="response-id">Identificador: ${esc(state.responseId)}<br><span data-last-change></span></p>
       <p id="copy-status" role="status"></p><div id="manual-copy-wrapper" hidden></div>
-      <div class="notice" id="export-receipt" role="status" hidden>Se ha solicitado la descarga de su copia. Descargar no equivale a enviar.</div>
-      <div class="notice" id="export-stale" hidden>Ha cambiado respuestas desde la última copia descargada.</div>
+      <div class="notice" id="export-receipt" role="status" hidden>Se ha solicitado la descarga de tu copia. Descargar no equivale a enviar.</div>
+      <div class="notice" id="export-stale" hidden>Has cambiado respuestas desde la última copia descargada.</div>
       <details><summary>Consultar progreso</summary>${reviewCounts()}</details></details>
       <div class="nav-row"><button type="button" class="button secondary" data-action="back">Volver al resumen</button></div>`;
   }
@@ -575,12 +582,12 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
     }).join('')}</div>`;
   }
   function review() {
-    return heading('Resumen de sus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Compruebe sus valoraciones antes de pasar a las conclusiones finales.') +
-      `<section class="summary-intro"><p><strong>Los números son sus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
+    return heading('Resumen de tus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Comprueba tus valoraciones antes de pasar a las conclusiones finales.') +
+      `<section class="summary-intro"><p><strong>Los números son tus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
-      <p class="fine">Pulse el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verá la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
+      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}${codeGuide()}</section>
       ${summaryMap()}
-      <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si lo desea, señale qué sobra o qué falta. Puede cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
+      <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si quieres, señala qué sobra o qué falta. Puedes cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
       ${nav('Continuar a la valoración final')}`;
   }
@@ -616,7 +623,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       const button = app.querySelector('[data-action="submit"]');
       button.disabled = sending || !!currentSubmission();
       button.textContent = sending ? 'Enviando…' : currentSubmission() ? 'Revisión enviada' : state.submission ? 'Enviar cambios' : 'Enviar revisión';
-      document.getElementById('submit-status').textContent = sending ? 'Enviando su revisión…' : submissionError || (currentSubmission() ? 'Su revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Ha cambiado respuestas después del envío. Puede enviar la versión actualizada.' : '');
+      document.getElementById('submit-status').textContent = sending ? 'Enviando tu revisión…' : submissionError || (currentSubmission() ? 'Tu revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Has cambiado respuestas después del envío. Puedes enviar la versión actualizada.' : '');
       document.querySelector('[data-last-change]').textContent = 'Último cambio: ' + new Date(state.updatedAt).toLocaleString('es-ES');
       const currentExport = model.hasCurrentExport(state);
       document.getElementById('export-receipt').hidden = !currentExport;
@@ -723,7 +730,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       if (action === 'export') exportResponses();
       if (action === 'copy') copyResponses();
       if (action === 'print' || action === 'print-map') { printMode = action === 'print-map' ? 'map' : 'full'; renderPrint(); window.print(); }
-    } catch (error) { message(error.message || 'No se pudo completar la acción. Puede volver a intentarlo.'); }
+    } catch (error) { message(error.message || 'No se pudo completar la acción. Puedes volver a intentarlo.'); }
   });
   async function submitResponses() {
     flushText();
@@ -742,7 +749,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
         persist();
       }
     } catch (error) {
-      if (state.responseId === payload.response.responseId) submissionError = error.message === 'not-configured' ? 'El envío todavía no está disponible. Sus respuestas se conservan; puede guardar una copia y volver más tarde.' : 'No se ha podido confirmar el envío. Sus respuestas se conservan. Pulse «Enviar revisión» para reintentarlo.';
+      if (state.responseId === payload.response.responseId) submissionError = error.message === 'not-configured' ? 'El envío todavía no está disponible. Tus respuestas se conservan; puedes guardar una copia y volver más tarde.' : 'No se ha podido confirmar el envío. Tus respuestas se conservan. Pulsa «Enviar revisión» para reintentarlo.';
     } finally { clearTimeout(timer); sending = false; refresh(); }
   }
   function exportResponses() {
@@ -774,7 +781,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
       await navigator.clipboard.writeText(raw);
       status.textContent = stillCurrent() ? 'Respuestas copiadas. Abra el correo y péguelas en el mensaje. Todavía no se han enviado.' : 'Las respuestas han cambiado durante la copia. Vuelva a copiarlas antes de enviarlas.';
     } catch {
-      if (!stillCurrent()) { status.textContent = 'Las respuestas han cambiado. Pulse de nuevo «Copiar respuestas».'; return; }
+      if (!stillCurrent()) { status.textContent = 'Las respuestas han cambiado. Pulsa de nuevo «Copiar respuestas».'; return; }
       status.textContent = 'El navegador no permite copiar automáticamente. Copie el texto seleccionado o descargue el archivo.';
       const label = document.createElement('label'); label.htmlFor = 'manual-copy'; label.textContent = 'Respuestas para copiar y pegar en el correo';
       const textarea = document.createElement('textarea'); textarea.id = 'manual-copy'; textarea.readOnly = true; textarea.value = raw;
@@ -787,7 +794,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de sus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
     document.getElementById('print-view').innerHTML = `<h1>Validación de expertos · V1.9</h1><p>Diagnóstico para startups en fase temprana</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y mirada inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Mirada inicial sin respuesta')}</p>
@@ -838,7 +845,7 @@ main{min-width:0;outline:none}.page-heading{margin-bottom:22px}.page-heading h1{
   render();
   if (writeBlocked) setSaveStatus(false);
   else if (restored.value) setSaveStatus(true);
-  else document.getElementById('save-state').textContent = 'El guardado local comienza cuando responde. También puede descargar una copia.';
+  else document.getElementById('save-state').textContent = 'El guardado local comienza cuando respondes. También puedes descargar una copia.';
 })();
 </script>
 </body>

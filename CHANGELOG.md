@@ -1,5 +1,34 @@
 # Registro de cambios
 
+## V1.9.1 — candidata (septiembre de 2026)
+
+Bloque de revisión aplicado sobre V1.9, centrado en comprensión y trato.
+
+- **Tuteo en todo el formulario**, incluidos los enunciados y las aclaraciones.
+  Se hace antes de validar: cambiar la persona después invalidaría las
+  puntuaciones de claridad ya recogidas.
+- **Aclaraciones y glosario desplegados por defecto.** Si están ocultos, el
+  experto puntúa la claridad sin el texto que la persona emprendedora sí vería.
+- **Fases de experiencia:** se añaden «Escalado» y «Otra» con texto libre
+  (`profile.phasesOther`), propagado a la hoja de contactos. Se mantiene
+  «Repetición comercial», que marca el límite superior del alcance.
+- **Participación y datos:** la hoja de información puede pedirse antes o
+  después de responder, y se explica que los resultados se publicarán de forma
+  agregada y anonimizada.
+- **Comprensión de términos:** LOI, burn neto, runway, CAC, LTV, GTM e «hito»
+  se explican en castellano dentro de la aclaración y del glosario.
+- **Contenido:** T1 explicita la complementariedad técnica y comercial; T3
+  nombra la coachability sin dejar de medir conducta; T5 menciona el pacto de
+  socios; PM2 distingue un problema real de una mejora deseable; PM3 sustituye
+  «top-down» por estimación de abajo arriba; D6 y SA2 explicitan la legitimidad;
+  D4 se subtitula «tracción y go-to-market».
+- **Corrección:** el glosario emparejaba por subcadena y «dedicación» activaba
+  la ficha del CAC. Ahora empareja por palabra completa.
+
+### Pendiente
+Sigue sin incorporarse la hoja de información del estudio. No abras la ronda
+de expertos sin ella.
+
 ## V1.9 — candidata (septiembre de 2026)
 
 Revisión de los enunciados y anclajes de la V1.8 para alinearlos con la evidencia de

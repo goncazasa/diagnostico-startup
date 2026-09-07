@@ -3,7 +3,7 @@
   const SCHEMA = 'expert-validation/1.9';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
-  const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial'];
+  const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
   const clone = value => JSON.parse(JSON.stringify(value));
   const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   function check(condition, message) { if (!condition) throw new Error(message); }
@@ -23,7 +23,7 @@
         schemaVersion: SCHEMA, instrumentVersion: instrument.version,
         responseId: id, createdAt: now, updatedAt: now, revision: 0, exportedRevision: -1,
         consent: false, step: 0, focusId: null, submission: null,
-        profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [] },
+        profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [], phasesOther: '' },
         initial: { text: '', lockedAt: null },
         dimensions: Object.fromEntries(dimIds.map(id => [id, { relevance: null, coverage: null, skipReason: '', comment: '' }])),
         items: Object.fromEntries(itemIds.map(id => [id, { relevance: null, usability: null, skipReason: '', comment: '' }])),
@@ -50,14 +50,15 @@
       }
       check(plain(candidate.profile) && plain(candidate.initial) && plain(candidate.dimensions) && plain(candidate.items) && plain(candidate.final), 'Faltan secciones en el archivo.');
       const p = candidate.profile;
-      check(text(p.email, 254) && (p.email === '' || validEmail(p.email)), 'Introduzca un correo electrónico válido.');
+      check(text(p.email, 254) && (p.email === '' || validEmail(p.email)), 'Introduce un correo electrónico válido.');
       check(text(p.name, 200), 'El nombre no es válido o supera 200 caracteres.');
       check(list(p.roles, ROLES) && list(p.phases, PHASES), 'El perfil contiene opciones desconocidas.');
+      check(text(p.phasesOther, 200), 'El perfil contiene un texto demasiado largo.');
       check(p.years === '' || (typeof p.years === 'string' && /^\d{1,3}$/.test(p.years) && Number(p.years) <= 100), 'Los años de experiencia deben estar entre 0 y 100.');
       check(['', '0–10', '11–25', '26–50', '51–100', '>100'].includes(p.ventures), 'El número de startups no es válido.');
       check(['', 'Sí', 'No', 'Prefiero no responder'].includes(p.pivot), 'La experiencia de pivote no es válida.');
       for (const key of ['sectors', 'conflict']) check(text(p[key]), 'El texto del perfil es demasiado largo.');
-      out.profile = { email: p.email, name: p.name, roles: [...p.roles], phases: [...p.phases], years: p.years, ventures: p.ventures, pivot: p.pivot, sectors: p.sectors, conflict: p.conflict };
+      out.profile = { email: p.email, name: p.name, roles: [...p.roles], phases: [...p.phases], phasesOther: p.phasesOther, years: p.years, ventures: p.ventures, pivot: p.pivot, sectors: p.sectors, conflict: p.conflict };
       check(text(candidate.initial.text) && (candidate.initial.lockedAt === null || date(candidate.initial.lockedAt)), 'La mirada inicial no es válida.');
       out.initial = { text: candidate.initial.text, lockedAt: candidate.initial.lockedAt };
       for (const [kind, ids, criteria] of [['dimensions', dimIds, dimCriteria], ['items', itemIds, itemCriteria]]) {
@@ -96,8 +97,8 @@
       return validateState(next);
     }
     function sealInitial(state) {
-      check(state.consent, 'Acepte la participación antes de continuar.');
-      check(validEmail(state.profile.email), 'Introduzca su correo electrónico para continuar.');
+      check(state.consent, 'Acepta la participación antes de continuar.');
+      check(validEmail(state.profile.email), 'Introduce tu correo electrónico para continuar.');
       if (state.initial.lockedAt) return state;
       const next = clone(state);
       next.initial.lockedAt = new Date().toISOString();
@@ -124,8 +125,8 @@
       return out;
     }
     function exportPayload(state, now = new Date().toISOString()) {
-      check(state.consent, 'Acepte la participación antes de exportar sus respuestas.');
-      check(validEmail(state.profile.email), 'Introduzca su correo electrónico en el perfil antes de entregar sus respuestas.');
+      check(state.consent, 'Acepta la participación antes de exportar tus respuestas.');
+      check(validEmail(state.profile.email), 'Introduce tu correo electrónico en el perfil antes de entregar tus respuestas.');
       const response = validateState(state);
       for (const id of dimIds) if (response.dimensions[id].skipReason) for (const key of dimCriteria) response.dimensions[id][key] = null;
       for (const item of instrument.items) {
