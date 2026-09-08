@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## Rediseño de la interfaz — septiembre de 2026
+
+- Nombre público: **Diagnóstico de startups**, con el subtítulo «Revisión por expertos». Se retira la etiqueta de versión candidata de la cabecera.
+- Jerarquía visual con un título principal por pantalla, navegación secundaria, mayor contraste y una ilustración propia para cada dimensión. Las escalas conservan números y etiquetas, sin iconos emocionales que orienten la valoración.
+- Perfil antes del criterio inicial; la explicación breve de las dos escalas aparece antes de revisar las dimensiones. Cada dimensión sigue en una sola página.
+- Instrucciones, ayudas de navegación y mensajes de guardado y envío más breves, con tuteo. Se retiran las referencias heredadas al envío manual por correo.
+- «Otra» muestra su campo de texto en cuanto se marca y conserva los cambios pendientes del perfil. El menú móvil mantiene su posición al recibir el foco.
+- Se mantienen íntegros los 21 enunciados, niveles, aclaraciones, dimensiones y criterios del instrumento. No cambian el esquema, los borradores V1.9 ni la integración con Google Sheets.
+
 ## V1.9.1 — candidata (septiembre de 2026)
 
 Bloque de revisión aplicado sobre V1.9, centrado en comprensión y trato.

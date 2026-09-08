@@ -25,13 +25,13 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
       const incoming = JSON.parse(raw);
       if (incoming.format !== 'expert-validation/1.9' || incoming.instrumentVersion !== instrument.version) return fail(400, 'Versión de formulario no compatible.');
       const state = model.validateState(incoming.response);
-      if (!state.initial.lockedAt) return fail(400, 'Complete el inicio del formulario.');
+      if (!state.initial.lockedAt) return fail(400, 'Completa el inicio del formulario.');
       // Only validated answers and the server's instrument enter the archive.
       // Navigation, client receipts and export time must not change a retry key.
       state.step = 10; state.focusId = null; state.submission = null;
       payload = model.exportPayload(state, state.updatedAt);
-    } catch { return fail(400, 'Revise el formato y los campos de su respuesta.'); }
-    if (!env.GOOGLE_SHEETS_SECRET || !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(env.GOOGLE_SHEETS_WEBHOOK_URL || '')) return fail(503, 'El envío aún no está configurado. Sus respuestas siguen en este navegador.');
+    } catch { return fail(400, 'Revisa el formato y los campos de tu respuesta.'); }
+    if (!env.GOOGLE_SHEETS_SECRET || !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(env.GOOGLE_SHEETS_WEBHOOK_URL || '')) return fail(503, 'El envío aún no está configurado. Tus respuestas siguen en este navegador.');
     const serialized = JSON.stringify(payload);
     const receiptId = 'sheets-' + createHash('sha256').update(serialized).digest('hex');
     const body = JSON.stringify({ payload: serialized, signature: createHmac('sha256', env.GOOGLE_SHEETS_SECRET).update(serialized).digest('hex') });
@@ -41,11 +41,11 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
         headers: { 'Content-Type': 'application/json' },
         body, signal: AbortSignal.timeout(15000)
       });
-      if (!response.ok) return fail(502, 'No se ha podido confirmar el envío. Puede reintentarlo.');
+      if (!response.ok) return fail(502, 'No se ha podido confirmar el envío. Puedes reintentarlo.');
       const data = await response.json();
       if (data.ok !== true || data.receiptId !== receiptId) return fail(502, 'No se ha recibido confirmación del guardado.');
       return res.status(200).json({ ok: true, receiptId });
-    } catch { return fail(502, 'No se ha podido confirmar el envío. Puede reintentarlo.'); }
+    } catch { return fail(502, 'No se ha podido confirmar el envío. Puedes reintentarlo.'); }
   };
 }
 

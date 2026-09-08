@@ -32,7 +32,7 @@
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Utilice una copia exportada desde V1.9.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V1.9.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -84,7 +84,7 @@
       check(Array.isArray(path) && path.length >= 1 && path.length <= 3 && !path.some(k => ['__proto__', 'prototype', 'constructor'].includes(k)), 'Campo desconocido.');
       const allowed = path[0] === 'consent' || ['profile', 'initial', 'items', 'dimensions', 'final'].includes(path[0]);
       check(allowed && (path[0] !== 'consent' || (path.length === 1 && typeof value === 'boolean')), 'Campo no editable.');
-      check(path[0] !== 'initial' || (path[1] === 'text' && !state.initial.lockedAt), 'La mirada inicial ya está registrada. Añada nuevas ideas en la valoración final.');
+      check(path[0] !== 'initial' || (path[1] === 'text' && !state.initial.lockedAt), 'Tu criterio inicial ya está registrado. Puedes añadir ideas en el resumen.');
       const next = clone(state);
       let target = next;
       for (const part of path.slice(0, -1)) { check(plain(target[part]), 'Campo desconocido.'); target = target[part]; }
@@ -140,7 +140,7 @@
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Seleccione una respuesta V1.9. Para continuar una respuesta anterior, abra su versión original: ahora claridad y respuestas se valoran conjuntamente y no se convierten puntuaciones automáticamente.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V1.9. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }

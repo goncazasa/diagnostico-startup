@@ -3,30 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Panel de revisión por expertos de un diagnóstico para startups en fase temprana. Versión candidata 1.9.">
-  <title>Validación de expertos · Startups · V1.9</title>
+  <meta name="description" content="Diagnóstico de startups. Revisión por expertos de las preguntas de un instrumento para startups en fase temprana. Investigación doctoral en la Universidad Rey Juan Carlos.">
+  <meta name="theme-color" content="#183b5b">
+  <title>Diagnóstico de startups | Revisión por expertos</title>
   <style>/*__STYLES__*/</style>
 </head>
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
   <header class="masthead">
-    <div><span class="brand">Validación de expertos</span><span class="brand-sub">Diagnóstico para startups en fase temprana</span></div>
-    <span class="version">V1.9 · Candidata</span>
+    <div class="brand-lockup"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M7 28V12m13 21V7m13 21V12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="19" r="4" fill="currentColor"/><circle cx="20" cy="13" r="4" fill="currentColor"/><circle cx="33" cy="24" r="4" fill="currentColor"/></svg><div><span class="brand">Diagnóstico de startups</span><span class="brand-sub">Revisión por expertos</span></div></div>
+    <p class="study-credit">Investigación doctoral<span>Universidad Rey Juan Carlos</span></p>
   </header>
   <div class="workspace">
     <aside class="sidebar" aria-label="Recorrido y progreso">
       <details class="outline">
-        <summary>Ir a una sección</summary>
+        <summary>Tu recorrido</summary>
         <nav id="step-nav" aria-label="Pasos del cuestionario"></nav>
       </details>
       <div class="progress-box">
-        <label for="progress">Avance de la evaluación</label>
+        <label for="progress">Tu avance</label>
         <progress id="progress" value="0"></progress>
         <p id="progress-text">6 dimensiones y 21 preguntas</p>
-        <p class="fine">Cada bloque es una dimensión o una pregunta. Las omisiones se cuentan por separado.</p>
+        <p class="fine">Cada pregunta y cada dimensión tienen dos valoraciones.</p>
       </div>
-      <details class="draft-tools"><summary>Opciones de guardado</summary>
-        <button type="button" id="import-button" class="text-button">Recuperar un archivo de respuestas</button>
+      <details class="draft-tools"><summary>Tu respuesta</summary>
+        <button type="button" id="import-button" class="text-button">Importar una copia</button>
         <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V1.9">
         <button type="button" id="reset-button" class="text-button">Comenzar otra respuesta</button>
       </details>
@@ -34,10 +35,11 @@
     <main id="main" tabindex="-1">
       <div id="message" role="alert" hidden></div>
       <div id="app"></div>
-      <noscript><div class="notice">Este formulario necesita JavaScript para guardar y exportar respuestas. Abra el archivo en un navegador con JavaScript habilitado.</div></noscript>
+      <noscript><div class="notice">Activa JavaScript en tu navegador para responder y guardar tu revisión.</div></noscript>
       <footer class="save-footer"><span id="save-state" role="status">Preparando el guardado local…</span><span id="save-time"></span></footer>
     </main>
   </div>
+  <footer class="site-footer"><span>Diagnóstico de startups</span><a href="mailto:luis.gonzalezc@urjc.es">Contactar con el investigador</a></footer>
   <div id="print-view"></div>
   <script>/*__INSTRUMENT__*/</script>
   <script>/*__CORE__*/</script>

@@ -21,21 +21,21 @@
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
     coverage: ['Insuficiente', 'Faltan aspectos', 'Lo principal', 'Suficiente'],
-    usability: ['Replantear', 'Cambios importantes', 'Ajustes menores', 'Están bien']
+    usability: ['Replantear', 'Cambios importantes', 'Ajustes menores', 'Clara y adecuada']
   };
   const steps = [
-    { name: 'Participación', type: 'intro' }, { name: 'Perfil y mirada inicial', type: 'profile' },
-    { name: 'Cómo valorar', type: 'guide' },
+    { name: 'Bienvenida', type: 'intro' }, { name: 'Tu experiencia', type: 'profile' },
+    { name: 'Cómo responder', type: 'guide' },
     ...instrument.dimensions.map((d, i) => ({ name: `Dimensión ${i + 1} · ${d.short}`, type: 'dimension', dim: d.id })),
-    { name: 'Resumen', type: 'review' }, { name: 'Valoración final y entrega', type: 'final' }
+    { name: 'Resumen', type: 'review' }, { name: 'Enviar revisión', type: 'final' }
   ];
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const idFor = path => path.replaceAll('.', '-');
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
-    T1: 'Capacidades disponibles', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
-    PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Condiciones de adopción',
+    T1: 'Perfiles complementarios', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
+    PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
     VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
     C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente',
     F1: 'Caja disponible', F2: 'Previsión de caja', F3: 'Recursos para el hito', F4: 'Costes y margen por cliente',
@@ -45,7 +45,18 @@
   const dimensionLabel = id => 'Dimensión ' + id.slice(1);
   const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]} · ${item.id}`;
   function codeGuide() {
-    return `<details class="code-guide"><summary>¿Qué significan los códigos de las preguntas?</summary><p><strong>D1 significa Dimensión 1.</strong> <strong>T significa equipo, del inglés Team.</strong> T1 identifica la primera pregunta sobre equipo. Las letras identifican el tema y el número, la pregunta dentro de ese tema.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl><p class="fine">Son referencias para localizar preguntas, no puntuaciones.</p></details>`;
+    return `<details class="code-guide"><summary>Los códigos de las preguntas</summary><p><strong>D1 significa Dimensión 1.</strong> En T1, la letra T identifica Equipo (Team) y el número indica la pregunta. Son referencias para localizarla.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl></details>`;
+  }
+  function illustration(id) {
+    const drawings = {
+      D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
+      D2: '<circle cx="99" cy="73" r="48"/><circle cx="99" cy="73" r="28"/><circle cx="99" cy="73" r="7"/><path d="M105 67l53-40m-4 0 23-5-11 22M41 126h98"/>',
+      D3: '<path d="M38 63l37-22 37 22v43l-37 22-37-22zM38 63l37 22 37-22M75 85v43M117 37h56v49h-40l-16 12zM130 52h30m-30 13h21"/>',
+      D4: '<path d="M39 117V34m0 83h143M56 101l33-26 29 8 51-44m-23 0h23v22"/><circle cx="89" cy="75" r="5"/><circle cx="118" cy="83" r="5"/><path d="M69 117v-8m36 8v-9m36 9V96"/>',
+      D5: '<rect x="40" y="37" width="142" height="91" rx="9"/><path d="M40 61h142M59 82h36m-36 17h22M122 107V87m18 20V74m18 33V94M59 25h55"/><circle cx="58" cy="49" r="2"/><circle cx="68" cy="49" r="2"/>',
+      D6: '<path d="M110 23l37 15v32c0 24-17 39-37 50-20-11-37-26-37-50V38zM93 67l12 13 23-27M42 54l31 7m74 0 31-7M65 114l18-17m54 0 18 17"/><circle cx="33" cy="51" r="9"/><circle cx="187" cy="51" r="9"/><circle cx="59" cy="123" r="9"/><circle cx="161" cy="123" r="9"/>'
+    };
+    return `<svg class="dimension-art" viewBox="0 0 220 150" aria-hidden="true"><ellipse cx="110" cy="85" rx="96" ry="58" fill="#eaf0f9"/><circle cx="176" cy="29" r="18" fill="#e5efd0"/><g fill="white" stroke="#29577b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${drawings[id] || drawings.D1}</g></svg>`;
   }
   let state = model.createState(globalThis.crypto?.randomUUID?.() || ('response-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2)));
   let writeBlocked = false;
@@ -72,7 +83,7 @@
   }
   function setSaveStatus(ok) {
     const node = document.getElementById('save-state');
-    const text = ok ? 'Cambios guardados en este navegador' : 'Guardado local no disponible. Descargue sus respuestas antes de cerrar.';
+    const text = ok ? 'Cambios guardados en este navegador' : 'No se puede guardar aquí. Descarga una copia antes de cerrar.';
     if (node.textContent !== text) node.textContent = text;
     node.classList.toggle('error', !ok);
     document.getElementById('save-time').textContent = ok ? 'Último cambio: ' + new Date(state.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : '';
@@ -90,7 +101,7 @@
     let control;
     if (type === 'select') control = `<select ${attrs}><option value="">Sin respuesta</option>${options.map(([v, l]) => `<option value="${esc(v)}" ${value === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
     else if (type === 'textarea') control = `<textarea ${attrs} maxlength="6000" ${path === 'initial.text' && state.initial.lockedAt ? 'disabled' : ''}>${esc(value)}</textarea>`;
-    else control = `<input ${attrs} type="${type}" value="${esc(value)}" ${type === 'number' ? 'min="0" max="100" step="1" inputmode="numeric"' : `maxlength="${required ? 254 : path === 'profile.name' ? 200 : 6000}"`}>`;
+    else control = `<input ${attrs} type="${type}" value="${esc(value)}" ${type === 'number' ? 'min="0" max="100" step="1" inputmode="numeric"' : `maxlength="${required ? 254 : ['profile.name', 'profile.phasesOther'].includes(path) ? 200 : 6000}"`}>`;
     return `<div class="field"><label for="${id}">${esc(label)} ${required ? '' : optional}</label>${control}${hint ? `<p class="fine" id="${id}-help">${esc(hint)}</p>` : ''}</div>`;
   }
   function checks(path, label, values) {
@@ -104,7 +115,7 @@
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Si no conoces suficientemente ${kind === 'dimensions' ? 'el tema de esta dimensión' : 'el tema de esta pregunta'}, no es necesario que opines.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Quiero dar mi opinión</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No conozco suficientemente este tema</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero dejarlo sin valorar</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
+    return `<div class="omission"><label for="${idFor(path)}">¿Este tema queda fuera de tu experiencia? Puedes omitir${kind === 'dimensions' ? ' la dimensión' : ' la pregunta'}.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No tengo suficiente experiencia</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
@@ -112,44 +123,37 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return heading('Ayúdanos a revisar 21 preguntas', 'Un diagnóstico para startups en fase temprana, revisado por expertos como tú.') +
-      `<section class="surface"><p class="intro-lead">Te mostraremos seis temas, uno por página. En cada pregunta solo tienes que valorar su relevancia y si el enunciado y sus respuestas funcionan bien.</p>
-      <p><strong>Estás evaluando el instrumento, no puntuando una startup.</strong></p>
-      <p>Los comentarios son opcionales. Puedes saltar lo que no puedas valorar y continuar más tarde.</p>
-      <p class="fine">Son 21 preguntas agrupadas en seis dimensiones. Puedes hacer pausas: guardamos tus avances en este navegador.</p>
-      <p class="subtle">Al terminar, pulsa «Enviar revisión». No tienes que abrir tu correo ni adjuntar archivos.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>Esta ronda incluye seis dimensiones y veintiuna preguntas candidatas. No predice éxito ni decide inversiones. Se centra en la evidencia para el siguiente hito; la escalabilidad no se evalúa como dimensión independiente. Puedes cuestionar esta delimitación en el resumen.</p></details>
+    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="review-purpose">Revisarás el cuestionario. No necesitas evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>21</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span>A tu ritmo</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+      `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
+      <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La escalabilidad no se evalúa como dimensión independiente; puedes comentar esta delimitación en el resumen.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
-      <p>Proyecto de investigación académica vinculado a la Universidad Rey Juan Carlos. La participación es voluntaria. Puedes dejar de cumplimentar el formulario en cualquier momento.</p>
-      <p>El borrador se guarda en este navegador cuando este lo permite. No incluyas nombres de clientes, datos confidenciales ni información que no quieras compartir. El almacenamiento local no sustituye una copia descargada.</p>
-      <p>Te pedimos el correo para identificar tu revisión y poder contactar contigo sobre ella; el nombre es opcional. Al pulsar «Enviar revisión», tus datos y respuestas se guardan en una hoja privada de Google Sheets del investigador, a través de Vercel y Google Apps Script. Puedes guardar una copia descargada. Esta participación no es anónima. Completar el formulario no autoriza a publicar tu nombre o tu correo.</p>
-      <p>Puedes pedir la hoja de información del estudio —responsable del tratamiento, base jurídica, conservación, destinatarios y derechos— escribiendo a <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>, antes o después de responder. Los resultados se publicarán de forma agregada y anonimizada: tu nombre y tu correo no aparecerán. Si más adelante quieres retirar tu respuesta, basta con ese mismo correo indicando tu identificador de respuesta; una vez anonimizada de forma irreversible puede que ya no sea posible localizarla.</p></details>
-      <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído esta información y acepto participar voluntariamente y el uso académico de las respuestas que decida entregar.</span></label>
+      <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
+      <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p>
+      <p>Al pulsar «Enviar revisión», tus respuestas se guardan en una hoja privada de Google Sheets del investigador mediante Vercel y Google Apps Script. No incluyas datos confidenciales ni nombres de clientes. También puedes descargar una copia de tu revisión.</p>
+      <p>Puedes solicitar la hoja de información del estudio antes o después de responder en <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>. Incluye responsable, base jurídica, conservación, destinatarios y derechos. Para retirar una respuesta, escribe a ese correo con su identificador. Tras anonimizarla de forma irreversible, puede que ya no sea posible localizarla.</p></details>
+      <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído la información y acepto participar voluntariamente y el uso académico de mis respuestas.</span></label>
       ${nav('Empezar la revisión')}</section>`;
   }
   function profile() {
-    return heading('Antes de empezar', 'Primero, tu criterio sin haber visto el modelo. Después, un breve perfil.') +
-      `<section class="surface"><h2>¿Qué mirarías tú?</h2>
-      ${field('initial.text', 'Si tuvieras diez minutos para diagnosticar una startup temprana, ¿qué evaluarías?', state.initial.lockedAt ? 'Tu respuesta inicial ya está registrada. Puedes añadir nuevas ideas en el resumen o al final.' : 'Unas pocas ideas bastan. Nos ayudan a detectar aspectos que el modelo podría haber pasado por alto. Puedes dejarlo en blanco; al continuar quedará registrado sin cambios.')}</section>` +
-      `<section class="surface">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y poder contactar contigo sobre tus respuestas.', 'email')}${field('profile.name', 'Nombre', '', 'text')}${checks('profile.roles', 'Perfiles desde los que participas', model.roles)}
-      ${field('profile.years', 'Años de experiencia relevante', '', 'number')}
-      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Añadir más detalles sobre tu experiencia (opcional)</summary>
+    return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
+      `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups?', model.roles)}
+      ${field('profile.years', 'Años de experiencia con startups', '', 'number')}
+      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
-      <div class="field" style="margin-top:20px">${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}</div>
-      ${state.profile.phases.includes('Otra') ? field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: Serie A, crecimiento internacional o consolidación.', 'text') : ''}
-      ${field('profile.sectors', 'Sectores o modelos con mayor experiencia', 'Por ejemplo: SaaS B2B, servicios, hardware o actividad regulada.', 'text')}
-      ${field('profile.pivot', 'Experiencia personal de pivote, cierre o fracaso', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
-      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'Puedes describirlos sin identificar personas o empresas.')}</details>
-      ${nav('Empezar con las preguntas')}</section>`;
+      ${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}
+      <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
+      ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
+      ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
+      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
+      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'Anota los aspectos que revisarías. Esta respuesta se guardará al continuar y no podrás editarla después.')}</div>
+      ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Dos escalas, dos tareas diferentes', 'Estás evaluando el instrumento, no puntuando una startup.') +
-      `<section class="surface"><h2>Lo que verá la persona emprendedora</h2><p>Cada pregunta tiene cuatro niveles candidatos, del <strong>0 al 3</strong>. Describen evidencias o prácticas observables, ordenadas para ese aspecto.</p>
-      <p class="subtle">Los niveles no son intervalos equivalentes ni una puntuación de éxito. En la aplicación futura habrá que distinguir falta de evidencia, desconocimiento, «No aplica todavía» y preferencia por no responder.</p>
-      <h2 style="margin-top:24px">Lo que te pedimos a ti</h2><p>Valora del <strong>1 al 4</strong> dos aspectos de cada pregunta:</p>
-      <table class="scale-guide"><tbody><tr><th scope="row">Relevancia</th><td>¿Ayuda a identificar brechas para el siguiente hito?</td></tr><tr><th scope="row">Claridad y respuestas</th><td>¿Se entiende la pregunta y son adecuadas sus respuestas? Si algo falla, indícalo en Observaciones.</td></tr></tbody></table>
-      <p class="fine" style="margin-top:12px">Cada pregunta tiene dos valoraciones; cada dimensión, relevancia y cobertura. Las observaciones son opcionales. Si no conoces suficientemente un tema, puedes dejarlo sin valorar.</p>${codeGuide()}</section>
-      <section class="surface"><h2>Contexto de esta ronda</h2><ul class="guidelines"><li>Se revisan seis dimensiones y veintiuna preguntas reformuladas. Las conclusiones se limitarán al contenido mostrado.</li><li>La escalabilidad no forma parte de esta ronda. Puedes cuestionar esta delimitación en la valoración final.</li><li>Juzga la adecuación a la fase y al modelo. Señala cuándo una pregunta solo resulta pertinente bajo determinadas condiciones.</li><li>Si una dimensión queda fuera de tu experiencia, puedes omitirla junto con sus preguntas. Las omisiones no se convertirán en puntuaciones bajas.</li><li>Cuando detectes un problema, indica el nivel o término afectado y una posible reformulación.</li></ul>${nav('Revisar el equipo')}</section>`;
+    return heading('Cómo responder', 'En cada pregunta, primero lee la propuesta y después da tu valoración.') +
+      `<section class="surface guide-sheet"><div class="guide-row"><span class="guide-number" aria-hidden="true">1</span><div><h2>Lee la pregunta y sus respuestas</h2><p>Los niveles del <strong>0 al 3</strong> son las opciones previstas para la persona emprendedora. Describen situaciones observables; aquí solo tienes que revisarlos.</p></div></div>
+      <div class="guide-row"><span class="guide-number" aria-hidden="true">2</span><div><h2>Valora la propuesta del 1 al 4</h2><p><strong>Relevancia:</strong> ¿es útil preguntar por este aspecto?</p><p><strong>Claridad y respuestas:</strong> ¿se entiende y ofrece opciones adecuadas?</p></div></div>
+      <p class="guide-note">Al final de cada dimensión, valorarás su relevancia y si sus preguntas cubren lo necesario. Si detectas un problema, explícalo en Observaciones. Puedes omitir los temas que no conozcas.</p>
+      <details class="extra-fields"><summary>Criterios de esta revisión</summary><p>Ten en cuenta la fase de la startup y su modelo de negocio. Indica si una pregunta solo tiene sentido en determinadas situaciones.</p><p>Los niveles 0–3 no son intervalos equivalentes ni predicen el éxito. «No aplica todavía» se registra aparte y no equivale a 0. Tampoco se asigna una puntuación baja a lo que un experto omite.</p></details>${codeGuide()}${nav('Revisar la primera dimensión')}</section>`;
   }
   function glossary(item) {
     const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
@@ -161,30 +165,30 @@
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
-      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help" open><summary>Aclaración de esta pregunta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
-      <p class="level-caption">Estas son las respuestas que podría elegir la persona emprendedora. Léelas para valorar la pregunta.</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
-      ${item.conditional ? `<aside class="conditional-note"><strong>Opción adicional propuesta para la persona emprendedora</strong><p>${esc(item.conditional)}</p><p class="fine">Valora también esta opción al juzgar las respuestas. Si no conoces suficientemente este tema, puedes dejarlo sin valorar al final de la pregunta.</p></aside>` : ''}
+      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help" open><summary>Qué tener en cuenta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
+      <p class="level-caption">Respuestas previstas para la persona emprendedora</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
+      ${item.conditional ? `<aside class="conditional-note"><p>${esc(item.conditional)}</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
-      <div data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Ahora, tu opinión como experto</p>
+      <div class="expert-response" data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Tu valoración <span>Escala de 1 a 4</span></p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
-      ${field(base + '.comment', 'Observaciones', 'Si algo no está claro o cambiarías alguna respuesta, puedes explicarlo aquí.')}</div>
+      ${field(base + '.comment', 'Observaciones', '')}</div>
       ${omission('items', item.id)}
       <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Tus puntuaciones no se incluirán en el análisis.</p></article>`;
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return heading(dimensionLabel(id) + ' · ' + dim.short, items.length + ' preguntas sobre este tema. Revisa la página y continúa a la siguiente dimensión.') +
-      `<section class="dimension-intro" id="dimension-${id}"><p>${esc(dim.desc)}</p>${omission('dimensions', id)}</section>
+    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de 6 <span>${items.length} preguntas</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
+      `<section class="dimension-intro" id="dimension-${id}">${omission('dimensions', id)}</section>
       <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
-      <section class="surface dimension-top"><h2>Tu opinión sobre esta dimensión</h2>
+      <section class="surface dimension-top"><h2>La dimensión en conjunto</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
-      ${field(base + '.comment', 'Observaciones', 'Puedes indicar qué falta o qué cambiarías en el conjunto de esta dimensión.')}</section></div>
+      ${field(base + '.comment', 'Observaciones', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de respuestas</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {
-    return heading('Último paso', 'Puedes añadir una observación y enviar tu revisión.') +
+    return heading('Envía tu revisión', 'Gracias por aportar tu experiencia. Puedes añadir un último comentario antes de enviar.') +
       `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>`;
   }
   function scoreText(record, criteria) { return criteria.map(key => criteriaLabels[key] + ': ' + (record[key] ?? 'sin respuesta')).join(' · '); }
@@ -194,11 +198,11 @@
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
-      <p class="fine">Puedes descargar una copia de seguridad de tus respuestas.</p>
-      <div class="actions"><button type="button" class="button secondary" data-action="export">Descargar respuestas (.json)</button><button type="button" class="button secondary" data-action="print">Imprimir resumen</button><button type="button" class="text-button" data-action="copy">Copiar respuestas</button></div>
+      <p class="fine">Puedes importar la copia descargada desde el menú «Tu respuesta».</p>
+      <div class="actions"><button type="button" class="button secondary" data-action="export">Descargar copia</button><button type="button" class="button secondary" data-action="print">Imprimir revisión</button><button type="button" class="text-button" data-action="copy">Copiar respuestas</button></div>
       <p class="response-id">Identificador: ${esc(state.responseId)}<br><span data-last-change></span></p>
       <p id="copy-status" role="status"></p><div id="manual-copy-wrapper" hidden></div>
-      <div class="notice" id="export-receipt" role="status" hidden>Se ha solicitado la descarga de tu copia. Descargar no equivale a enviar.</div>
+      <div class="notice" id="export-receipt" role="status" hidden>Copia preparada para descargar. Para entregar tu revisión, pulsa «Enviar revisión».</div>
       <div class="notice" id="export-stale" hidden>Has cambiado respuestas desde la última copia descargada.</div>
       <details><summary>Consultar progreso</summary>${reviewCounts()}</details></details>
       <div class="nav-row"><button type="button" class="button secondary" data-action="back">Volver al resumen</button></div>`;
@@ -227,14 +231,14 @@
     }).join('')}</div>`;
   }
   function review() {
-    return heading('Resumen de tus respuestas', 'Las seis dimensiones y sus veintiuna preguntas, reunidas en una sola vista. Comprueba tus valoraciones antes de pasar a las conclusiones finales.') +
-      `<section class="summary-intro"><p><strong>Los números son tus valoraciones como experto, de 1 a 4.</strong> En cada pregunta se muestran relevancia y valoración conjunta de claridad y respuestas. En cada dimensión, relevancia y cobertura.</p>
+    return heading('Resumen de tu revisión', 'Comprueba tus valoraciones. Pulsa en una pregunta o dimensión para corregirla.') +
+      `<section class="summary-intro"><p>Estos números representan tu valoración del cuestionario, de 1 a 4.</p>
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
-      <p class="fine">Pulsa el nombre de una dimensión o pregunta para revisarla. Los títulos están abreviados; al abrirlos verás la pregunta completa. No se calculan promedios ni una puntuación de la startup.</p>${reviewCounts()}</section>
+      ${reviewCounts()}</section>
       ${summaryMap()}
-      <section class="surface summary-feedback"><h2>Con el conjunto a la vista</h2><p class="fine">Si quieres, señala qué sobra o qué falta. Puedes cuestionar también la ausencia de una dimensión de escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
+      <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2><p class="fine">Puedes comentar también si debería incluirse la escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
-      ${nav('Continuar a la valoración final')}`;
+      ${nav('Continuar al envío')}`;
   }
   function profileText() {
     const p = state.profile;
@@ -242,10 +246,12 @@
   }
   function render() {
     const step = steps[state.step];
+    document.body.dataset.screen = step.type;
     document.querySelector('.sidebar').hidden = state.step === 0;
     document.querySelector('.save-footer').hidden = state.step === 0;
     printMode = step.type === 'review' ? 'map' : 'full';
     app.innerHTML = step.type === 'intro' ? intro() : step.type === 'profile' ? profile() : step.type === 'guide' ? guide() : step.type === 'dimension' ? dimension(step.dim) : step.type === 'final' ? final() : review();
+    document.querySelector('.outline').open = !globalThis.matchMedia?.('(max-width: 800px)').matches;
     document.getElementById('step-nav').innerHTML = steps.map((step, i) => {
       const name = !state.initial.lockedAt && step.type === 'dimension' ? 'Dimensión ' + (i - 2) : step.name;
       return `<button type="button" class="step-button" data-step="${i}" ${model.canVisit(state, i) ? '' : 'disabled'} ${i === state.step ? 'aria-current="step"' : ''}><span class="step-number" aria-hidden="true">${i + 1}</span><span>${esc(name)}</span>${step.dim ? `<span class="step-count" data-nav-count="${step.dim}"></span>` : ''}</button>`;
@@ -258,7 +264,11 @@
     progress.max = counts.total;
     progress.value = counts.resolved;
     progress.setAttribute('aria-valuetext', `${counts.complete} completos, ${counts.skipped} omitidos y ${counts.pending + counts.partial} sin terminar`);
-    document.getElementById('progress-text').textContent = `${counts.complete} completos, ${counts.skipped} omitidos, ${counts.pending + counts.partial} por terminar`;
+    const completeQuestions = instrument.items.filter(item => model.status(state, item.id) === 'complete').length;
+    const completeDimensions = instrument.dimensions.filter(dim => model.status(state, dim.id) === 'complete').length;
+    document.getElementById('progress-text').textContent = `Preguntas: ${completeQuestions}/21 · Dimensiones: ${completeDimensions}/6${counts.skipped ? ' · ' + counts.skipped + ' omitidas' : ''}`;
+    const otherPhase = app.querySelector('[data-other-phase]');
+    if (otherPhase) otherPhase.hidden = !state.profile.phases.includes('Otra');
     document.querySelectorAll('[data-status]').forEach(node => { const status = model.status(state, node.dataset.status); node.className = 'badge ' + status; node.textContent = statusLabels[status]; });
     document.querySelectorAll('#step-nav [data-step]').forEach(button => { button.disabled = !model.canVisit(state, Number(button.dataset.step)); });
     document.querySelectorAll('[data-nav-count]').forEach(node => { const c = model.summary(state, node.dataset.navCount); node.textContent = `${c.resolved}/${c.total}`; node.setAttribute('aria-label', `${c.complete} completos y ${c.skipped} omitidos`); });
@@ -301,7 +311,6 @@
     }
     state.step = step;
     persist(); render();
-    document.querySelector('.outline').open = false;
     const requested = anchor ? document.getElementById(anchor) : document.getElementById('page-title');
     const target = requested?.closest('[hidden]') ? document.getElementById('dimension-' + steps[step].dim) : requested;
     if (target) { target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); target.scrollIntoView({ block: 'start' }); }
@@ -309,8 +318,7 @@
   function advance(direction) {
     flushText();
     if (!validFields()) return;
-    if (state.step === 1 && direction === 1) { state = model.sealInitial(state); goTo(3); return; }
-    if (state.step === 3 && direction === -1) { goTo(1); return; }
+    if (state.step === 1 && direction === 1) { state = model.sealInitial(state); goTo(2); return; }
     goTo(state.step + direction);
   }
   function updateControl(event) {
@@ -338,7 +346,7 @@
   }
   function invalidateCopy() {
     const status = document.getElementById('copy-status');
-    if (status?.textContent) status.textContent = 'Ha cambiado respuestas. Vuelva a copiarlas antes de pegarlas en el correo.';
+    if (status?.textContent) status.textContent = 'Has cambiado respuestas. Vuelve a copiarlas para tener una copia actualizada.';
     const manual = document.getElementById('manual-copy-wrapper');
     if (manual) { manual.hidden = true; manual.replaceChildren(); }
   }
@@ -348,7 +356,7 @@
     pendingText.set(control.dataset.path, control);
     clearTimeout(textTimer);
     invalidateCopy();
-    document.getElementById('save-state').textContent = writeBlocked ? 'Guardado detenido en esta pestaña. Descargue su copia antes de cerrarla.' : 'Guardando al terminar de escribir…';
+    document.getElementById('save-state').textContent = writeBlocked ? 'Guardado detenido. Descarga una copia antes de cerrar esta pestaña.' : 'Guardando al terminar de escribir…';
     const receipt = document.getElementById('export-receipt');
     if (receipt) receipt.hidden = true;
     textTimer = setTimeout(flushText, 400);
@@ -380,7 +388,7 @@
   async function submitResponses() {
     flushText();
     if (sending || currentSubmission()) return;
-    if (location.protocol === 'file:') { submissionError = 'Para enviar, abra el enlace web de la encuesta. Esta copia local permite revisar y descargar respuestas.'; refresh(); return; }
+    if (location.protocol === 'file:') { submissionError = 'Para enviar, abre el enlace web de la encuesta. Desde esta copia local puedes revisar y descargar tus respuestas.'; refresh(); return; }
     const payload = model.exportPayload(state);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 20000);
@@ -424,11 +432,11 @@
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(raw);
-      status.textContent = stillCurrent() ? 'Respuestas copiadas. Abra el correo y péguelas en el mensaje. Todavía no se han enviado.' : 'Las respuestas han cambiado durante la copia. Vuelva a copiarlas antes de enviarlas.';
+      status.textContent = stillCurrent() ? 'Respuestas copiadas. Para entregarlas, usa el botón «Enviar revisión».' : 'Las respuestas han cambiado durante la copia. Vuelve a copiarlas para tener la versión actualizada.';
     } catch {
       if (!stillCurrent()) { status.textContent = 'Las respuestas han cambiado. Pulsa de nuevo «Copiar respuestas».'; return; }
-      status.textContent = 'El navegador no permite copiar automáticamente. Copie el texto seleccionado o descargue el archivo.';
-      const label = document.createElement('label'); label.htmlFor = 'manual-copy'; label.textContent = 'Respuestas para copiar y pegar en el correo';
+      status.textContent = 'No se ha podido copiar automáticamente. Copia el texto seleccionado o descarga el archivo.';
+      const label = document.createElement('label'); label.htmlFor = 'manual-copy'; label.textContent = 'Copia de tus respuestas';
       const textarea = document.createElement('textarea'); textarea.id = 'manual-copy'; textarea.readOnly = true; textarea.value = raw;
       holder.replaceChildren(label, textarea); holder.hidden = false;
       textarea.focus(); textarea.select();
@@ -442,7 +450,7 @@
       document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Validación de expertos · V1.9</h1><p>Diagnóstico para startups en fase temprana</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y mirada inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Mirada inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V1.9</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }
@@ -452,26 +460,26 @@
     const file = event.target.files?.[0];
     if (!file) return;
     try {
-      if (file.size > 1024 * 1024) throw new Error('El archivo supera 1 MB. Seleccione una exportación de este formulario.');
+      if (file.size > 1024 * 1024) throw new Error('El archivo supera 1 MB. Selecciona una copia descargada de este formulario.');
       const raw = await new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = () => reject(new Error('No se pudo leer el archivo.')); reader.readAsText(file); });
       let payload;
-      try { payload = JSON.parse(raw); } catch { throw new Error('El archivo no contiene JSON válido. No se ha cambiado su borrador.'); }
+      try { payload = JSON.parse(raw); } catch { throw new Error('No se reconoce el formato del archivo. Tu borrador se conserva.'); }
       const incoming = model.importPayload(payload);
-      if ((state.revision > 0 || writeBlocked) && !window.confirm('Recuperar este archivo reemplazará el borrador de este navegador. Si necesita conservarlo, cancele y descargue primero sus respuestas. ¿Recuperar el archivo?')) return;
+      if ((state.revision > 0 || writeBlocked) && !window.confirm('Importar este archivo reemplazará tu borrador en este navegador. Si quieres conservarlo, cancela y descarga una copia primero. ¿Importar el archivo?')) return;
       flushText();
       state = incoming;
       if (!model.canVisit(state, state.step)) state.step = state.consent ? 1 : 0;
       writeBlocked = false;
       const saved = persist();
       render();
-      message(saved ? '' : 'Archivo recuperado en esta ventana. El navegador no permite guardarlo localmente; descargue una copia antes de cerrar.');
+      message(saved ? '' : 'Archivo recuperado. El navegador no permite guardar los cambios; descarga una copia antes de cerrar.');
       document.getElementById('page-title').focus();
     } catch (error) { message(error.message); }
     finally { event.target.value = ''; }
   });
   document.getElementById('reset-button').addEventListener('click', () => {
     flushText();
-    if (!window.confirm('Se iniciará una respuesta nueva y se reemplazará el borrador local. Cancele y descargue primero la respuesta actual si necesita conservarla. ¿Comenzar otra respuesta?')) return;
+    if (!window.confirm('Se reemplazará tu borrador por una respuesta nueva. Si quieres conservarlo, cancela y descarga una copia primero. ¿Comenzar otra respuesta?')) return;
     state = model.createState(globalThis.crypto?.randomUUID?.() || ('response-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2)));
     writeBlocked = false;
     message(''); persist(); render();
@@ -484,7 +492,7 @@
     if (event.key === STORAGE_KEY && event.newValue !== JSON.stringify(state)) {
       writeBlocked = true;
       setSaveStatus(false);
-      message('La respuesta guardada ha cambiado en otra ventana. Esta ventana conserva su borrador y ha detenido el guardado para evitar sobrescribirlo. Descargue aquí la copia que quiera conservar; después, recargue esta pestaña para continuar con la copia guardada.');
+      message('Hay cambios guardados desde otra pestaña. Aquí se ha detenido el guardado para no sobrescribirlos. Descarga una copia si quieres conservar lo que ves; después, recarga para recuperar los cambios de la otra pestaña.');
     }
   });
   render();

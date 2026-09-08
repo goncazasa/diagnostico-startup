@@ -39,6 +39,7 @@ function start(ui) {
   ui.input('[data-path="profile.email"]', 'experto@example.org');
   ui.input('[data-path="initial.text"]', 'Clientes y ejecución');
   ui.click('[data-action="next"]');
+  ui.click('[data-action="next"]');
 }
 test('final page has one optional question and confirms only an acknowledged submission', async () => {
   const ui=boot(); start(ui); ui.click('[data-step="10"]');
@@ -82,7 +83,30 @@ test('welcome hides navigation tools and the profile requests an email with opti
   assert.equal(ui.document.querySelector('#item-T1'), null);
   ui.input('[data-path="profile.email"]', 'experto@example.org');
   ui.click('[data-action="next"]');
+  assert.equal(ui.stored().step, 2, 'Instructions precede the first dimension');
+  assert.equal(ui.document.querySelector('#item-T1'), null);
+  ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('#item-T1'));
+  ui.dom.window.close();
+});
+
+test('other phase can be entered immediately and survives navigation without losing pending profile text', async () => {
+  const ui = boot();
+  ui.input('[data-path="consent"]', true); ui.click('[data-action="next"]');
+  ui.input('[data-path="profile.email"]', 'experto@example.org');
+  ui.input('[data-path="profile.name"]', 'Nombre pendiente');
+  ui.input('[data-path="profile.phases"][value="Otra"]', true);
+  const other = ui.document.querySelector('[data-path="profile.phasesOther"]');
+  assert.ok(other, 'Selecting Otra reveals its input without a reload');
+  assert.equal(other.closest('[hidden]'), null);
+  ui.input('[data-path="profile.phasesOther"]', 'Consolidación');
+  ui.click('[data-action="next"]'); ui.click('[data-action="back"]');
+  assert.equal(ui.document.querySelector('[data-path="profile.name"]').value, 'Nombre pendiente');
+  assert.equal(ui.document.querySelector('[data-path="profile.phasesOther"]').value, 'Consolidación');
+  ui.input('[data-path="profile.phases"][value="Otra"]', false);
+  assert.ok(ui.document.querySelector('[data-path="profile.phasesOther"]').closest('[hidden]'));
+  ui.input('[data-path="profile.phases"][value="Otra"]', true);
+  assert.equal(ui.document.querySelector('[data-path="profile.phasesOther"]').value, 'Consolidación');
   ui.dom.window.close();
 });
 
