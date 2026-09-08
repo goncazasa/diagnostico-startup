@@ -19,15 +19,18 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
  try {
   const page=await browser.newPage({viewport:{width:1320,height:900}});page.on('pageerror',e=>errors.push(e.message));
   await page.goto('http://127.0.0.1:'+server.address().port);assert.equal(events.length,0);
+  const out=process.env.PLAYWRIGHT_OUTPUT||'output/playwright';fs.mkdirSync(out,{recursive:true});
+  await page.screenshot({path:path.join(out,'v2-intro.png'),fullPage:true});
+  await page.setViewportSize({width:375,height:812});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await page.screenshot({path:path.join(out,'v2-intro-mobile.png'),fullPage:true});
+  await page.setViewportSize({width:1320,height:900});
   await page.locator('#consent').check();await page.locator('[data-action="next"]').click();
   await page.locator('#profile-email').fill('prueba-local@example.org');await page.locator('#initial-text').fill('Experiencia previa a las preguntas.');
-  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('[data-screening-design]').count(),5);assert.equal(await page.locator('[data-context-metadata]').count(),2);
-  assert.equal(await page.locator('[data-screening-design] input,[data-screening-design] select').count(),0);
-  await page.locator('[data-guide-reference] > summary').click();
-  await page.locator('#designReview-screeningComment').fill('Las condiciones deben conservar las preguntas sobre caja.');
-  const out=process.env.PLAYWRIGHT_OUTPUT||'output/playwright';fs.mkdirSync(out,{recursive:true});
+  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.guide-steps > li').count(),2);
+  assert.equal(await page.locator('[data-guide-reference],[data-screening-design],.code-guide').count(),0);
   await page.screenshot({path:path.join(out,'v2-guide.png'),fullPage:true});
   await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),5);
+  await page.screenshot({path:path.join(out,'v2-d1.png'),fullPage:true});
   await page.locator('#step-nav [data-step="10"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
   for(let step=3;step<=8;step++) {
    await page.locator('#step-nav [data-step="'+step+'"]').click();

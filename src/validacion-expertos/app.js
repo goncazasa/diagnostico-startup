@@ -42,12 +42,8 @@
     F1: 'Caja disponible', F2: 'Previsión de caja', F3: 'Recursos para el hito', F4: 'Costes y margen por cliente',
     SA1: 'Aportación de la red', SA2: 'Evidencias de confianza'
   };
-  const codeGroups = { T: 'Equipo (Team)', PM: 'Problema y mercado', VB: 'Propuesta de valor y modelo de negocio', C: 'Evidencia comercial', F: 'Finanzas', SA: 'Recursos estratégicos y legitimidad' };
   const dimensionLabel = id => 'Dimensión ' + id.slice(1);
-  const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]} · ${item.id}`;
-  function codeGuide() {
-    return `<div class="code-guide"><p><strong>Cómo leer los códigos.</strong> D1 significa Dimensión 1. En T1, la T identifica Equipo (Team) y el número indica la pregunta.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl></div>`;
-  }
+  const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]}`;
   function illustration(id) {
     const drawings = {
       D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
@@ -117,7 +113,7 @@
   function rating(path, label, criterion) {
     return `<fieldset class="rating-group"><legend>${esc(label)} ${criterion === 'relevance' ? '<span class="optional">Obligatoria o con omisión</span>' : optional}</legend><div class="rating-options">${scaleLabels[criterion].map((label, i) => {
       const number = i + 1, id = idFor(path) + '-' + number;
-      return `<label class="rating-choice" for="${id}" title="${esc(label)}"><input type="radio" id="${id}" name="${idFor(path)}" data-path="${path}" aria-label="${number}: ${esc(label)}" value="${number}" ${valueAt(path) === number ? 'checked' : ''}><span><b>${number}</b>${esc(shortScales[criterion][i])}</span></label>`;
+      return `<label class="rating-choice score-${number}" for="${id}" title="${esc(label)}"><input type="radio" id="${id}" name="${idFor(path)}" data-path="${path}" aria-label="${number}: ${esc(label)}" value="${number}" ${valueAt(path) === number ? 'checked' : ''}><span><b>${number}</b>${esc(shortScales[criterion][i])}</span></label>`;
     }).join('')}</div><div class="rating-tools"><button class="text-button" type="button" data-action="clear" data-target="${path}" ${valueAt(path) === null ? 'hidden' : ''}>Dejar sin respuesta</button></div></fieldset>`;
   }
   function omission(kind, id) {
@@ -130,9 +126,9 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
-      `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
+    return `<div class="welcome-hero"><div>${heading('Revisión experta del diagnóstico de startups', 'Ayúdanos a validar un cuestionario dirigido a personas emprendedoras en fases iniciales.')}<p class="intro-lead">Como experto, analizarás si las preguntas son relevantes para diagnosticar con rigor la situación de una startup y si se entienden con facilidad.</p><p class="key-instruction">Tu tarea es valorar el cuestionario. No debes evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+      `<section class="surface welcome-start"><div class="welcome-notes"><p><strong>Responde con tu criterio.</strong> Puedes omitir los temas que queden fuera de tu experiencia.</p><p><strong>Guardado automático.</strong> Puedes continuar más tarde en este navegador.</p></div>
+      <details class="extra-fields"><summary>Sobre el diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
       <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p>
@@ -152,22 +148,16 @@
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
       ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
       ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
-      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe tu criterio antes de ver el cuestionario; al continuar se guardará y ya no podrás editarlo.')}</div>
+      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué dimensiones evaluarías para diagnosticar una startup en fase inicial?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe las grandes áreas que revisarías; al continuar se guardará la respuesta y ya no podrás editarla.')}</div>
       ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Cómo responder', 'Valora el cuestionario, no una startup concreta.') +
+    return heading('Cómo responder', 'Para cada pregunta, valora el cuestionario desde tu experiencia.') +
       `<section class="surface guide-sheet"><ol class="guide-steps">
-      <li><strong>Lee la pregunta.</strong><span>Los niveles 0–3 son las respuestas que verá la persona emprendedora.</span></li>
-      <li><strong>Da tu valoración.</strong><span>Marca la relevancia. Si quieres, valora también la claridad y añade una observación.</span></li></ol>
-      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si un tema queda fuera de tu experiencia, puedes omitirlo. Una omisión nunca cuenta como 0.</p>
-      <details class="reference-panel" data-guide-reference><summary>Consultar códigos y reglas del diagnóstico</summary><div class="reference-content">${codeGuide()}${screeningDesign()}</div></details>${nav('Revisar la primera dimensión')}</section>`;
-  }
-  function screeningDesign() {
-    return `<div class="screening-reference"><p><strong>Cribado y contexto.</strong> Estos datos adaptarán el futuro diagnóstico a cada proyecto. Revisa su planteamiento; no los respondas como fundador.</p>
-      <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
-      <p><strong>Contexto temporal sin puntuación.</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
-      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</div>`;
+      <li><strong>Lee la pregunta y las cuatro respuestas posibles.</strong><span>Son las opciones que verá la persona emprendedora.</span></li>
+      <li><strong>Valora su calidad.</strong><span>Indica si es relevante. Si lo necesitas, valora también su claridad y escribe una observación.</span></li></ol>
+      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si el tema queda fuera de tu experiencia, selecciona «No tengo suficiente experiencia».</p>
+      ${nav('Revisar la primera dimensión')}</section>`;
   }
   function itemDesign(item) {
     return (item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('');
@@ -217,7 +207,7 @@
     const counts = model.summary(state);
     const missing = model.deliveryIssues(state);
     return `<p class="fine">${missing.length ? 'Faltan decisiones de relevancia. Se necesita una puntuación o un motivo de omisión antes del envío.' : 'La revisión está lista para enviar. Los campos opcionales pueden quedar vacíos.'}</p>
-      ${missing.length ? `<div data-missing-relevance><p>Revisar los elementos pendientes:</p><div class="choice-list">${missing.map(id => { const item = instrument.items.find(i => i.id === id), dimId = item ? item.dim : id; return `<button type="button" class="text-button" data-action="jump" data-step="${steps.findIndex(s => s.dim === dimId)}" data-anchor="${item ? 'item' : 'dimension'}-${id}">${esc(item ? id : dimensionLabel(id))}</button>`; }).join('')}</div></div>` : ''}
+      ${missing.length ? `<div data-missing-relevance><p>Revisar los elementos pendientes:</p><div class="choice-list">${missing.map(id => { const item = instrument.items.find(i => i.id === id), dimId = item ? item.dim : id; return `<button type="button" class="text-button" data-action="jump" data-step="${steps.findIndex(s => s.dim === dimId)}" data-anchor="${item ? 'item' : 'dimension'}-${id}">${esc(item ? questionLabel(item) : dimensionLabel(id))}</button>`; }).join('')}</div></div>` : ''}
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
@@ -236,8 +226,9 @@
   }
   function summaryValue(kind, id, criterion) {
     const value = state[kind][id][criterion];
-    const label = `${id} · ${criteriaLabels[criterion]}: ${value === null ? 'sin responder' : value + ', ' + scaleLabels[criterion][value - 1]}`;
-    return `<span class="summary-score ${value === null ? 'unanswered' : ''}" data-summary-value="${kind}.${id}.${criterion}" role="img" aria-label="${esc(label)}" title="${esc(label)}">${value ?? '—'}</span>`;
+    const visibleId = kind === 'items' ? questionLabel(instrument.items.find(item => item.id === id)) : dimensionLabel(id);
+    const label = `${visibleId} · ${criteriaLabels[criterion]}: ${value === null ? 'sin responder' : value + ', ' + scaleLabels[criterion][value - 1]}`;
+    return `<span class="summary-score ${value === null ? 'unanswered' : `score-${value}`}" data-summary-value="${kind}.${id}.${criterion}" role="img" aria-label="${esc(label)}" title="${esc(label)}">${value ?? '—'}</span>`;
   }
   function summaryMap(interactive = true) {
     return `<div class="summary-map" ${interactive ? 'id="summary-map"' : ''}>${instrument.dimensions.map((dim, index) => {
@@ -248,7 +239,7 @@
       <div class="summary-dimension-scores">${omitted ? '<p class="summary-omitted">Dimensión omitida</p>' : `<div><span>Relevancia</span>${summaryValue('dimensions', dim.id, 'relevance')}</div><div><span>Cobertura</span>${summaryValue('dimensions', dim.id, 'coverage')}</div>`}</div>
       <table class="summary-table"><caption class="sr-only">Preguntas de ${esc(dim.name)}. Valoraciones del experto de 1 a 4.</caption><thead><tr><th scope="col">Pregunta</th><th scope="col">Relevancia</th><th scope="col">Claridad y respuestas</th></tr></thead><tbody>${items.map(item => {
         const skipped = model.status(state, item.id) === 'skipped';
-        const title = `<span class="summary-question-code">${item.id}</span><span>${esc(questionNames[item.id])}</span>`;
+        const title = `<span class="summary-question-code">${questionLabel(item)}</span><span>${esc(questionNames[item.id])}</span>`;
         return `<tr data-summary-item="${item.id}"><th scope="row">${interactive ? `<button type="button" data-action="jump" data-step="${index + 3}" data-anchor="item-${item.id}" title="${esc(item.q)}" aria-label="Revisar ${questionLabel(item)}: ${esc(item.q)}">${title}</button>` : title}</th>${skipped ? '<td colspan="2" class="summary-omitted">Omitida</td>' : model.itemCriteria.map(criterion => `<td>${summaryValue('items', item.id, criterion)}</td>`).join('')}</tr>`;
       }).join('')}</tbody></table></section>`;
     }).join('')}</div>`;
@@ -260,13 +251,13 @@
       ${reviewCounts()}</section>
       ${summaryMap()}
       <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2><details class="summary-optional" ${state.final.v2 || state.final.v3 ? 'open' : ''}><summary>Añadir comentarios sobre dimensiones ${optional}</summary><div class="observation-content">${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</div></details>
-      <fieldset class="field discrimination"><legend>¿Qué preguntas podrían dar casi siempre la misma respuesta? ${optional}</legend><p class="fine">Abre una dimensión y marca las preguntas que podrían distinguir poco entre startups.</p><div class="discrimination-groups">${instrument.dimensions.map(dim => { const items=instrument.items.filter(item=>item.dim===dim.id), selected=items.filter(item=>state.designReview.discrimination.includes(item.id)).length; return `<details ${selected ? 'open' : ''}><summary>${dimensionLabel(dim.id)} · ${esc(dim.short)}${selected ? `<span>${selected} seleccionada${selected === 1 ? '' : 's'}</span>` : ''}</summary><div class="choice-list">${items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${item.id} · ${esc(questionNames[item.id])}</label>`).join('')}</div></details>`; }).join('')}</div></fieldset>
+      <fieldset class="field discrimination"><legend>¿Qué preguntas podrían dar casi siempre la misma respuesta? ${optional}</legend><p class="fine">Abre una dimensión y marca las preguntas que podrían distinguir poco entre startups.</p><div class="discrimination-groups">${instrument.dimensions.map(dim => { const items=instrument.items.filter(item=>item.dim===dim.id), selected=items.filter(item=>state.designReview.discrimination.includes(item.id)).length; return `<details ${selected ? 'open' : ''}><summary>${dimensionLabel(dim.id)} · ${esc(dim.short)}${selected ? `<span>${selected} seleccionada${selected === 1 ? '' : 's'}</span>` : ''}</summary><div class="choice-list">${items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${questionLabel(item)} · ${esc(questionNames[item.id])}</label>`).join('')}</div></details>`; }).join('')}</div></fieldset>
       ${field('designReview.discriminationComment', 'Observaciones sobre estas preguntas', 'Es una previsión. Las diferencias reales se estudiarán después con respuestas de emprendedores.')}</section>
       ${nav('Continuar al envío')}`;
   }
   function designReviewText() {
     const d = state.designReview;
-    return 'Cribado: ' + (d.screeningComment || 'Sin observaciones') + '\nPosible falta de discriminación: ' + (d.discrimination.join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
+    return 'Posible falta de discriminación: ' + (d.discrimination.map(id => questionLabel(instrument.items.find(item => item.id === id))).join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
   }
   function profileText() {
     const p = state.profile;

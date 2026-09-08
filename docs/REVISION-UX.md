@@ -1,6 +1,6 @@
 # Revisión UX basada en Yablonski y Krug
 
-Fecha de revisión: 8 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.1 en escritorio y móvil. Esta revisión evalúa la interfaz; no modifica las 23 preguntas, sus niveles ni sus aclaraciones académicas.
+Fecha de revisión: 8 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.1 en escritorio y móvil. Se conserva la estructura académica del instrumento. T1 se aclara sin cambiar el constructo evaluado: disponibilidad de perfiles complementarios para ejecutar la startup.
 
 ## Criterio de diseño
 
@@ -14,10 +14,11 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 |---|---|---|---|
 | Ley de Jakob | El formulario podía requerir aprender etiquetas y recorridos propios. | Se mantienen botones, campos, radios, desplegables, pasos y resumen con patrones web convencionales. | Permite usar conocimientos adquiridos en otros formularios. |
 | Ley de Fitts | Las acciones pequeñas o próximas podían favorecer errores, especialmente en móvil. | Botones principales de al menos 48 px, opciones de 44 px y separación entre acciones. | Mejora alcance táctil y reduce pulsaciones accidentales. |
-| Ley de Miller | «Cómo responder» distribuía la referencia en tres desplegables y demasiados subtítulos. | Se reduce a dos acciones visibles y un único desplegable opcional para códigos y reglas. | Forma dos bloques fáciles de escanear y evita memorizar instrucciones. |
+| Ley de Miller | «Cómo responder» distribuía la referencia en varios bloques, códigos y subtítulos. | Se reduce a dos acciones y una aclaración breve. Se retira toda la referencia de códigos, cribado y contexto. | Permite empezar sin memorizar información que no es necesaria para valorar las preguntas. |
 | Ley de Hick | La revisión de discriminación mostraba 23 casillas a la vez. | Las preguntas se agrupan en seis dimensiones desplegables y se abren automáticamente si contienen una selección. | Reduce opciones simultáneas sin retirar ninguna. |
 | Principio de Postel | Los estados inesperados podían perder trabajo. | Persistencia local, importación, reintento, prevención de sobrescritura entre pestañas y mensajes que explican la recuperación. El campo de correo acepta espacios exteriores que el navegador normaliza. | El sistema absorbe errores frecuentes y conserva el trabajo. |
 | Estética–usabilidad | Las primeras versiones parecían candidatas y mostraban jerarquías débiles. | Nombre definitivo, jerarquía única por pantalla, contraste, ritmo espacial e ilustraciones coherentes. | Refuerza confianza sin convertir la estética en decoración. |
+| Reconocimiento visual | Las cuatro puntuaciones se distinguían solo por número y texto. | Se asigna a cada valor un tono suave y estable; número y etiqueta siguen visibles. | Facilita el escaneo sin hacer que el significado dependa del color. |
 | Ley de Tesler | Cada pregunta repetía campos opcionales que alargaban seis páginas ya densas. | «Observaciones» permanece como un único campo, pero se abre solo cuando se necesita y vuelve a abrirse si contiene texto. Los comentarios globales siguen la misma regla. | El sistema gestiona la complejidad opcional y conserva visible lo que debe evaluarse. |
 | Umbral de Doherty | Guardado y envío pueden tardar más que una respuesta inmediata. | La selección cambia visualmente al instante, el guardado local informa de su estado y el envío cambia el botón y muestra «Guardando… No cierres esta página». | Mantiene la conversación entre persona y sistema durante operaciones lentas. |
 | «No me hagas pensar» | Algunos textos explicaban el mecanismo en vez de la tarea. | «Valora el cuestionario, no una startup», «Solo la relevancia es obligatoria» y acciones con verbos concretos. | Cada texto responde a la decisión inmediata. |
@@ -26,7 +27,9 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 
 ## Resultado de la revisión visual
 
-- «Cómo responder» cabe completa en una ventana de escritorio de 1320 × 900 sin abrir la referencia opcional.
+- «Cómo responder» cabe completa en una ventana de escritorio de 1320 × 900 y no contiene material de referencia secundario.
+- La portada explica la tarea experta, la población emprendedora y el alcance sin mostrar una estimación de tiempo no contrastada.
+- Los códigos internos permanecen en el conjunto de datos para conservar la trazabilidad, pero se sustituyen por «Pregunta 1», «Pregunta 2», etc. en la interfaz.
 - Cada dimensión conserva todas sus preguntas en una página, con aclaraciones y respuestas previstas visibles.
 - Los campos de observación cerrados reducen altura sin perder datos existentes.
 - En móvil, las valoraciones se organizan en una matriz 2 × 2 y la revisión de discriminación presenta seis grupos, no 23 opciones simultáneas.
@@ -38,8 +41,10 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 
 Las pruebas verifican, entre otros puntos:
 
-- un único bloque de referencia opcional en las instrucciones;
+- ausencia de códigos, cribado y contexto en las instrucciones;
 - dos pasos esenciales visibles;
+- presentación de la población objetivo y ausencia de estimaciones de tiempo;
+- cuatro tonos de puntuación que conservan número y etiqueta;
 - una observación por pregunta, cerrada si está vacía y abierta si contiene texto;
 - seis grupos de discriminación y reapertura del grupo seleccionado;
 - etiquetas, identificadores únicos y navegación por foco;
@@ -56,4 +61,4 @@ Las leyes de UX orientan decisiones, pero no demuestran usabilidad. Antes de abr
 4. Preguntar qué texto o control les obligó a detenerse.
 5. Corregir los tres problemas de mayor impacto y repetir la prueba.
 
-La estimación visible de 20–30 minutos debe confirmarse empíricamente. También conviene probar al menos un móvil, un portátil y navegación únicamente por teclado.
+También conviene probar al menos un móvil, un portátil y navegación únicamente por teclado. El tiempo real debe medirse durante el piloto antes de decidir si conviene comunicar una estimación.

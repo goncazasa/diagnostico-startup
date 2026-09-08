@@ -397,22 +397,37 @@ test('summary hides stale omitted scores and updates after a focused correction'
   ui.dom.window.close();
 });
 
-test('expert guide presents five screening fields without asking for founder answers',()=>{
- const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
- assert.equal(ui.document.querySelectorAll('[data-screening-design]').length,5);
- assert.equal(ui.document.querySelectorAll('[data-context-metadata]').length,2);
- assert.equal(ui.document.querySelectorAll('[data-screening-design] input, [data-screening-design] select').length,0);
- ui.input('[data-path="designReview.screeningComment"]','No ocultar finanzas por no buscar inversión.');ui.click('[data-action="next"]');
- assert.equal(ui.stored().designReview.screeningComment,'No ocultar finanzas por no buscar inversión.');assert.equal(ui.document.querySelectorAll('.item').length,5);
- assert.equal(ui.document.querySelector('[data-path="designReview.t3Example"]'),null);ui.dom.window.close();
+test('welcome explains the expert task, target population and scope without a time estimate',()=>{
+ const ui=boot();const text=ui.document.querySelector('#app').textContent;
+ assert.match(text,/Como experto/i);
+ assert.match(text,/personas emprendedoras en fases iniciales/i);
+ assert.doesNotMatch(text,/20[–-]30|minutos/);
+ assert.doesNotMatch(text,/Una omisión nunca cuenta como 0/);
+ ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
+ assert.match(ui.document.querySelector('label[for="initial-text"]').textContent,/qué dimensiones evaluarías/i);
+ ui.dom.window.close();
 });
-test('guide keeps the essential instructions visible and secondary reference collapsed',()=>{
+test('expert guide contains only the essential instructions',()=>{
  const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
  assert.equal(ui.document.querySelectorAll('.guide-steps > li').length,2);
  assert.equal(ui.document.querySelectorAll('.guide-sheet > h2').length,0);
- assert.equal(ui.document.querySelectorAll('.guide-sheet > details').length,1);
- const reference=ui.document.querySelector('[data-guide-reference]');
- assert.ok(reference);assert.equal(reference.open,false);
+ assert.equal(ui.document.querySelectorAll('.guide-sheet > details').length,0);
+ assert.equal(ui.document.querySelector('[data-guide-reference]'),null);
+ assert.equal(ui.document.querySelector('[data-screening-design]'),null);
+ assert.equal(ui.document.querySelector('.code-guide'),null);
+ assert.doesNotMatch(ui.document.querySelector('.guide-sheet').textContent,/códigos|cribado|omisión nunca/i);
+ ui.dom.window.close();
+});
+test('visible question labels avoid internal codes and rating choices use four distinct tones',()=>{
+ const ui=boot();start(ui);const item=ui.document.querySelector('#item-T1');
+ assert.match(item.querySelector('.item-id').textContent,/Pregunta 1/);
+ assert.doesNotMatch(item.querySelector('.item-id').textContent,/T1/);
+ assert.match(item.querySelector('h2').textContent,/tiene cubiertos/i);
+ assert.match(item.querySelector('h2').textContent,/startup/i);
+ for(let score=1;score<=4;score++) assert.equal(item.querySelectorAll('.rating-choice.score-'+score).length,2);
+ ui.input('input[data-path="items.T1.relevance"][value="4"]',true);ui.click('[data-step="9"]');
+ assert.ok(ui.document.querySelector('[data-summary-value="items.T1.relevance"].score-4'));
+ assert.doesNotMatch(ui.document.querySelector('[data-summary-item="T1"]').textContent,/T1/);
  ui.dom.window.close();
 });
 test('summary groups the long discrimination choice by dimension',()=>{

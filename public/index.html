@@ -78,11 +78,13 @@ progress::-moz-progress-bar { background: var(--teal); }
 .welcome-art p { font-size: 1rem; color: var(--muted); text-align: center; margin-top: 12px; }
 .welcome-art strong { font-weight: 600; color: var(--ink); }
 .welcome-start { max-width: 100%; padding: 30px 36px; }
-.welcome-start > p { max-width: 82ch; font-size: .9375rem; }
-.extra-fields, .privacy, .reference-panel, .summary-optional, .item-observation { margin: 20px 0; border-top: 1px solid var(--line); padding-top: 16px; font-size: .875rem; }
-.extra-fields > summary, .privacy > summary, .reference-panel > summary, .summary-optional > summary, .item-observation > summary { font-weight: 600; color: var(--ink); }
-.extra-fields[open] > summary, .privacy[open] > summary, .reference-panel[open] > summary, .summary-optional[open] > summary, .item-observation[open] > summary { margin-bottom: 16px; }
-.privacy p, .code-guide p, .extra-fields > p, .reference-content > p { color: var(--muted); font-size: .875rem; max-width: 78ch; }
+.welcome-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 4px; }
+.welcome-notes p { max-width: 48ch; padding: 14px 16px; border-radius: 8px; background: #f4f7fb; font-size: .875rem; line-height: 1.55; }
+.welcome-notes strong { display: block; color: var(--ink); margin-bottom: 2px; }
+.extra-fields, .privacy, .summary-optional, .item-observation { margin: 20px 0; border-top: 1px solid var(--line); padding-top: 16px; font-size: .875rem; }
+.extra-fields > summary, .privacy > summary, .summary-optional > summary, .item-observation > summary { font-weight: 600; color: var(--ink); }
+.extra-fields[open] > summary, .privacy[open] > summary, .summary-optional[open] > summary, .item-observation[open] > summary { margin-bottom: 16px; }
+.privacy p, .extra-fields > p { color: var(--muted); font-size: .875rem; max-width: 78ch; }
 .check-line { display: flex; align-items: flex-start; gap: 12px; font-size: .9375rem; margin-top: 24px; max-width: 74ch; }
 .check-line input { width: 20px; height: 20px; flex: 0 0 auto; margin: 3px 0 0; accent-color: var(--teal); }
 .button { display: inline-flex; justify-content: center; align-items: center; min-height: 48px; padding: 12px 22px; border: 1px solid var(--teal); border-radius: 8px; background: var(--teal); color: white; text-decoration: none; font-size: .9375rem; line-height: 1.4; font-weight: 650; }
@@ -119,18 +121,6 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .guide-steps li::before { content: counter(guide); grid-row: 1 / 3; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--soft); color: var(--teal-dark); font-weight: 700; }
 .guide-steps strong { padding-top: 4px; }
 .guide-steps span { grid-column: 2; color: var(--muted); font-size: .9375rem; }
-.code-guide dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
-.code-guide dl > div { display: flex; align-items: flex-start; gap: 10px; }
-.code-guide dt { min-width: 25px; font-weight: 700; }
-.code-guide dd { margin: 0; color: var(--muted); }
-.reference-content { padding: 4px 0 0; }
-.code-guide { padding: 16px; background: var(--soft); border-radius: 8px; }
-.code-guide dl { margin-bottom: 0; }
-.screening-reference { margin-top: 24px; }
-.screening-reference > dl { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; }
-.screening-reference dt { font-weight: 650; }
-.screening-reference dd { margin: 5px 0 0; color: var(--muted); }
-.screening-reference dd p { margin-top: 4px; font-size: .8125rem; }
 .dimension-heading { display: grid; grid-template-columns: minmax(0,1fr) 155px; align-items: center; gap: 24px; }
 .dimension-heading .page-heading { margin-bottom: 0; }
 .dimension-heading .page-heading p { font-size: .9375rem; margin-top: 14px; }
@@ -173,8 +163,15 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .rating-choice input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .rating-choice > span { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 4px; height: 100%; min-height: 74px; padding: 10px 12px; border: 1px solid var(--field-line); border-radius: 7px; font-size: .8125rem; line-height: 1.3; color: var(--ink); background: white; }
 .rating-choice b { font-size: 1.0625rem; font-weight: 650; }
-.rating-choice:hover > span { border-color: var(--teal); background: var(--soft); }
-.rating-choice input:checked + span { border-color: var(--teal); background: var(--teal); color: white; }
+.rating-choice.score-1 > span { border-color: #ead4d6; background: #fff5f5; }
+.rating-choice.score-2 > span { border-color: #eadfbd; background: #fff9e9; }
+.rating-choice.score-3 > span { border-color: #d5dfc7; background: #f5f8ee; }
+.rating-choice.score-4 > span { border-color: #c9ded3; background: #edf7f1; }
+.rating-choice:hover > span { border-color: var(--teal); filter: brightness(.98); }
+.rating-choice.score-1 input:checked + span { border-color: #8f4048; background: #8f4048; color: white; }
+.rating-choice.score-2 input:checked + span { border-color: #7a570f; background: #7a570f; color: white; }
+.rating-choice.score-3 input:checked + span { border-color: #48652e; background: #48652e; color: white; }
+.rating-choice.score-4 input:checked + span { border-color: #216144; background: #216144; color: white; }
 .rating-choice input:focus-visible + span { outline: 3px solid #326ec7; outline-offset: 3px; }
 .rating-tools { display: flex; justify-content: flex-end; }
 .rating-tools .text-button { font-size: .75rem; padding: 3px 0; min-height: 28px; }
@@ -210,6 +207,10 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 .summary-dimension-scores { display: flex; gap: 16px; padding: 12px 18px 18px; font-size: .75rem; }
 .summary-dimension-scores > div { display: flex; align-items: center; gap: 8px; }
 .summary-score { display: inline-flex; align-items: center; justify-content: center; min-width: 27px; height: 27px; padding: 0 5px; border: 1px solid #c3d2e7; border-radius: 5px; color: var(--ink); background: var(--soft); font-size: .8125rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.summary-score.score-1 { border-color: #ead4d6; background: #fff1f2; color: #74353c; }
+.summary-score.score-2 { border-color: #eadfbd; background: #fff7dd; color: #71510f; }
+.summary-score.score-3 { border-color: #d5dfc7; background: #f1f6e7; color: #405b29; }
+.summary-score.score-4 { border-color: #c9ded3; background: #e8f5ed; color: #1d573d; }
 .summary-score.unanswered { background: white; color: var(--muted); border-style: dashed; font-weight: 400; }
 .summary-omitted { font-size: .75rem; color: #5b5f75; background: #f1f1f6; }
 .summary-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -280,7 +281,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   .welcome-art { padding-left: 16px; }
   .welcome-art p { font-size: .875rem; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 135px; }
-  .screening-reference > dl, .discrimination-groups { grid-template-columns: 1fr; }
+  .discrimination-groups { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .masthead { padding: 20px 18px; }
@@ -305,7 +306,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   .guide-row h2 { font-size: 1rem; margin-top: 0; }
   .guide-note { padding: 16px; }
   .guide-steps { grid-template-columns: 1fr; gap: 18px; }
-  .code-guide dl { grid-template-columns: 1fr; }
+  .welcome-notes { grid-template-columns: 1fr; gap: 10px; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 82px; gap: 8px; align-items: start; }
   .dimension-heading .dimension-art { margin-top: 18px; }
   .dimension-heading h1 { font-size: 1.8125rem; }
@@ -398,8 +399,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   "version": "2.1.0",
   "title": "Validación de expertos",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Identificar brechas de evidencia y de capacidad de ejecución para priorizar el siguiente hito de una startup en fase temprana.",
-  "population": "Startups desde la exploración de una idea hasta las primeras señales de repetición comercial. La pertinencia de cada pregunta depende de la fase y del modelo de negocio.",
+  "purpose": "Ofrecer a las personas emprendedoras una visión estructurada de la situación de su startup y de las áreas que requieren atención.",
+  "population": "Personas emprendedoras en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
   "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
@@ -447,8 +448,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿El equipo cubre los perfiles necesarios para crear la solución y venderla?",
-      "note": "Revisa si están cubiertas las funciones de producto y ventas, además de las que exija el modelo. Los perfiles pueden estar en el equipo o colaborar de forma estable.",
+      "q": "¿El equipo tiene cubiertos los perfiles necesarios para desarrollar la startup y conseguir clientes?",
+      "note": "Revisa si están cubiertas las funciones clave que exige el modelo de negocio, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
@@ -1190,12 +1191,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     F1: 'Caja disponible', F2: 'Previsión de caja', F3: 'Recursos para el hito', F4: 'Costes y margen por cliente',
     SA1: 'Aportación de la red', SA2: 'Evidencias de confianza'
   };
-  const codeGroups = { T: 'Equipo (Team)', PM: 'Problema y mercado', VB: 'Propuesta de valor y modelo de negocio', C: 'Evidencia comercial', F: 'Finanzas', SA: 'Recursos estratégicos y legitimidad' };
   const dimensionLabel = id => 'Dimensión ' + id.slice(1);
-  const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]} · ${item.id}`;
-  function codeGuide() {
-    return `<div class="code-guide"><p><strong>Cómo leer los códigos.</strong> D1 significa Dimensión 1. En T1, la T identifica Equipo (Team) y el número indica la pregunta.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl></div>`;
-  }
+  const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]}`;
   function illustration(id) {
     const drawings = {
       D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
@@ -1265,7 +1262,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   function rating(path, label, criterion) {
     return `<fieldset class="rating-group"><legend>${esc(label)} ${criterion === 'relevance' ? '<span class="optional">Obligatoria o con omisión</span>' : optional}</legend><div class="rating-options">${scaleLabels[criterion].map((label, i) => {
       const number = i + 1, id = idFor(path) + '-' + number;
-      return `<label class="rating-choice" for="${id}" title="${esc(label)}"><input type="radio" id="${id}" name="${idFor(path)}" data-path="${path}" aria-label="${number}: ${esc(label)}" value="${number}" ${valueAt(path) === number ? 'checked' : ''}><span><b>${number}</b>${esc(shortScales[criterion][i])}</span></label>`;
+      return `<label class="rating-choice score-${number}" for="${id}" title="${esc(label)}"><input type="radio" id="${id}" name="${idFor(path)}" data-path="${path}" aria-label="${number}: ${esc(label)}" value="${number}" ${valueAt(path) === number ? 'checked' : ''}><span><b>${number}</b>${esc(shortScales[criterion][i])}</span></label>`;
     }).join('')}</div><div class="rating-tools"><button class="text-button" type="button" data-action="clear" data-target="${path}" ${valueAt(path) === null ? 'hidden' : ''}>Dejar sin respuesta</button></div></fieldset>`;
   }
   function omission(kind, id) {
@@ -1278,9 +1275,9 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
-      `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
+    return `<div class="welcome-hero"><div>${heading('Revisión experta del diagnóstico de startups', 'Ayúdanos a validar un cuestionario dirigido a personas emprendedoras en fases iniciales.')}<p class="intro-lead">Como experto, analizarás si las preguntas son relevantes para diagnosticar con rigor la situación de una startup y si se entienden con facilidad.</p><p class="key-instruction">Tu tarea es valorar el cuestionario. No debes evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+      `<section class="surface welcome-start"><div class="welcome-notes"><p><strong>Responde con tu criterio.</strong> Puedes omitir los temas que queden fuera de tu experiencia.</p><p><strong>Guardado automático.</strong> Puedes continuar más tarde en este navegador.</p></div>
+      <details class="extra-fields"><summary>Sobre el diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
       <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p>
@@ -1300,22 +1297,16 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
       ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
       ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
-      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe tu criterio antes de ver el cuestionario; al continuar se guardará y ya no podrás editarlo.')}</div>
+      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué dimensiones evaluarías para diagnosticar una startup en fase inicial?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe las grandes áreas que revisarías; al continuar se guardará la respuesta y ya no podrás editarla.')}</div>
       ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Cómo responder', 'Valora el cuestionario, no una startup concreta.') +
+    return heading('Cómo responder', 'Para cada pregunta, valora el cuestionario desde tu experiencia.') +
       `<section class="surface guide-sheet"><ol class="guide-steps">
-      <li><strong>Lee la pregunta.</strong><span>Los niveles 0–3 son las respuestas que verá la persona emprendedora.</span></li>
-      <li><strong>Da tu valoración.</strong><span>Marca la relevancia. Si quieres, valora también la claridad y añade una observación.</span></li></ol>
-      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si un tema queda fuera de tu experiencia, puedes omitirlo. Una omisión nunca cuenta como 0.</p>
-      <details class="reference-panel" data-guide-reference><summary>Consultar códigos y reglas del diagnóstico</summary><div class="reference-content">${codeGuide()}${screeningDesign()}</div></details>${nav('Revisar la primera dimensión')}</section>`;
-  }
-  function screeningDesign() {
-    return `<div class="screening-reference"><p><strong>Cribado y contexto.</strong> Estos datos adaptarán el futuro diagnóstico a cada proyecto. Revisa su planteamiento; no los respondas como fundador.</p>
-      <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
-      <p><strong>Contexto temporal sin puntuación.</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
-      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</div>`;
+      <li><strong>Lee la pregunta y las cuatro respuestas posibles.</strong><span>Son las opciones que verá la persona emprendedora.</span></li>
+      <li><strong>Valora su calidad.</strong><span>Indica si es relevante. Si lo necesitas, valora también su claridad y escribe una observación.</span></li></ol>
+      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si el tema queda fuera de tu experiencia, selecciona «No tengo suficiente experiencia».</p>
+      ${nav('Revisar la primera dimensión')}</section>`;
   }
   function itemDesign(item) {
     return (item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('');
@@ -1365,7 +1356,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const counts = model.summary(state);
     const missing = model.deliveryIssues(state);
     return `<p class="fine">${missing.length ? 'Faltan decisiones de relevancia. Se necesita una puntuación o un motivo de omisión antes del envío.' : 'La revisión está lista para enviar. Los campos opcionales pueden quedar vacíos.'}</p>
-      ${missing.length ? `<div data-missing-relevance><p>Revisar los elementos pendientes:</p><div class="choice-list">${missing.map(id => { const item = instrument.items.find(i => i.id === id), dimId = item ? item.dim : id; return `<button type="button" class="text-button" data-action="jump" data-step="${steps.findIndex(s => s.dim === dimId)}" data-anchor="${item ? 'item' : 'dimension'}-${id}">${esc(item ? id : dimensionLabel(id))}</button>`; }).join('')}</div></div>` : ''}
+      ${missing.length ? `<div data-missing-relevance><p>Revisar los elementos pendientes:</p><div class="choice-list">${missing.map(id => { const item = instrument.items.find(i => i.id === id), dimId = item ? item.dim : id; return `<button type="button" class="text-button" data-action="jump" data-step="${steps.findIndex(s => s.dim === dimId)}" data-anchor="${item ? 'item' : 'dimension'}-${id}">${esc(item ? questionLabel(item) : dimensionLabel(id))}</button>`; }).join('')}</div></div>` : ''}
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
@@ -1384,8 +1375,9 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function summaryValue(kind, id, criterion) {
     const value = state[kind][id][criterion];
-    const label = `${id} · ${criteriaLabels[criterion]}: ${value === null ? 'sin responder' : value + ', ' + scaleLabels[criterion][value - 1]}`;
-    return `<span class="summary-score ${value === null ? 'unanswered' : ''}" data-summary-value="${kind}.${id}.${criterion}" role="img" aria-label="${esc(label)}" title="${esc(label)}">${value ?? '—'}</span>`;
+    const visibleId = kind === 'items' ? questionLabel(instrument.items.find(item => item.id === id)) : dimensionLabel(id);
+    const label = `${visibleId} · ${criteriaLabels[criterion]}: ${value === null ? 'sin responder' : value + ', ' + scaleLabels[criterion][value - 1]}`;
+    return `<span class="summary-score ${value === null ? 'unanswered' : `score-${value}`}" data-summary-value="${kind}.${id}.${criterion}" role="img" aria-label="${esc(label)}" title="${esc(label)}">${value ?? '—'}</span>`;
   }
   function summaryMap(interactive = true) {
     return `<div class="summary-map" ${interactive ? 'id="summary-map"' : ''}>${instrument.dimensions.map((dim, index) => {
@@ -1396,7 +1388,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <div class="summary-dimension-scores">${omitted ? '<p class="summary-omitted">Dimensión omitida</p>' : `<div><span>Relevancia</span>${summaryValue('dimensions', dim.id, 'relevance')}</div><div><span>Cobertura</span>${summaryValue('dimensions', dim.id, 'coverage')}</div>`}</div>
       <table class="summary-table"><caption class="sr-only">Preguntas de ${esc(dim.name)}. Valoraciones del experto de 1 a 4.</caption><thead><tr><th scope="col">Pregunta</th><th scope="col">Relevancia</th><th scope="col">Claridad y respuestas</th></tr></thead><tbody>${items.map(item => {
         const skipped = model.status(state, item.id) === 'skipped';
-        const title = `<span class="summary-question-code">${item.id}</span><span>${esc(questionNames[item.id])}</span>`;
+        const title = `<span class="summary-question-code">${questionLabel(item)}</span><span>${esc(questionNames[item.id])}</span>`;
         return `<tr data-summary-item="${item.id}"><th scope="row">${interactive ? `<button type="button" data-action="jump" data-step="${index + 3}" data-anchor="item-${item.id}" title="${esc(item.q)}" aria-label="Revisar ${questionLabel(item)}: ${esc(item.q)}">${title}</button>` : title}</th>${skipped ? '<td colspan="2" class="summary-omitted">Omitida</td>' : model.itemCriteria.map(criterion => `<td>${summaryValue('items', item.id, criterion)}</td>`).join('')}</tr>`;
       }).join('')}</tbody></table></section>`;
     }).join('')}</div>`;
@@ -1408,13 +1400,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       ${reviewCounts()}</section>
       ${summaryMap()}
       <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2><details class="summary-optional" ${state.final.v2 || state.final.v3 ? 'open' : ''}><summary>Añadir comentarios sobre dimensiones ${optional}</summary><div class="observation-content">${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</div></details>
-      <fieldset class="field discrimination"><legend>¿Qué preguntas podrían dar casi siempre la misma respuesta? ${optional}</legend><p class="fine">Abre una dimensión y marca las preguntas que podrían distinguir poco entre startups.</p><div class="discrimination-groups">${instrument.dimensions.map(dim => { const items=instrument.items.filter(item=>item.dim===dim.id), selected=items.filter(item=>state.designReview.discrimination.includes(item.id)).length; return `<details ${selected ? 'open' : ''}><summary>${dimensionLabel(dim.id)} · ${esc(dim.short)}${selected ? `<span>${selected} seleccionada${selected === 1 ? '' : 's'}</span>` : ''}</summary><div class="choice-list">${items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${item.id} · ${esc(questionNames[item.id])}</label>`).join('')}</div></details>`; }).join('')}</div></fieldset>
+      <fieldset class="field discrimination"><legend>¿Qué preguntas podrían dar casi siempre la misma respuesta? ${optional}</legend><p class="fine">Abre una dimensión y marca las preguntas que podrían distinguir poco entre startups.</p><div class="discrimination-groups">${instrument.dimensions.map(dim => { const items=instrument.items.filter(item=>item.dim===dim.id), selected=items.filter(item=>state.designReview.discrimination.includes(item.id)).length; return `<details ${selected ? 'open' : ''}><summary>${dimensionLabel(dim.id)} · ${esc(dim.short)}${selected ? `<span>${selected} seleccionada${selected === 1 ? '' : 's'}</span>` : ''}</summary><div class="choice-list">${items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${questionLabel(item)} · ${esc(questionNames[item.id])}</label>`).join('')}</div></details>`; }).join('')}</div></fieldset>
       ${field('designReview.discriminationComment', 'Observaciones sobre estas preguntas', 'Es una previsión. Las diferencias reales se estudiarán después con respuestas de emprendedores.')}</section>
       ${nav('Continuar al envío')}`;
   }
   function designReviewText() {
     const d = state.designReview;
-    return 'Cribado: ' + (d.screeningComment || 'Sin observaciones') + '\nPosible falta de discriminación: ' + (d.discrimination.join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
+    return 'Posible falta de discriminación: ' + (d.discrimination.map(id => questionLabel(instrument.items.find(item => item.id === id))).join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
   }
   function profileText() {
     const p = state.profile;

@@ -1,5 +1,16 @@
 # Registro de cambios
 
+## Simplificación de bienvenida e instrucciones (septiembre de 2026)
+
+- La portada explica de forma directa que el experto valida preguntas destinadas a personas emprendedoras en fases iniciales.
+- El propósito y la población se reescriben para aclarar qué ofrece el futuro diagnóstico y a quién va dirigido.
+- La pregunta inicial pide las dimensiones que el experto evaluaría antes de conocer el instrumento.
+- «Cómo responder» conserva dos pasos y una aclaración breve; se retiran códigos, cribado y contexto de esta pantalla.
+- Los códigos internos se mantienen en los datos para el análisis, pero la interfaz muestra números de pregunta comprensibles.
+- Se elimina la estimación de tiempo y se reorganizan las notas de inicio para evitar líneas y márgenes irregulares.
+- T1 pregunta por los perfiles necesarios para desarrollar la startup y conseguir clientes, con una aclaración sobre producto, operaciones y ventas.
+- Las puntuaciones 1–4 incorporan tonos suaves, manteniendo siempre el número y la etiqueta para no depender del color.
+
 ## Revisión UX basada en Yablonski y Krug (septiembre de 2026)
 
 - «Cómo responder» se reduce a dos acciones visibles y una única referencia opcional.

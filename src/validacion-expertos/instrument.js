@@ -4,8 +4,8 @@
   "version": "2.1.0",
   "title": "Validación de expertos",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Identificar brechas de evidencia y de capacidad de ejecución para priorizar el siguiente hito de una startup en fase temprana.",
-  "population": "Startups desde la exploración de una idea hasta las primeras señales de repetición comercial. La pertinencia de cada pregunta depende de la fase y del modelo de negocio.",
+  "purpose": "Ofrecer a las personas emprendedoras una visión estructurada de la situación de su startup y de las áreas que requieren atención.",
+  "population": "Personas emprendedoras en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
   "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
@@ -53,8 +53,8 @@
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿El equipo cubre los perfiles necesarios para crear la solución y venderla?",
-      "note": "Revisa si están cubiertas las funciones de producto y ventas, además de las que exija el modelo. Los perfiles pueden estar en el equipo o colaborar de forma estable.",
+      "q": "¿El equipo tiene cubiertos los perfiles necesarios para desarrollar la startup y conseguir clientes?",
+      "note": "Revisa si están cubiertas las funciones clave que exige el modelo de negocio, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
