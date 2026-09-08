@@ -3,10 +3,11 @@
 ## Resultados visuales y datos de prueba (septiembre de 2026)
 
 - Se añade la pestaña `Resumen`, con indicadores, resultados por dimensión y resultados por pregunta ordenados para facilitar su revisión.
-- Las tablas reciben formato visual, filtros y anchuras de columna legibles.
+- `Resumen` recibe formato visual y anchuras legibles; las tablas largas conservan una estructura estable para exportación y rendimiento.
 - Los registros identificados como `DATOS DE TESTING` se etiquetan con `es_testing` y quedan excluidos de los cálculos académicos de validez de contenido.
 - Se añaden `CalidadDatos`, `Comentarios` y `Metodologia` para documentar completitud, preparar el análisis cualitativo y dejar trazables las decisiones analíticas.
 - `ValidezContenido` incorpora tamaño efectivo, faltantes, S-CVI/UA, probabilidad de acuerdo por azar y kappa modificado, manteniendo separados los registros de prueba.
+- Se incorpora en `docs/` la memoria del proyecto: historia razonada, metodología, estructura de datos, arquitectura, despliegue, seguridad, pruebas y recuperación.
 
 ## V2.1 — retirada de T3 (septiembre de 2026)
 

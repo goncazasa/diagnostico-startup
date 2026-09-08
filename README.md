@@ -2,6 +2,13 @@
 
 Formulario con una dimensión por página, veintitrés preguntas, 58 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
 
+## Documentación
+
+- [Historia y decisiones del proyecto](docs/HISTORIA-Y-DECISIONES.md)
+- [Metodología y estructura de datos](docs/METODOLOGIA-Y-DATOS.md)
+- [Arquitectura, despliegue y operación](docs/ARQUITECTURA-Y-OPERACION.md)
+- [Registro de cambios por versión](CHANGELOG.md)
+
 ## Configuración
 
 El código incluye la integración. Su activación requiere desplegar el receptor en una cuenta de Google y añadir dos variables privadas en Vercel; sin ellas, el formulario conserva el borrador y no confirma el envío. Ver [instrucciones de conexión](google-apps-script/LEEME.md).
@@ -33,7 +40,7 @@ Las omisiones se exportan vacías, nunca como cero. `claridad_y_respuestas` es u
 
 La unidad de análisis cuantitativa es la valoración de relevancia de cada pregunta. El I-CVI es la proporción de puntuaciones 3–4 entre las valoraciones válidas 1–4. Se muestran el numerador, el denominador, las omisiones, los valores ausentes, la probabilidad de acuerdo por azar y el kappa modificado. La regla automática exige al menos seis valoraciones válidas y utiliza 0,78 como referencia para el I-CVI; el S-CVI/Ave se presenta con 0,90 como referencia global. Estos umbrales son ayudas para la decisión y deben interpretarse junto con las observaciones, el perfil del panel y la trazabilidad teórica de cada pregunta.
 
-Los identificadores que empiezan por `testing-`, los nombres que contienen `DATOS DE TESTING` y los correos técnicos que empiezan por `testing` o `datos.testing` se marcan como `es_testing=true`. Se conservan para probar el sistema y pueden aparecer en la vista demostrativa, pero no entran en `ValidezContenido`. Antes del análisis formal:
+Los identificadores que empiezan por `testing-` o `testing_`, los nombres que contienen `DATOS DE TESTING` y los correos técnicos que empiezan por `datos.testing` o por `testing` seguido de `.`, `+`, `_` o `-` se marcan como `es_testing=true`. Se conservan para probar el sistema y pueden aparecer en la vista demostrativa, pero no entran en `ValidezContenido`. Antes del análisis formal:
 
 1. Revisar `CalidadDatos` y documentar cualquier exclusión adicional sin borrar `Entregas`.
 2. Describir el panel real mediante `Participantes`, manteniendo los datos identificativos fuera de los archivos compartidos.
