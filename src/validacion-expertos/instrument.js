@@ -16,7 +16,7 @@
       "id": "D1",
       "short": "Equipo",
       "name": "Equipo y gobernanza",
-      "desc": "Capacidades disponibles, aprendizaje, dedicación y acuerdos para ejecutar el siguiente hito."
+      "desc": "Capacidades, aprendizaje, disponibilidad y acuerdos para alcanzar el siguiente objetivo."
     },
     {
       "id": "D2",
@@ -53,13 +53,13 @@
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿Están cubiertos los perfiles que exige este modelo de negocio: quién construye o entrega la solución y quién vende y accede al cliente?",
-      "note": "Se busca complementariedad: perfil técnico o de producto y perfil comercial o de acceso al cliente, más los que exija el modelo (por ejemplo, regulatorio u operaciones). Pueden estar dentro del equipo o cubiertos con colaboradores estables. Externalizar no penaliza, pero un perfil crítico sin compromiso estable es una dependencia, no una cobertura. El conocimiento del sector se valora en T2.",
+      "q": "¿El equipo cubre los perfiles necesarios para crear la solución y venderla?",
+      "note": "Revisa si están cubiertas las funciones de producto y ventas, además de las que exija el modelo. Los perfiles pueden estar en el equipo o colaborar de forma estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
         "Los perfiles críticos están cubiertos y hay un responsable identificado para cada uno.",
-        "Esa combinación ya ha permitido cumplir hitos comparables y las piezas cubiertas desde fuera tienen un compromiso estable."
+        "El equipo ya ha alcanzado objetivos similares y cuenta de forma estable con los perfiles externos que necesita."
       ],
       "applicability": {
         "field": null,
@@ -70,7 +70,7 @@
       "id": "T2",
       "dim": "D1",
       "q": "¿El equipo dispone de conocimiento directo del cliente, sector o problema para tomar decisiones?",
-      "note": "Puede proceder de experiencia previa, investigación directa o colaboración continuada con personas conocedoras del contexto. Distingue el conocimiento técnico del sector del conocimiento comercial: quién compra, cómo compra y con qué ciclos.",
+      "note": "El conocimiento puede venir de experiencia, investigación o colaboración continua con personas del sector. Incluye quién compra, cómo compra y cuánto tarda en decidir.",
       "levels": [
         "Las decisiones se apoyan principalmente en supuestos sin contraste directo.",
         "Hay conocimiento indirecto o contactos puntuales, con lagunas relevantes.",
@@ -109,13 +109,13 @@
     {
       "id": "T4",
       "dim": "D1",
-      "q": "¿El tiempo disponible cubre las prioridades previstas del proyecto?",
-      "note": "Se comparan las horas reservadas con las necesarias para las prioridades de las últimas cuatro semanas. Cuentan agendas o registros de dedicación; en proyectos más recientes se usa el periodo desde el inicio.",
+      "q": "¿La disponibilidad de los fundadores permite atender las prioridades del proyecto?",
+      "note": "Compara la disponibilidad real de los fundadores con el tiempo que exigen las prioridades de las últimas cuatro semanas. Puede comprobarse con agendas o registros de dedicación.",
       "levels": [
-        "El tiempo reservado no permite atender ninguna prioridad del periodo.",
-        "El tiempo reservado permite atender solo una parte de las prioridades del periodo.",
-        "El tiempo reservado permite atender todas las prioridades del periodo.",
-        "El tiempo reservado permite atender todas las prioridades y cubrir ausencias previstas."
+        "La disponibilidad de los fundadores no permite atender las prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender solo algunas prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender todas las prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender las prioridades incluso en semanas de mayor carga."
       ],
       "applicability": {
         "field": null,
@@ -126,7 +126,7 @@
       "id": "T5",
       "dim": "D1",
       "q": "¿Están claros y documentados los acuerdos necesarios para tomar decisiones y distribuir responsabilidades?",
-      "note": "Adáptalo al equipo: responsabilidades, forma de tomar decisiones importantes y delegación en colaboradores. Con varios socios, el instrumento habitual es el pacto de socios; con fundador único, basta con acuerdos escritos con los colaboradores. La estructura de propiedad se valora por separado en T6.",
+      "note": "Revisa si están claras las responsabilidades y cómo se toman decisiones. Puede constar en un pacto de socios o en acuerdos escritos con colaboradores.",
       "levels": [
         "No están claros los responsables ni cómo se toman decisiones importantes.",
         "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
@@ -144,7 +144,7 @@
       "id": "T6",
       "dim": "D1",
       "q": "¿La estructura de propiedad permite decidir con agilidad y no compromete etapas futuras?",
-      "note": "Valora el efecto del reparto sobre la toma de decisiones y sobre la capacidad de incorporar personas clave o inversores más adelante. El vesting solo se considera si procede.",
+      "note": "Comprueba si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",

@@ -71,6 +71,7 @@ progress::-moz-progress-bar { background: var(--teal); }
 .welcome-hero .page-heading { margin-bottom: 20px; }
 .intro-lead { font-size: 1.0625rem; max-width: 54ch; }
 .review-purpose { color: var(--muted); font-size: .9375rem; max-width: 55ch; }
+.key-instruction { background: var(--soft); color: var(--teal-dark); border-left: 4px solid var(--teal); padding: 12px 16px; border-radius: 8px; font-weight: 600; max-width: 55ch; margin-top: 12px; }
 .welcome-facts { display: flex; flex-wrap: wrap; gap: 16px 28px; margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); font-size: .875rem; }
 .welcome-facts strong { font-size: 1.125rem; font-weight: 650; margin-right: 5px; }
 .welcome-art { border-left: 1px solid var(--line); padding: 20px 0 20px 28px; }
@@ -112,11 +113,14 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .profile-form > .field:has(input[type=number]) { max-width: 270px; }
 .initial-question { margin-top: 30px; border-top: 1px solid var(--line); padding-top: 28px; }
 .initial-question > .field > label { max-width: 65ch; font-size: 1.125rem; }
-.guide-row { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 28px; }
-.guide-number { display: flex; align-items: center; justify-content: center; flex: 0 0 34px; width: 34px; height: 34px; background: var(--soft); color: var(--teal); border-radius: 50%; font-size: .9375rem; font-weight: 650; }
-.guide-row h2 { font-size: 1.125rem; margin: 3px 0 10px; }
-.guide-row p { font-size: .9375rem; color: var(--muted); }
 .guide-note { font-size: .9375rem; padding: 20px; background: #f4f7fb; border-radius: 8px; }
+.guide-steps { display: grid; gap: 20px; margin: 0 0 22px; padding: 0; list-style: none; counter-reset: guide; }
+.guide-steps li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 6px 14px; align-items: start; counter-increment: guide; }
+.guide-steps li::before { content: counter(guide); grid-row: 1 / 3; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--soft); color: var(--teal-dark); font-weight: 700; }
+.guide-steps strong { padding-top: 4px; }
+.guide-steps span { grid-column: 2; color: var(--muted); font-size: .9375rem; }
+.design-proposal > summary { cursor: pointer; font-weight: 650; color: var(--ink); }
+.design-proposal[open] > summary { margin-bottom: 18px; }
 .code-guide dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
 .code-guide dl > div { display: flex; align-items: flex-start; gap: 10px; }
 .code-guide dt { min-width: 25px; font-weight: 700; }
@@ -385,7 +389,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "id": "D1",
       "short": "Equipo",
       "name": "Equipo y gobernanza",
-      "desc": "Capacidades disponibles, aprendizaje, dedicación y acuerdos para ejecutar el siguiente hito."
+      "desc": "Capacidades, aprendizaje, disponibilidad y acuerdos para alcanzar el siguiente objetivo."
     },
     {
       "id": "D2",
@@ -422,13 +426,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿Están cubiertos los perfiles que exige este modelo de negocio: quién construye o entrega la solución y quién vende y accede al cliente?",
-      "note": "Se busca complementariedad: perfil técnico o de producto y perfil comercial o de acceso al cliente, más los que exija el modelo (por ejemplo, regulatorio u operaciones). Pueden estar dentro del equipo o cubiertos con colaboradores estables. Externalizar no penaliza, pero un perfil crítico sin compromiso estable es una dependencia, no una cobertura. El conocimiento del sector se valora en T2.",
+      "q": "¿El equipo cubre los perfiles necesarios para crear la solución y venderla?",
+      "note": "Revisa si están cubiertas las funciones de producto y ventas, además de las que exija el modelo. Los perfiles pueden estar en el equipo o colaborar de forma estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
         "Los perfiles críticos están cubiertos y hay un responsable identificado para cada uno.",
-        "Esa combinación ya ha permitido cumplir hitos comparables y las piezas cubiertas desde fuera tienen un compromiso estable."
+        "El equipo ya ha alcanzado objetivos similares y cuenta de forma estable con los perfiles externos que necesita."
       ],
       "applicability": {
         "field": null,
@@ -439,7 +443,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "id": "T2",
       "dim": "D1",
       "q": "¿El equipo dispone de conocimiento directo del cliente, sector o problema para tomar decisiones?",
-      "note": "Puede proceder de experiencia previa, investigación directa o colaboración continuada con personas conocedoras del contexto. Distingue el conocimiento técnico del sector del conocimiento comercial: quién compra, cómo compra y con qué ciclos.",
+      "note": "El conocimiento puede venir de experiencia, investigación o colaboración continua con personas del sector. Incluye quién compra, cómo compra y cuánto tarda en decidir.",
       "levels": [
         "Las decisiones se apoyan principalmente en supuestos sin contraste directo.",
         "Hay conocimiento indirecto o contactos puntuales, con lagunas relevantes.",
@@ -478,13 +482,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T4",
       "dim": "D1",
-      "q": "¿El tiempo disponible cubre las prioridades previstas del proyecto?",
-      "note": "Se comparan las horas reservadas con las necesarias para las prioridades de las últimas cuatro semanas. Cuentan agendas o registros de dedicación; en proyectos más recientes se usa el periodo desde el inicio.",
+      "q": "¿La disponibilidad de los fundadores permite atender las prioridades del proyecto?",
+      "note": "Compara la disponibilidad real de los fundadores con el tiempo que exigen las prioridades de las últimas cuatro semanas. Puede comprobarse con agendas o registros de dedicación.",
       "levels": [
-        "El tiempo reservado no permite atender ninguna prioridad del periodo.",
-        "El tiempo reservado permite atender solo una parte de las prioridades del periodo.",
-        "El tiempo reservado permite atender todas las prioridades del periodo.",
-        "El tiempo reservado permite atender todas las prioridades y cubrir ausencias previstas."
+        "La disponibilidad de los fundadores no permite atender las prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender solo algunas prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender todas las prioridades del periodo.",
+        "La disponibilidad de los fundadores permite atender las prioridades incluso en semanas de mayor carga."
       ],
       "applicability": {
         "field": null,
@@ -495,7 +499,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "id": "T5",
       "dim": "D1",
       "q": "¿Están claros y documentados los acuerdos necesarios para tomar decisiones y distribuir responsabilidades?",
-      "note": "Adáptalo al equipo: responsabilidades, forma de tomar decisiones importantes y delegación en colaboradores. Con varios socios, el instrumento habitual es el pacto de socios; con fundador único, basta con acuerdos escritos con los colaboradores. La estructura de propiedad se valora por separado en T6.",
+      "note": "Revisa si están claras las responsabilidades y cómo se toman decisiones. Puede constar en un pacto de socios o en acuerdos escritos con colaboradores.",
       "levels": [
         "No están claros los responsables ni cómo se toman decisiones importantes.",
         "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
@@ -513,7 +517,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "id": "T6",
       "dim": "D1",
       "q": "¿La estructura de propiedad permite decidir con agilidad y no compromete etapas futuras?",
-      "note": "Valora el efecto del reparto sobre la toma de decisiones y sobre la capacidad de incorporar personas clave o inversores más adelante. El vesting solo se considera si procede.",
+      "note": "Comprueba si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",
@@ -1169,7 +1173,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   const finalQuestions = [
     ['v2', '¿Eliminarías alguna dimensión? ¿Por qué?', 'Puedes responder «Ninguna».'],
     ['v3', '¿Falta alguna dimensión o área importante?', 'Piensa en el propósito y las fases del diagnóstico.'],
-    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puedes dejarlo en blanco.']
+    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?']
   ];
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
@@ -1283,7 +1287,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="review-purpose">Revisarás el cuestionario. No necesitas evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span>A tu ritmo</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
       `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
       <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
@@ -1296,31 +1300,32 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function profile() {
     return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
-      `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups?', model.roles)}
+      `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups? (puedes marcar varias)', model.roles)}
       ${field('profile.years', 'Años de experiencia con startups', '', 'number')}
       <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
-      ${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}
+      ${checks('profile.phases', 'Fases con las que tienes experiencia (puedes marcar varias)', model.phases)}
       <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
       ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
       ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
-      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'Anota los aspectos que revisarías. Esta respuesta se guardará al continuar y no podrás editarla después.')}</div>
+      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe tu criterio antes de ver el cuestionario; al continuar se guardará y ya no podrás editarlo.')}</div>
       ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Cómo responder', 'En cada pregunta, primero lee la propuesta y después da tu valoración.') +
-      `<section class="surface guide-sheet"><div class="guide-row"><span class="guide-number" aria-hidden="true">1</span><div><h2>Lee la pregunta y sus respuestas</h2><p>Los niveles del <strong>0 al 3</strong> son las opciones previstas para la persona emprendedora. Describen situaciones observables; aquí solo tienes que revisarlos.</p></div></div>
-      <div class="guide-row"><span class="guide-number" aria-hidden="true">2</span><div><h2>Valora la propuesta del 1 al 4</h2><p><strong>Relevancia:</strong> ¿es útil preguntar por este aspecto?</p><p><strong>Claridad y respuestas:</strong> ¿se entiende y ofrece opciones adecuadas?</p></div></div>
-      <p class="guide-note">La relevancia requiere una puntuación o un motivo de omisión. Claridad y respuestas es opcional en todos los ítems; la cobertura también es opcional. Las observaciones permiten explicar los cambios propuestos.</p>
-      <details class="extra-fields"><summary>Criterios de esta revisión</summary><p>Ten en cuenta la fase de la startup y su modelo de negocio. Indica si una pregunta solo tiene sentido en determinadas situaciones.</p><p>Los niveles 0–3 no son intervalos equivalentes ni predicen el éxito. «No aplica todavía» se registra aparte y no equivale a 0. Tampoco se asigna una puntuación baja a lo que un experto omite.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
+    return heading('Cómo responder', 'Revisa cada pregunta; no la respondas como si evaluaras una startup.') +
+      `<section class="surface guide-sheet"><ol class="guide-steps">
+      <li><strong>Lee la pregunta y sus respuestas.</strong><span>Los niveles 0–3 son las opciones que verá la persona emprendedora.</span></li>
+      <li><strong>Valora la pregunta.</strong><span><b>Relevancia</b>: si merece formar parte del diagnóstico. <b>Claridad y respuestas</b>: si se entiende y las opciones funcionan.</span></li></ol>
+      <p class="guide-note">La relevancia es obligatoria. Si el tema queda fuera de tu experiencia, puedes omitirlo. Las demás valoraciones y las observaciones son opcionales.</p>
+      <details class="extra-fields"><summary>Más criterios de revisión</summary><p>Ten en cuenta la fase y el modelo de negocio. «No aplica todavía» se registra aparte y nunca equivale a 0.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
   }
   function screeningDesign() {
-    return `<section class="design-proposal"><h2>Diseño del cribado y del contexto</h2><p>Estas preguntas se utilizarán para adaptar el diagnóstico al proyecto. Se solicita revisar sus opciones y reglas; no responderlas como fundador.</p>
+    return `<details class="design-proposal" data-guide-reference><summary>Cribado y contexto del futuro diagnóstico</summary><p>Estos datos adaptarán el diagnóstico a cada proyecto. Revisa las opciones y las reglas; no los respondas como fundador.</p>
       <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
       <p>Los cinco datos generales no resuelven todas las exclusiones. Las condiciones específicas se muestran junto a cada ítem; una falta de pruebas no oculta la pregunta.</p>
-      <h3>Contexto temporal sin puntuación</h3><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
-      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</section>`;
+      <p class="section-label"><strong>Contexto temporal sin puntuación</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
+      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</details>`;
   }
   function itemDesign(item) {
     return `${(item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('')}
@@ -1356,7 +1361,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <section class="surface dimension-top"><h2>La dimensión en conjunto</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
       ${field(base + '.comment', 'Observaciones', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
-      <button type="button" class="text-button" data-action="return-summary">Ver resumen de respuestas</button>
+      <button type="button" class="text-button" data-action="return-summary">Ver resumen de tu revisión</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {

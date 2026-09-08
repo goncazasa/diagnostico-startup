@@ -1,5 +1,9 @@
 # Registro de cambios
 
+## V2.0 — copy y UX menor (septiembre de 2026)
+
+- Simplifica las instrucciones de revisión, aclara la disponibilidad del equipo y elimina expresiones ambiguas sobre perfiles y propiedad. Sin cambios de esquema.
+
 ## Rediseño de la interfaz — septiembre de 2026
 
 - Nombre público: **Diagnóstico de startups**, con el subtítulo «Revisión por expertos». Se retira la etiqueta de versión candidata de la cabecera.

@@ -16,7 +16,7 @@
   const finalQuestions = [
     ['v2', '¿Eliminarías alguna dimensión? ¿Por qué?', 'Puedes responder «Ninguna».'],
     ['v3', '¿Falta alguna dimensión o área importante?', 'Piensa en el propósito y las fases del diagnóstico.'],
-    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta? Puedes dejarlo en blanco.']
+    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?']
   ];
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
@@ -130,7 +130,7 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="review-purpose">Revisarás el cuestionario. No necesitas evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span>A tu ritmo</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
       `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
       <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
@@ -143,31 +143,32 @@
   }
   function profile() {
     return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
-      `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups?', model.roles)}
+      `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups? (puedes marcar varias)', model.roles)}
       ${field('profile.years', 'Años de experiencia con startups', '', 'number')}
       <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
-      ${checks('profile.phases', 'Fases con las que tienes experiencia', model.phases)}
+      ${checks('profile.phases', 'Fases con las que tienes experiencia (puedes marcar varias)', model.phases)}
       <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
       ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
       ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
-      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'Anota los aspectos que revisarías. Esta respuesta se guardará al continuar y no podrás editarla después.')}</div>
+      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué evaluarías en una startup en fase temprana?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe tu criterio antes de ver el cuestionario; al continuar se guardará y ya no podrás editarlo.')}</div>
       ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Cómo responder', 'En cada pregunta, primero lee la propuesta y después da tu valoración.') +
-      `<section class="surface guide-sheet"><div class="guide-row"><span class="guide-number" aria-hidden="true">1</span><div><h2>Lee la pregunta y sus respuestas</h2><p>Los niveles del <strong>0 al 3</strong> son las opciones previstas para la persona emprendedora. Describen situaciones observables; aquí solo tienes que revisarlos.</p></div></div>
-      <div class="guide-row"><span class="guide-number" aria-hidden="true">2</span><div><h2>Valora la propuesta del 1 al 4</h2><p><strong>Relevancia:</strong> ¿es útil preguntar por este aspecto?</p><p><strong>Claridad y respuestas:</strong> ¿se entiende y ofrece opciones adecuadas?</p></div></div>
-      <p class="guide-note">La relevancia requiere una puntuación o un motivo de omisión. Claridad y respuestas es opcional en todos los ítems; la cobertura también es opcional. Las observaciones permiten explicar los cambios propuestos.</p>
-      <details class="extra-fields"><summary>Criterios de esta revisión</summary><p>Ten en cuenta la fase de la startup y su modelo de negocio. Indica si una pregunta solo tiene sentido en determinadas situaciones.</p><p>Los niveles 0–3 no son intervalos equivalentes ni predicen el éxito. «No aplica todavía» se registra aparte y no equivale a 0. Tampoco se asigna una puntuación baja a lo que un experto omite.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
+    return heading('Cómo responder', 'Revisa cada pregunta; no la respondas como si evaluaras una startup.') +
+      `<section class="surface guide-sheet"><ol class="guide-steps">
+      <li><strong>Lee la pregunta y sus respuestas.</strong><span>Los niveles 0–3 son las opciones que verá la persona emprendedora.</span></li>
+      <li><strong>Valora la pregunta.</strong><span><b>Relevancia</b>: si merece formar parte del diagnóstico. <b>Claridad y respuestas</b>: si se entiende y las opciones funcionan.</span></li></ol>
+      <p class="guide-note">La relevancia es obligatoria. Si el tema queda fuera de tu experiencia, puedes omitirlo. Las demás valoraciones y las observaciones son opcionales.</p>
+      <details class="extra-fields"><summary>Más criterios de revisión</summary><p>Ten en cuenta la fase y el modelo de negocio. «No aplica todavía» se registra aparte y nunca equivale a 0.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
   }
   function screeningDesign() {
-    return `<section class="design-proposal"><h2>Diseño del cribado y del contexto</h2><p>Estas preguntas se utilizarán para adaptar el diagnóstico al proyecto. Se solicita revisar sus opciones y reglas; no responderlas como fundador.</p>
+    return `<details class="design-proposal" data-guide-reference><summary>Cribado y contexto del futuro diagnóstico</summary><p>Estos datos adaptarán el diagnóstico a cada proyecto. Revisa las opciones y las reglas; no los respondas como fundador.</p>
       <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
       <p>Los cinco datos generales no resuelven todas las exclusiones. Las condiciones específicas se muestran junto a cada ítem; una falta de pruebas no oculta la pregunta.</p>
-      <h3>Contexto temporal sin puntuación</h3><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
-      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</section>`;
+      <p class="section-label"><strong>Contexto temporal sin puntuación</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
+      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</details>`;
   }
   function itemDesign(item) {
     return `${(item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('')}
@@ -203,7 +204,7 @@
       <section class="surface dimension-top"><h2>La dimensión en conjunto</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
       ${field(base + '.comment', 'Observaciones', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
-      <button type="button" class="text-button" data-action="return-summary">Ver resumen de respuestas</button>
+      <button type="button" class="text-button" data-action="return-summary">Ver resumen de tu revisión</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {

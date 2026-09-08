@@ -403,6 +403,14 @@ test('expert guide presents five screening fields without asking for founder ans
  assert.equal(ui.stored().designReview.screeningComment,'No ocultar finanzas por no buscar inversión.');assert.equal(ui.document.querySelectorAll('.item').length,6);
  assert.ok(ui.document.querySelector('[data-path="designReview.t3Example"]'));ui.dom.window.close();
 });
+test('guide keeps the essential instructions visible and secondary reference collapsed',()=>{
+ const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
+ assert.equal(ui.document.querySelectorAll('.guide-steps > li').length,2);
+ assert.equal(ui.document.querySelectorAll('.guide-sheet > h2').length,0);
+ const reference=ui.document.querySelector('[data-guide-reference]');
+ assert.ok(reference);assert.equal(reference.open,false);
+ ui.dom.window.close();
+});
 test('sending with missing relevance stays local and points to unresolved questions',async()=>{
  const ui=boot();start(ui);ui.click('[data-step="10"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
  ui.click('[data-action="submit"]');assert.equal(sent,false);assert.match(ui.document.querySelector('#submit-status').textContent,/relevancia/);

@@ -23,6 +23,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.locator('#profile-email').fill('prueba-local@example.org');await page.locator('#initial-text').fill('Experiencia previa a las preguntas.');
   await page.locator('[data-action="next"]').click();assert.equal(await page.locator('[data-screening-design]').count(),5);assert.equal(await page.locator('[data-context-metadata]').count(),2);
   assert.equal(await page.locator('[data-screening-design] input,[data-screening-design] select').count(),0);
+  await page.locator('[data-guide-reference] > summary').click();
   await page.locator('#designReview-screeningComment').fill('Las condiciones deben conservar las preguntas sobre caja.');
   const out=process.env.PLAYWRIGHT_OUTPUT||'output/playwright';fs.mkdirSync(out,{recursive:true});
   await page.screenshot({path:path.join(out,'v2-guide.png'),fullPage:true});
