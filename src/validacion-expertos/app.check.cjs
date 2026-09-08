@@ -428,6 +428,8 @@ test('visible question labels avoid internal codes and rating choices use four d
  ui.input('input[data-path="items.T1.relevance"][value="4"]',true);ui.click('[data-step="9"]');
  assert.ok(ui.document.querySelector('[data-summary-value="items.T1.relevance"].score-4'));
  assert.doesNotMatch(ui.document.querySelector('[data-summary-item="T1"]').textContent,/T1/);
+ ui.dom.window.dispatchEvent(new ui.dom.window.Event('beforeprint'));
+ assert.doesNotMatch(ui.document.querySelector('#print-view').textContent,/T: Equipo|PM: Problema|T1/);
  ui.dom.window.close();
 });
 test('summary groups the long discrimination choice by dimension',()=>{
