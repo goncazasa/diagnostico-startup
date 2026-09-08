@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## Resultados visuales y datos de prueba (septiembre de 2026)
+
+- Se añade la pestaña `Resumen`, con indicadores, resultados por dimensión y resultados por pregunta ordenados para facilitar su revisión.
+- Las tablas reciben formato visual, filtros y anchuras de columna legibles.
+- Los registros identificados como `DATOS DE TESTING` se etiquetan con `es_testing` y quedan excluidos de los cálculos académicos de validez de contenido.
+
 ## V2.1 — retirada de T3 (septiembre de 2026)
 
 - Retira T3 del banco y deja 23 preguntas. El esquema pasa a `expert-validation/2.1` para separar sus respuestas de versiones anteriores.

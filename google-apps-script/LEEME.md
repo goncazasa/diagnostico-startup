@@ -13,6 +13,8 @@ Si se modifica `Code.gs`, actualizar la implementación a una **nueva versión**
 
 Las pestañas de análisis se generan tras la primera entrega. Se pueden reconstruir desde la hoja con **Validación de expertos → Actualizar tablas de análisis** (recargar la hoja para ver el menú). No escribir anotaciones propias en estas pestañas porque se reemplazan; usar otra pestaña. No modificar ni borrar `Entregas`.
 
+`Resumen` ofrece una lectura visual por dimensiones y preguntas. Los perfiles cuyo identificador empieza por `testing-`, cuyo nombre contiene `DATOS DE TESTING` o cuyo correo empieza por `datos.testing`/`testing` quedan marcados en la columna `es_testing`. Se muestran en el resumen cuando todavía no existen respuestas reales, pero se excluyen siempre de `ValidezContenido`.
+
 Las dos variables sustituyen a `RESEND_API_KEY` y `RESEND_FROM`, que ya no se usan. El envío no genera correos: guarda datos. Si posteriormente se quieren avisos, se pueden añadir sin cambiar la experiencia del encuestado.
 
 [Documentación de aplicaciones web de Google](https://developers.google.com/apps-script/guides/web) · [Funciones Node.js de Vercel](https://vercel.com/docs/functions/runtimes/node-js).

@@ -100,6 +100,88 @@ function writeTable_(book, name, rows) {
   sheet.getRange(1,1,rows.length,rows[0].length).setValues(rows.map(row => row.map(safeCell_)));
   sheet.setFrozenRows(1);
 }
+function isTestingResponse_(response) {
+  const profile = response && response.profile || {};
+  return /^testing[-_]/i.test(response && response.responseId || '') ||
+    /DATOS DE TESTING/i.test(profile.name || '') ||
+    /^(datos[.]testing|testing[.+_-])/i.test(profile.email || '');
+}
+function average_(values) {
+  const valid = values.filter(value => Number.isFinite(value));
+  return valid.length ? Math.round(valid.reduce((sum,value) => sum + value, 0) / valid.length * 100) / 100 : '';
+}
+function summaryRows_(latest, instruments) {
+  const entries = Object.keys(latest).map(key => latest[key].payload).filter(payload => payload.instrumentVersion === '2.1.0');
+  const real = entries.filter(payload => !isTestingResponse_(payload.response));
+  const testing = entries.filter(payload => isTestingResponse_(payload.response));
+  const selected = real.length ? real : testing;
+  const instrument = instruments['2.1.0'];
+  const rows = [
+    ['Panel de resultados · Validación de expertos','','','','',''],
+    [real.length ? 'Resultados académicos: los registros de prueba están excluidos.' : 'VISTA DEMOSTRATIVA · Todavía no hay respuestas reales. Se muestran únicamente datos de prueba.','','','','',''],
+    ['Indicador','Valor','Cómo interpretarlo','','',''],
+    ['Respuestas recibidas',entries.length,'Última revisión recibida de cada participante.','','',''],
+    ['Participantes reales',real.length,'Se utilizan en los cálculos académicos.','','',''],
+    ['Registros de prueba',testing.length,'Sirven para comprobar el funcionamiento y no entran en la validez de contenido.','','',''],
+    ['','','','','',''],
+    ['Resultados por dimensión','','','','',''],
+    ['Dimensión','N','Relevancia media','Cobertura media','Lectura','Datos mostrados']
+  ];
+  if (!instrument || !selected.length) rows.push(['Sin datos','','','','','']);
+  else instrument.dimensions.forEach(dimension => {
+    const records = selected.map(payload => payload.response.dimensions[dimension.id]).filter(record => record && !record.skipReason);
+    const relevance = average_(records.map(record => record.relevance));
+    const coverage = average_(records.map(record => record.coverage));
+    const combined = average_([relevance,coverage]);
+    const reading = combined === '' ? 'Sin datos' : combined >= 3.5 ? 'Muy favorable' : combined >= 3 ? 'Favorable' : combined >= 2.5 ? 'Revisar' : 'Prioritaria';
+    rows.push([dimension.name,records.length,relevance,coverage,reading,real.length ? 'Reales' : 'Prueba']);
+  });
+  rows.push(['','','','','',''],['Resultados por pregunta','','','','',''],['Pregunta','Dimensión','N','Relevancia media','Claridad media','Lectura']);
+  if (instrument && selected.length) instrument.items.map(item => {
+    const records = selected.map(payload => payload.response.items[item.id]).filter(record => record && !record.skipReason);
+    const relevance = average_(records.map(record => record.relevance));
+    const usability = average_(records.map(record => record.usability));
+    const combined = average_([relevance,usability]);
+    return {item, n:records.length, relevance, usability, combined};
+  }).sort((a,b) => (a.combined === '' ? 99 : a.combined) - (b.combined === '' ? 99 : b.combined)).forEach(result => {
+    const reading = result.combined === '' ? 'Sin datos' : result.combined >= 3.5 ? 'Muy favorable' : result.combined >= 3 ? 'Favorable' : result.combined >= 2.5 ? 'Revisar' : 'Prioritaria';
+    rows.push([result.item.id + ' · ' + result.item.q,result.item.dim,result.n,result.relevance,result.usability,reading]);
+  });
+  return rows;
+}
+function formatWorkbook_(book) {
+  const tableNames = ['Valoraciones','Participantes','Respuestas','Diccionario','RevisionDiseno','DisenoInstrumento','ValidezContenido','Recorrido'];
+  tableNames.forEach(name => {
+    const sheet = book.getSheetByName(name);
+    if (!sheet || !sheet.getLastColumn || !sheet.getLastRow) return;
+    const rows = sheet.getLastRow(), columns = sheet.getLastColumn();
+    if (!rows || !columns) return;
+    sheet.setFrozenRows(1);
+    sheet.getDataRange().setFontFamily('Arial').setFontSize(10).setVerticalAlignment('middle');
+    sheet.getRange(1,1,1,columns).setBackground('#17324d').setFontColor('#ffffff').setFontWeight('bold').setWrap(true);
+    if (sheet.getFilter()) sheet.getFilter().remove();
+    if (rows > 1) sheet.getRange(1,1,rows,columns).createFilter();
+    sheet.autoResizeColumns(1,columns);
+    for (let column=1; column<=columns; column++) sheet.setColumnWidth(column,Math.min(sheet.getColumnWidth(column),320));
+    sheet.setTabColor('#6b8e7d');
+  });
+  const summary = book.getSheetByName('Resumen');
+  if (!summary || !summary.getLastColumn) return;
+  const rows = summary.getLastRow(), columns = summary.getLastColumn();
+  summary.setFrozenRows(2); summary.setHiddenGridlines(true); summary.setTabColor('#d49a3a');
+  summary.getDataRange().setFontFamily('Arial').setFontSize(10).setVerticalAlignment('middle').setWrap(true);
+  summary.getRange(1,1,1,columns).setBackground('#17324d').setFontColor('#ffffff').setFontSize(18).setFontWeight('bold');
+  summary.getRange(2,1,1,columns).setBackground('#f4ead7').setFontColor('#6b4e20').setFontWeight('bold');
+  [3,9,17,18].filter(row => row <= rows).forEach(row => summary.getRange(row,1,1,columns).setBackground('#dce8e2').setFontColor('#17324d').setFontWeight('bold'));
+  summary.setColumnWidth(1,430); summary.setColumnWidth(2,130); summary.setColumnWidth(3,160); summary.setColumnWidth(4,160); summary.setColumnWidth(5,150); summary.setColumnWidth(6,140);
+  summary.setRowHeight(1,42); summary.setRowHeight(2,38);
+  const rules = [
+    SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo('Prioritaria').setBackground('#f8d7da').setFontColor('#842029').setRanges([summary.getRange(1,6,rows,1),summary.getRange(1,5,rows,1)]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo('Revisar').setBackground('#fff3cd').setFontColor('#664d03').setRanges([summary.getRange(1,6,rows,1),summary.getRange(1,5,rows,1)]).build(),
+    SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo('Muy favorable').setBackground('#d1e7dd').setFontColor('#0f5132').setRanges([summary.getRange(1,6,rows,1),summary.getRange(1,5,rows,1)]).build()
+  ];
+  summary.setConditionalFormatRules(rules);
+}
 function actualizarAnalisis() {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(10000)) throw new Error('Hay una entrega en curso. Inténtelo de nuevo.');
@@ -122,7 +204,7 @@ function rebuild_(book) {
     // Equal revisions resolve to the most recently received; all originals remain.
     if (!latest[key] || s.revision >= latest[key].payload.response.revision) latest[key] = {payload:p,id:row[0],at:row[4]};
   });
-  const base = ['participante_id','version','revision','entrega_id','recibida_utc'];
+  const base = ['participante_id','version','revision','entrega_id','recibida_utc','es_testing'];
   const ratings = [base.concat(['tipo','dimension_id','elemento_id','texto','relevancia','claridad_y_respuestas','cobertura','motivo_omision','observaciones'])];
   const contacts = [base.concat(['correo','nombre','roles','anos_experiencia','numero_proyectos','experiencia_pivote','sectores','conflicto_interes','fases','fases_otra'])];
   const responses = [base.concat(['consentimiento','creada_utc','actualizada_utc','opinion_inicial','opinion_bloqueada_utc','global_v2','global_v3','observacion_final','juicios_contestados','juicios_posibles'])];
@@ -131,7 +213,7 @@ function rebuild_(book) {
   const instrumentDesign = [['version','tipo','elemento_id','definicion_json']];
   Object.keys(latest).sort().forEach(key => {
     const entry = latest[key], p = entry.payload, s = p.response, ins = p.instrument, profile = s.profile;
-    const common = [s.responseId,p.instrumentVersion,s.revision,entry.id,entry.at];
+    const common = [s.responseId,p.instrumentVersion,s.revision,entry.id,entry.at,isTestingResponse_(s)];
     if (s.designReview) designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
     let answered = 0;
     ins.dimensions.forEach(d => {
@@ -166,12 +248,14 @@ function rebuild_(book) {
   writeTable_(book,'RevisionDiseno',designReviews);
   writeTable_(book,'DisenoInstrumento',instrumentDesign);
   writeTable_(book,'ValidezContenido',contentValidity_(latest,instruments));
+  writeTable_(book,'Resumen',summaryRows_(latest,instruments));
+  try { formatWorkbook_(book); } catch (error) { console.error('No se pudo aplicar el formato visual: ' + error.message); }
 }
 
 function contentValidity_(latest, instruments) {
   const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones']];
   Object.keys(instruments).filter(version => version === '2.1.0').forEach(version => {
-    const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version);
+    const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version && !isTestingResponse_(p.response));
     const results = ins.items.map(item => {
       const valid = entries.filter(p => !p.response.dimensions[item.dim].skipReason && !p.response.items[item.id].skipReason && Number.isInteger(p.response.items[item.id].relevance) && p.response.items[item.id].relevance >= 1 && p.response.items[item.id].relevance <= 4);
       const positive = valid.filter(p => p.response.items[item.id].relevance >= 3).length;
