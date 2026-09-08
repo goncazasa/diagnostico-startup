@@ -27,7 +27,7 @@ test('analysis uses latest revision, preserves numeric scores and missingness, e
   const x=boot();assert.equal(x.post(payload(2)).ok,true);assert.equal(x.post(payload(1)).ok,true);
   assert.equal(x.tables.get('Entregas').length,3);
   const rows=x.tables.get('Valoraciones'), header=rows[0];
-  assert.equal(rows.length,31);
+  assert.equal(rows.length,30);
   const t1=rows.find(r=>r[header.indexOf('elemento_id')]==='T1');
   assert.equal(t1[header.indexOf('revision')],2);
   assert.equal(t1[header.indexOf('relevancia')],4);
@@ -41,7 +41,7 @@ test('archive survives analysis failure and retry repairs derived tables',()=>{
   const x=boot(),p=payload();x.setFailAnalysis(true);
   assert.equal(x.post(p).ok,true);assert.equal(x.props.ANALYSIS_PENDING,'true');
   x.setFailAnalysis(false);assert.equal(x.post(p).ok,true);
-  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,31);
+  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,30);
   assert.equal(x.props.ANALYSIS_PENDING,undefined);
 });
 test('large unicode observations round trip across archive cells',()=>{
@@ -53,10 +53,10 @@ test('large unicode observations round trip across archive cells',()=>{
 });
 
 test('V2 design judgements and conditional rules are available in analysis tables',()=>{
- const x=boot(),p=payload();p.response.designReview={screeningComment:'Revisar fase',t3Example:'yes',discrimination:['C3','F5'],discriminationComment:'Concentración variable'};
+ const x=boot(),p=payload();p.response.designReview={screeningComment:'Revisar fase',discrimination:['C3','F5'],discriminationComment:'Concentración variable'};
  assert.equal(x.post(p).ok,true);
  const review=x.tables.get('RevisionDiseno');assert.ok(review);assert.equal(review.length,2);
- assert.ok(review[1].includes('C3 | F5'));assert.ok(review[1].includes('yes'));
+ assert.ok(review[1].includes('C3 | F5'));
  const dictionary=x.tables.get('Diccionario');const c3=dictionary.find(r=>r[3]==='C3');assert.match(c3[dictionary[0].indexOf('aplicabilidad')],/facturación/);
  assert.ok(x.tables.get('DisenoInstrumento'));
 });
@@ -81,11 +81,12 @@ test('aggregate screen events contain no participant archive and reject unknown 
 test('historical V1.9 archives stay intact and separate when rebuilding V2 tables',()=>{
  const x=boot(),p=payload();assert.equal(x.post(p).ok,true);
  const legacy=JSON.parse(JSON.stringify(p));legacy.instrument=require('../../test-support/instrument-v1.9.cjs');legacy.instrumentVersion='1.9.0';legacy.format='expert-validation/1.9';legacy.response.instrumentVersion='1.9.0';legacy.response.schemaVersion='expert-validation/1.9';delete legacy.response.designReview;
+ legacy.response.items.T3={relevance:3,usability:null,skipReason:'',comment:'Dato histórico V1.9'};
  for(const id of ['VB4','C3','F5'])delete legacy.response.items[id];
  const raw=JSON.stringify(legacy),receipt='sheets-'+crypto.createHash('sha256').update(raw).digest('hex');
  const row=[receipt,legacy.response.responseId,'1.9.0',legacy.response.revision,new Date().toISOString(),Buffer.from(raw).toString('base64')];
  x.tables.get('Entregas').push(row);x.ctx.actualizarAnalisis();
  assert.deepEqual(x.tables.get('Entregas')[2],row);
- const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.0.0').length,30);
+ const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.1.0').length,29);
  assert.equal(x.post(legacy).ok,false,'V2 receiver rejects new V1.9 submissions but preserves archived originals');
 });

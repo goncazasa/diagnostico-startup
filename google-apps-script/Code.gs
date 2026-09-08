@@ -45,7 +45,7 @@ function doPost(e) {
     // Full validation happens in the trusted Vercel function before signing.
     const payload = JSON.parse(envelope.payload), response = payload.response;
     if (payload.format === 'expert-progress/2.0') return recordProgress_(payload, sheetId);
-    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/2.0' || payload.instrumentVersion !== '2.0.0' || payload.instrument.version !== '2.0.0' || response.schemaVersion !== payload.format || response.instrumentVersion !== payload.instrumentVersion) return json_({ok:false});
+    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/2.1' || payload.instrumentVersion !== '2.1.0' || payload.instrument.version !== '2.1.0' || response.schemaVersion !== payload.format || response.instrumentVersion !== payload.instrumentVersion) return json_({ok:false});
     const receiptId = 'sheets-' + digest_(envelope.payload);
     lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) return json_({ok:false});
@@ -127,12 +127,12 @@ function rebuild_(book) {
   const contacts = [base.concat(['correo','nombre','roles','anos_experiencia','numero_proyectos','experiencia_pivote','sectores','conflicto_interes','fases','fases_otra'])];
   const responses = [base.concat(['consentimiento','creada_utc','actualizada_utc','opinion_inicial','opinion_bloqueada_utc','global_v2','global_v3','observacion_final','juicios_contestados','juicios_posibles'])];
   const dictionary = [['version','tipo','dimension_id','elemento_id','texto','nota','aplicabilidad','niveles_emprendedor','criterios_experto']];
-  const designReviews = [base.concat(['observacion_cribado','ejemplo_t3','posible_falta_discriminacion','observacion_discriminacion'])];
+  const designReviews = [base.concat(['observacion_cribado','posible_falta_discriminacion','observacion_discriminacion'])];
   const instrumentDesign = [['version','tipo','elemento_id','definicion_json']];
   Object.keys(latest).sort().forEach(key => {
     const entry = latest[key], p = entry.payload, s = p.response, ins = p.instrument, profile = s.profile;
     const common = [s.responseId,p.instrumentVersion,s.revision,entry.id,entry.at];
-    if (s.designReview) designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.t3Example,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
+    if (s.designReview) designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
     let answered = 0;
     ins.dimensions.forEach(d => {
       const a = s.dimensions[d.id];
@@ -154,7 +154,7 @@ function rebuild_(book) {
     ins.dimensions.forEach(d => dictionary.push([version,'dimension',d.id,d.id,d.name,d.desc,'','','Relevancia y cobertura: 1–4; vacío = sin respuesta.']));
     ins.items.forEach(i => {
       dictionary.push([version,'pregunta',i.dim,i.id,i.q,i.note,[i.conditional,i.applicabilityNote].filter(Boolean).join('\n'),i.levels.map((level,n)=>n+': '+level).join('\n'),JSON.stringify(ins.expertCriteria)]);
-      if (i.applicability) instrumentDesign.push([version,'reglas_item',i.id,JSON.stringify({applicability:i.applicability,evidenceRequirement:i.evidenceRequirement,designFields:i.designFields,sources:i.sources})]);
+      if (i.applicability) instrumentDesign.push([version,'reglas_item',i.id,JSON.stringify({applicability:i.applicability,designFields:i.designFields,sources:i.sources})]);
     });
     (ins.screening || []).forEach(f => instrumentDesign.push([version,'cribado',f.id,JSON.stringify(f)]));
     (ins.contextMetadata || []).forEach(f => instrumentDesign.push([version,'metadato_no_puntuado',f.id,JSON.stringify(f)]));
@@ -170,7 +170,7 @@ function rebuild_(book) {
 
 function contentValidity_(latest, instruments) {
   const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones']];
-  Object.keys(instruments).filter(version => version === '2.0.0').forEach(version => {
+  Object.keys(instruments).filter(version => version === '2.1.0').forEach(version => {
     const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version);
     const results = ins.items.map(item => {
       const valid = entries.filter(p => !p.response.dimensions[item.dim].skipReason && !p.response.items[item.id].skipReason && Number.isInteger(p.response.items[item.id].relevance) && p.response.items[item.id].relevance >= 1 && p.response.items[item.id].relevance <= 4);

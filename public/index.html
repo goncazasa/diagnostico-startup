@@ -353,12 +353,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <div class="progress-box">
         <label for="progress">Tu avance</label>
         <progress id="progress" value="0"></progress>
-        <p id="progress-text">6 dimensiones y 24 preguntas</p>
+        <p id="progress-text">6 dimensiones y 23 preguntas</p>
         <p class="fine">La relevancia es obligatoria; los otros criterios son opcionales.</p>
       </div>
       <details class="draft-tools"><summary>Tu respuesta</summary>
         <button type="button" id="import-button" class="text-button">Importar una copia</button>
-        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.0">
+        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.1">
         <button type="button" id="reset-button" class="text-button">Comenzar otra respuesta</button>
       </details>
     </aside>
@@ -374,12 +374,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   <script>(function (root) {
   'use strict';
   const instrument = {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "title": "Validación de expertos",
   "researcherEmail": "luis.gonzalezc@urjc.es",
   "purpose": "Identificar brechas de evidencia y de capacidad de ejecución para priorizar el siguiente hito de una startup en fase temprana.",
   "population": "Startups desde la exploración de una idea hasta las primeras señales de repetición comercial. La pertinencia de cada pregunta depende de la fase y del modelo de negocio.",
-  "source": "Bloque A V2.0 aprobado el 8 de septiembre de 2026. Banco de 24 ítems; pendiente de validación experta V2. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -450,30 +450,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
         "El equipo dispone de conocimiento directo sobre el cliente y su contexto.",
         "Ese conocimiento ha permitido corregir supuestos y fundamentar decisiones concretas."
       ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "T3",
-      "dim": "D1",
-      "q": "¿Qué decisiones del proyecto has tomado a partir de pruebas o aprendizajes?",
-      "note": "Se relaciona una prueba con su resultado y una decisión del proyecto. Los niveles 2 y 3 requieren un ejemplo escrito que permita reconocer esa relación.",
-      "levels": [
-        "Las decisiones no se relacionan con pruebas o aprendizajes identificables.",
-        "Las decisiones se relacionan con aprendizajes generales, sin un ejemplo concreto.",
-        "Las decisiones se relacionan con una prueba documentada mediante un ejemplo concreto.",
-        "Las decisiones se relacionan con pruebas sucesivas que han confirmado o cambiado las prioridades."
-      ],
-      "evidenceRequirement": {
-        "levels": [
-          2,
-          3
-        ],
-        "label": "Ejemplo de prueba, resultado y decisión",
-        "description": "El fundador aportaría un único ejemplo escrito para elegir 2 o 3. Se comprueba que existe texto; su veracidad requiere revisión humana. No se solicitan nombres de clientes ni documentos."
-      },
       "applicability": {
         "field": null,
         "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
@@ -899,7 +875,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.0",
+  "schema": "expert-validation/2.1",
   "screening": [
     {
       "id": "phase",
@@ -974,7 +950,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 </script>
   <script>(function (root) {
   'use strict';
-  const SCHEMA = 'expert-validation/2.0';
+  const SCHEMA = 'expert-validation/2.1';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
   const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
@@ -999,7 +975,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
         consent: false, step: 0, focusId: null, submission: null,
         profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [], phasesOther: '' },
         initial: { text: '', lockedAt: null },
-        designReview: { screeningComment: '', t3Example: '', discrimination: [], discriminationComment: '' },
+        designReview: { screeningComment: '', discrimination: [], discriminationComment: '' },
         dimensions: Object.fromEntries(dimIds.map(id => [id, { relevance: null, coverage: null, skipReason: '', comment: '' }])),
         items: Object.fromEntries(itemIds.map(id => [id, { relevance: null, usability: null, skipReason: '', comment: '' }])),
         final: Object.fromEntries(['v2', 'v3', 'v9'].map(key => [key, '']))
@@ -1007,7 +983,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.0.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.1.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -1038,9 +1014,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       out.initial = { text: candidate.initial.text, lockedAt: candidate.initial.lockedAt };
       const design = candidate.designReview;
       check(plain(design) && text(design.screeningComment) && text(design.discriminationComment), 'Falta la revisión del diseño o contiene texto demasiado largo.');
-      check(['', 'yes', 'no', 'unsure'].includes(design.t3Example), 'El juicio sobre el ejemplo de T3 no es válido.');
       check(list(design.discrimination, itemIds), 'La selección sobre discriminación contiene preguntas desconocidas o repetidas.');
-      out.designReview = { screeningComment: design.screeningComment, t3Example: design.t3Example, discrimination: [...design.discrimination], discriminationComment: design.discriminationComment };
+      out.designReview = { screeningComment: design.screeningComment, discrimination: [...design.discrimination], discriminationComment: design.discriminationComment };
       for (const [kind, ids, criteria] of [['dimensions', dimIds, dimCriteria], ['items', itemIds, itemCriteria]]) {
         for (const id of ids) {
           const record = candidate[kind][id];
@@ -1109,11 +1084,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       if (typeof context[rule.field] !== 'boolean') return { status: 'needs_context', field: rule.field, reason: rule.question };
       return context[rule.field] ? { status: 'applicable', reason: rule.question } : { status: 'not_applicable', reason: rule.exclusion };
     }
-    function founderEvidenceIssue(itemId, level, example) {
-      const item = instrument.items.find(item => item.id === itemId);
-      check(!!item && Number.isInteger(level) && level >= 0 && level <= 3, 'Pregunta o nivel desconocido.');
-      return item.evidenceRequirement?.levels.includes(level) && (typeof example !== 'string' || !example.trim()) ? 'Se necesita un ejemplo de prueba, resultado y decisión para seleccionar este nivel.' : null;
-    }
     function summary(state, dimensionId) {
       const ids = dimensionId ? [dimensionId, ...instrument.items.filter(i => i.dim === dimensionId).map(i => i.id)] : [...dimIds, ...itemIds];
       const out = { complete: 0, partial: 0, skipped: 0, pending: 0, total: ids.length, resolved: 0 };
@@ -1137,12 +1107,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.0. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.1. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }
     function hasCurrentExport(state) { return state.exportedRevision >= 0 && state.exportedRevision === state.revision; }
-    return { createState, validateState, edit, sealInitial, canVisit, status, summary, deliveryIssues, applicability, founderEvidenceIssue, exportPayload, importPayload, markExport, hasCurrentExport, roles: ROLES, phases: PHASES, dimCriteria, itemCriteria };
+    return { createState, validateState, edit, sealInitial, canVisit, status, summary, deliveryIssues, applicability, exportPayload, importPayload, markExport, hasCurrentExport, roles: ROLES, phases: PHASES, dimCriteria, itemCriteria };
   }
   function createRepository(storage, key) {
     return {
@@ -1159,7 +1129,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.0';
+  const STORAGE_KEY = 'startup-expert-validation-v2.1';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const email = instrument.researcherEmail;
@@ -1192,7 +1162,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
     C3: 'Dependencia de clientes', VB4: 'Ingresos y horas de trabajo', F5: 'Financiación pública pendiente',
-    T1: 'Perfiles complementarios', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
+    T1: 'Perfiles complementarios', T2: 'Conocimiento del cliente', T4: 'Disponibilidad', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
     PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
     VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
     C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente',
@@ -1287,7 +1257,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="key-instruction">Vas a revisar el cuestionario, no a evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span><strong>20–30</strong> min</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
       `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
       <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
@@ -1328,8 +1298,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</details>`;
   }
   function itemDesign(item) {
-    return `${(item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('')}
-      ${item.evidenceRequirement ? `<aside class="design-note"><strong>${esc(item.evidenceRequirement.label)}</strong><p>${esc(item.evidenceRequirement.description)}</p></aside>${field('designReview.t3Example', '¿Debe exigirse un ejemplo para seleccionar los niveles 2 y 3?', '', 'select', [['yes','Sí'],['no','No'],['unsure','Sin criterio']])}` : ''}`;
+    return (item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('');
   }
   function glossary(item) {
     const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
@@ -1423,7 +1392,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function designReviewText() {
     const d = state.designReview;
-    return 'Cribado: ' + (d.screeningComment || 'Sin observaciones') + '\nEjemplo en T3: ' + ({yes:'Sí',no:'No',unsure:'Sin criterio'}[d.t3Example] || 'Sin respuesta') + '\nPosible falta de discriminación: ' + (d.discrimination.join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
+    return 'Cribado: ' + (d.screeningComment || 'Sin observaciones') + '\nPosible falta de discriminación: ' + (d.discrimination.join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
   }
   function profileText() {
     const p = state.profile;
@@ -1600,7 +1569,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_0_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_1_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -1635,10 +1604,10 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.0 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.1 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V2.0</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V2.1</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

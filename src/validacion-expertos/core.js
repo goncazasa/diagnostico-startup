@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const SCHEMA = 'expert-validation/2.0';
+  const SCHEMA = 'expert-validation/2.1';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
   const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
@@ -25,7 +25,7 @@
         consent: false, step: 0, focusId: null, submission: null,
         profile: { email: '', name: '', roles: [], years: '', ventures: '', pivot: '', sectors: '', conflict: '', phases: [], phasesOther: '' },
         initial: { text: '', lockedAt: null },
-        designReview: { screeningComment: '', t3Example: '', discrimination: [], discriminationComment: '' },
+        designReview: { screeningComment: '', discrimination: [], discriminationComment: '' },
         dimensions: Object.fromEntries(dimIds.map(id => [id, { relevance: null, coverage: null, skipReason: '', comment: '' }])),
         items: Object.fromEntries(itemIds.map(id => [id, { relevance: null, usability: null, skipReason: '', comment: '' }])),
         final: Object.fromEntries(['v2', 'v3', 'v9'].map(key => [key, '']))
@@ -33,7 +33,7 @@
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.0.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.1.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -64,9 +64,8 @@
       out.initial = { text: candidate.initial.text, lockedAt: candidate.initial.lockedAt };
       const design = candidate.designReview;
       check(plain(design) && text(design.screeningComment) && text(design.discriminationComment), 'Falta la revisión del diseño o contiene texto demasiado largo.');
-      check(['', 'yes', 'no', 'unsure'].includes(design.t3Example), 'El juicio sobre el ejemplo de T3 no es válido.');
       check(list(design.discrimination, itemIds), 'La selección sobre discriminación contiene preguntas desconocidas o repetidas.');
-      out.designReview = { screeningComment: design.screeningComment, t3Example: design.t3Example, discrimination: [...design.discrimination], discriminationComment: design.discriminationComment };
+      out.designReview = { screeningComment: design.screeningComment, discrimination: [...design.discrimination], discriminationComment: design.discriminationComment };
       for (const [kind, ids, criteria] of [['dimensions', dimIds, dimCriteria], ['items', itemIds, itemCriteria]]) {
         for (const id of ids) {
           const record = candidate[kind][id];
@@ -135,11 +134,6 @@
       if (typeof context[rule.field] !== 'boolean') return { status: 'needs_context', field: rule.field, reason: rule.question };
       return context[rule.field] ? { status: 'applicable', reason: rule.question } : { status: 'not_applicable', reason: rule.exclusion };
     }
-    function founderEvidenceIssue(itemId, level, example) {
-      const item = instrument.items.find(item => item.id === itemId);
-      check(!!item && Number.isInteger(level) && level >= 0 && level <= 3, 'Pregunta o nivel desconocido.');
-      return item.evidenceRequirement?.levels.includes(level) && (typeof example !== 'string' || !example.trim()) ? 'Se necesita un ejemplo de prueba, resultado y decisión para seleccionar este nivel.' : null;
-    }
     function summary(state, dimensionId) {
       const ids = dimensionId ? [dimensionId, ...instrument.items.filter(i => i.dim === dimensionId).map(i => i.id)] : [...dimIds, ...itemIds];
       const out = { complete: 0, partial: 0, skipped: 0, pending: 0, total: ids.length, resolved: 0 };
@@ -163,12 +157,12 @@
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.0. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.1. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }
     function hasCurrentExport(state) { return state.exportedRevision >= 0 && state.exportedRevision === state.revision; }
-    return { createState, validateState, edit, sealInitial, canVisit, status, summary, deliveryIssues, applicability, founderEvidenceIssue, exportPayload, importPayload, markExport, hasCurrentExport, roles: ROLES, phases: PHASES, dimCriteria, itemCriteria };
+    return { createState, validateState, edit, sealInitial, canVisit, status, summary, deliveryIssues, applicability, exportPayload, importPayload, markExport, hasCurrentExport, roles: ROLES, phases: PHASES, dimCriteria, itemCriteria };
   }
   function createRepository(storage, key) {
     return {

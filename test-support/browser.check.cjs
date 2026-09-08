@@ -27,25 +27,25 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.locator('#designReview-screeningComment').fill('Las condiciones deben conservar las preguntas sobre caja.');
   const out=process.env.PLAYWRIGHT_OUTPUT||'output/playwright';fs.mkdirSync(out,{recursive:true});
   await page.screenshot({path:path.join(out,'v2-guide.png'),fullPage:true});
-  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),6);
+  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),5);
   await page.locator('#step-nav [data-step="10"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
   for(let step=3;step<=8;step++) {
    await page.locator('#step-nav [data-step="'+step+'"]').click();
-   if(step===3) {await page.locator('#designReview-t3Example').selectOption('yes');await page.locator('#items-T4-skipReason').selectOption('experience');}
+   if(step===3) await page.locator('#items-T4-skipReason').selectOption('experience');
    if(step===4) {await page.locator('#dimensions-D2-skipReason').selectOption('prefer');continue;}
    for(const label of await page.locator('#app label:has(input[data-path$=".relevance"][value="3"])').all())if(await label.isVisible())await label.click();
-   if(step===3){assert.ok(await page.locator('label[for="items-T3-usability-4"]').isVisible());await page.locator('label[for="items-T3-usability-4"]').click();}
+   if(step===3){assert.ok(await page.locator('label[for="items-T2-usability-4"]').isVisible());await page.locator('label[for="items-T2-usability-4"]').click();}
   }
-  await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),24);
+  await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),23);
   await page.locator('input[data-path="designReview.discrimination"][value="C3"]').check();
   await page.locator('#designReview-discriminationComment').fill('La concentración puede cambiar con el periodo.');
   await page.setViewportSize({width:375,height:812});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.0');assert.equal(p.instrument.items.length,24);
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.1');assert.equal(p.instrument.items.length,23);
   assert.equal(p.response.items.C3.usability,null);assert.equal(p.response.items.T4.relevance,null);assert.equal(p.response.items.PM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['C3']);
-  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,31);assert.ok(sheets.tables.get('RevisionDiseno')[1].includes('yes'));
+  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,30);
   assert.ok(events.length>0);assert.ok(events.every(e=>Object.keys(e).join(',')==='screen'));
   await page.reload();assert.ok(await page.locator('[data-action="submit"]').isDisabled());assert.equal(await page.locator('#final-v9').inputValue(),'Prueba local del bloque A.');
   assert.deepEqual(errors,[]);await page.screenshot({path:path.join(out,'v2-sent-mobile.png')});

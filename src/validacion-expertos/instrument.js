@@ -1,12 +1,12 @@
 (function (root) {
   'use strict';
   const instrument = {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "title": "Validación de expertos",
   "researcherEmail": "luis.gonzalezc@urjc.es",
   "purpose": "Identificar brechas de evidencia y de capacidad de ejecución para priorizar el siguiente hito de una startup en fase temprana.",
   "population": "Startups desde la exploración de una idea hasta las primeras señales de repetición comercial. La pertinencia de cada pregunta depende de la fase y del modelo de negocio.",
-  "source": "Bloque A V2.0 aprobado el 8 de septiembre de 2026. Banco de 24 ítems; pendiente de validación experta V2. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -77,30 +77,6 @@
         "El equipo dispone de conocimiento directo sobre el cliente y su contexto.",
         "Ese conocimiento ha permitido corregir supuestos y fundamentar decisiones concretas."
       ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "T3",
-      "dim": "D1",
-      "q": "¿Qué decisiones del proyecto has tomado a partir de pruebas o aprendizajes?",
-      "note": "Se relaciona una prueba con su resultado y una decisión del proyecto. Los niveles 2 y 3 requieren un ejemplo escrito que permita reconocer esa relación.",
-      "levels": [
-        "Las decisiones no se relacionan con pruebas o aprendizajes identificables.",
-        "Las decisiones se relacionan con aprendizajes generales, sin un ejemplo concreto.",
-        "Las decisiones se relacionan con una prueba documentada mediante un ejemplo concreto.",
-        "Las decisiones se relacionan con pruebas sucesivas que han confirmado o cambiado las prioridades."
-      ],
-      "evidenceRequirement": {
-        "levels": [
-          2,
-          3
-        ],
-        "label": "Ejemplo de prueba, resultado y decisión",
-        "description": "El fundador aportaría un único ejemplo escrito para elegir 2 o 3. Se comprueba que existe texto; su veracidad requiere revisión humana. No se solicitan nombres de clientes ni documentos."
-      },
       "applicability": {
         "field": null,
         "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
@@ -526,7 +502,7 @@
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.0",
+  "schema": "expert-validation/2.1",
   "screening": [
     {
       "id": "phase",

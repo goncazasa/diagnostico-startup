@@ -1,5 +1,9 @@
 # Registro de cambios
 
+## V2.1 — retirada de T3 (septiembre de 2026)
+
+- Retira T3 del banco y deja 23 preguntas. El esquema pasa a `expert-validation/2.1` para separar sus respuestas de versiones anteriores.
+
 ## V2.0 — copy y UX menor (septiembre de 2026)
 
 - Simplifica las instrucciones de revisión, aclara la disponibilidad del equipo y elimina expresiones ambiguas sobre perfiles y propiedad. Sin cambios de esquema.

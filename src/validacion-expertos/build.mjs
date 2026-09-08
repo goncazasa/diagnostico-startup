@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const output = path.resolve(dir, '../..', 'Validacion_Expertos_Startup_V2_0.html');
+const output = path.resolve(dir, '../..', 'Validacion_Expertos_Startup_V2_1.html');
 let html = fs.readFileSync(path.join(dir, 'shell.html'), 'utf8');
 for (const [marker, filename] of [['STYLES', 'style.css'], ['INSTRUMENT', 'instrument.js'], ['CORE', 'core.js'], ['APP', 'app.js']]) {
   const contents = fs.readFileSync(path.join(dir, filename), 'utf8') + (marker === 'STYLES' ? '\n' + fs.readFileSync(path.join(dir, 'focus.css'), 'utf8') : '');

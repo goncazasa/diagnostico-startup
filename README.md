@@ -1,6 +1,6 @@
 # Diagnóstico startup · Panel de expertos
 
-Formulario con una dimensión por página, veintiuna preguntas, 54 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
+Formulario con una dimensión por página, veintitrés preguntas, 58 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
 
 ## Configuración
 
@@ -12,7 +12,7 @@ Importar `goncazasa/diagnostico-startup` en Vercel, manteniendo la raíz del rep
 
 | Pestaña | Contenido |
 |---|---|
-| Valoraciones | Una fila por participante y elemento: seis dimensiones y veintiuna preguntas; puntuaciones numéricas, omisiones y observaciones. |
+| Valoraciones | Una fila por participante y elemento: seis dimensiones y veintitrés preguntas; puntuaciones numéricas, omisiones y observaciones. |
 | Respuestas | Una fila por participante y versión: opinión inicial, respuestas globales, observación final y número de juicios contestados. |
 | Participantes | Contacto y perfil, separados de las puntuaciones mediante un identificador. |
 | Diccionario | Texto exacto del instrumento, niveles y criterios de cada versión. |

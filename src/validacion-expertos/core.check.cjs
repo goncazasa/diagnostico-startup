@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { createModel, createRepository } = require('./core.js');
 
 const instrument = {
-  version: '2.0.0',
+  version: '2.1.0',
   dimensions: [{ id: 'D1', name: 'Equipo' }, { id: 'D2', name: 'Mercado' }],
   items: [{ id: 'T1', dim: 'D1' }, { id: 'T2', dim: 'D1' }, { id: 'PM1', dim: 'D2' }]
 };
