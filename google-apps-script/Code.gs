@@ -110,6 +110,14 @@ function average_(values) {
   const valid = values.filter(value => Number.isFinite(value));
   return valid.length ? Math.round(valid.reduce((sum,value) => sum + value, 0) / valid.length * 100) / 100 : '';
 }
+function combination_(n, k) {
+  if (k < 0 || k > n) return 0;
+  k = Math.min(k,n-k); let result = 1;
+  for (let i=1; i<=k; i++) result = result * (n-k+i) / i;
+  return result;
+}
+function chanceAgreement_(n, relevant) { return n ? combination_(n,relevant) * Math.pow(0.5,n) : null; }
+function modifiedKappa_(cvi, chance) { return cvi === null || chance === null || chance === 1 ? null : (cvi-chance)/(1-chance); }
 function summaryRows_(latest, instruments) {
   const entries = Object.keys(latest).map(key => latest[key].payload).filter(payload => payload.instrumentVersion === '2.1.0');
   const real = entries.filter(payload => !isTestingResponse_(payload.response));
@@ -196,25 +204,49 @@ function rebuild_(book) {
   const dictionary = [['version','tipo','dimension_id','elemento_id','texto','nota','aplicabilidad','niveles_emprendedor','criterios_experto']];
   const designReviews = [base.concat(['observacion_cribado','posible_falta_discriminacion','observacion_discriminacion'])];
   const instrumentDesign = [['version','tipo','elemento_id','definicion_json']];
+  const quality = [base.concat(['relevancia_contestada','relevancia_esperada','porcentaje_relevancia','claridad_contestada','claridad_esperada','cobertura_contestada','cobertura_esperada','omisiones_explicitas','estado_relevancia'])];
+  const comments = [base.concat(['ambito','dimension_id','elemento_id','campo','texto'])];
+  const methods = [
+    ['Indicador','Definición operativa','Numerador','Denominador','Regla de inclusión','Interpretación','Referencia'],
+    ['I-CVI','Proporción de expertos que puntúan la relevancia con 3 o 4.','Valoraciones 3–4','Valoraciones válidas 1–4','Solo respuestas reales; omisiones y valores ausentes quedan fuera.','Se informa con n. La decisión automática se aplica desde seis valoraciones válidas y usa 0,78 como umbral.','Polit, Beck y Owen (2007), doi:10.1002/nur.20199'],
+    ['S-CVI/Ave','Media de los I-CVI de las preguntas.','Suma de I-CVI','Número de preguntas','Solo se calcula si todas las preguntas tienen al menos seis valoraciones válidas.','0,90 se muestra como referencia global; revisar siempre los resultados por pregunta.','Polit, Beck y Owen (2007), doi:10.1002/nur.20199'],
+    ['S-CVI/UA','Proporción de preguntas con acuerdo universal en relevancia.','Preguntas con I-CVI = 1','Número de preguntas','Misma base que S-CVI/Ave.','Indicador descriptivo estricto; no sustituye a S-CVI/Ave.','Polit, Beck y Owen (2007), doi:10.1002/nur.20199'],
+    ['Kappa modificado','I-CVI corregido por la probabilidad de acuerdo por azar.','I-CVI − Pc','1 − Pc','Pc = combinación(n,A) × 0,5^n; A es el número de puntuaciones 3–4.','Complementa el I-CVI; debe interpretarse junto con n, omisiones y evidencia cualitativa.','Polit, Beck y Owen (2007), doi:10.1002/nur.20199'],
+    ['Completitud de relevancia','Proporción de dimensiones y preguntas aplicables con relevancia contestada.','Relevancias contestadas','Bloques no omitidos explícitamente','Se calcula por participante y separa registros de prueba.','Una respuesta incompleta debe revisarse antes del análisis.','Protocolo analítico del estudio'],
+    ['Contenido','Relevancia, cobertura y comprensión deben interpretarse junto con observaciones cualitativas.','','','No inferir validez del constructo, fiabilidad ni capacidad predictiva a partir del CVI.','La evidencia cuantitativa complementa el juicio experto; no lo reemplaza.','COSMIN methodology for content validity (2018), doi:10.1007/s11136-018-1829-0']
+  ];
   Object.keys(latest).sort().forEach(key => {
     const entry = latest[key], p = entry.payload, s = p.response, ins = p.instrument, profile = s.profile;
     const common = [s.responseId,p.instrumentVersion,s.revision,entry.id,entry.at,isTestingResponse_(s)];
-    if (s.designReview) designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
-    let answered = 0;
+    const addComment = (scope,dimensionId,itemId,field,value) => { if (value) comments.push(common.concat([scope,dimensionId,itemId,field,value])); };
+    if (s.designReview) {
+      designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
+      addComment('diseño','','','observacion_cribado',s.designReview.screeningComment);
+      addComment('diseño','','','observacion_discriminacion',s.designReview.discriminationComment);
+    }
+    addComment('global','','','opinion_inicial',s.initial.text);
+    let answered = 0, relevanceAnswered = 0, relevanceExpected = 0, clarityAnswered = 0, clarityExpected = 0, coverageAnswered = 0, coverageExpected = 0, omissions = 0;
     ins.dimensions.forEach(d => {
       const a = s.dimensions[d.id];
       const rel = a.skipReason ? null : a.relevance, coverage = a.skipReason ? null : a.coverage;
       answered += Number(rel !== null) + Number(coverage !== null);
+      if (a.skipReason) omissions++; else { relevanceExpected++; coverageExpected++; relevanceAnswered += Number(rel !== null); coverageAnswered += Number(coverage !== null); }
       ratings.push(common.concat(['dimension',d.id,d.id,d.name,rel,null,coverage,a.skipReason,a.comment]));
+      addComment('dimension',d.id,d.id,'observaciones',a.comment);
     });
     ins.items.forEach(item => {
       const a = s.items[item.id];
       const rel = a.skipReason ? null : a.relevance, usability = a.skipReason ? null : a.usability;
       answered += Number(rel !== null) + Number(usability !== null);
+      if (a.skipReason) omissions++; else { relevanceExpected++; clarityExpected++; relevanceAnswered += Number(rel !== null); clarityAnswered += Number(usability !== null); }
       ratings.push(common.concat(['pregunta',item.dim,item.id,item.q,rel,usability,null,a.skipReason,a.comment]));
+      addComment('pregunta',item.dim,item.id,'observaciones',a.comment);
     });
     contacts.push(common.concat([profile.email,profile.name,profile.roles.join(' | '),profile.years,profile.ventures,profile.pivot,profile.sectors,profile.conflict,profile.phases.join(' | '),profile.phasesOther||'']));
     responses.push(common.concat([s.consent,s.createdAt,s.updatedAt,s.initial.text,s.initial.lockedAt,s.final.v2,s.final.v3,s.final.v9,answered,2*(ins.dimensions.length+ins.items.length)]));
+    addComment('global','','','preguntas_ausentes',s.final.v2); addComment('global','','','preguntas_prescindibles',s.final.v3); addComment('global','','','observacion_final',s.final.v9);
+    const completion = relevanceExpected ? relevanceAnswered/relevanceExpected : null;
+    quality.push(common.concat([relevanceAnswered,relevanceExpected,completion,clarityAnswered,clarityExpected,coverageAnswered,coverageExpected,omissions,completion === 1 ? 'Completa' : 'Revisar faltantes']));
   });
   Object.keys(instruments).sort().forEach(version => {
     const ins=instruments[version];
@@ -233,12 +265,15 @@ function rebuild_(book) {
   writeTable_(book,'RevisionDiseno',designReviews);
   writeTable_(book,'DisenoInstrumento',instrumentDesign);
   writeTable_(book,'ValidezContenido',contentValidity_(latest,instruments));
+  writeTable_(book,'CalidadDatos',quality);
+  writeTable_(book,'Comentarios',comments);
+  writeTable_(book,'Metodologia',methods);
   writeTable_(book,'Resumen',summaryRows_(latest,instruments));
   try { formatWorkbook_(book); } catch (error) { console.error('No se pudo aplicar el formato visual: ' + error.message); }
 }
 
 function contentValidity_(latest, instruments) {
-  const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones']];
+  const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones','n_panel_real','faltantes','p_acuerdo_azar','kappa_modificado']];
   Object.keys(instruments).filter(version => version === '2.1.0').forEach(version => {
     const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version && !isTestingResponse_(p.response));
     const results = ins.items.map(item => {
@@ -246,12 +281,15 @@ function contentValidity_(latest, instruments) {
       const positive = valid.filter(p => p.response.items[item.id].relevance >= 3).length;
       const omitted = entries.filter(p => p.response.dimensions[item.dim].skipReason || p.response.items[item.id].skipReason).length;
       const cvi = valid.length ? positive / valid.length : null;
-      rows.push([version,item.id,valid.length,positive,cvi,valid.length < 6 ? 'datos insuficientes' : cvi >= 0.78 ? 'umbral alcanzado' : 'revisar',omitted]);
+      const missing = Math.max(0,entries.length-valid.length-omitted), chance = chanceAgreement_(valid.length,positive), kappa = modifiedKappa_(cvi,chance);
+      rows.push([version,item.id,valid.length,positive,cvi,valid.length < 6 ? 'datos insuficientes' : cvi >= 0.78 ? 'umbral alcanzado' : 'revisar',omitted,entries.length,missing,chance,kappa]);
       return {n:valid.length,cvi};
     });
     const enough = results.length > 0 && results.every(r => r.n >= 6);
     const average = enough ? results.reduce((sum,r) => sum+r.cvi,0)/results.length : null;
-    rows.push([version,'S-CVI/Ave',entries.length,null,average,!enough ? 'datos insuficientes en uno o más ítems' : average >= 0.90 ? 'umbral global alcanzado; revisar resultados por ítem' : 'revisar',null]);
+    const universal = enough ? results.filter(result => result.cvi === 1).length/results.length : null;
+    rows.push([version,'S-CVI/Ave',entries.length,null,average,!enough ? 'datos insuficientes en uno o más ítems' : average >= 0.90 ? 'umbral global alcanzado; revisar resultados por ítem' : 'revisar',null,entries.length,null,null,null]);
+    rows.push([version,'S-CVI/UA',entries.length,null,universal,!enough ? 'datos insuficientes en uno o más ítems' : 'indicador descriptivo',null,entries.length,null,null,null]);
   });
   return rows;
 }

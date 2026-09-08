@@ -64,19 +64,26 @@ test('content validity uses exact fractions, minimum counts and all items for th
  const x=boot();
  for(let n=0;n<9;n++) {const p=payload();p.response.responseId='panel-'+n;for(const a of Object.values(p.response.items)){a.skipReason='';a.relevance=4;}p.response.items.C3.relevance=n<7?4:1;assert.equal(x.post(p).ok,true);}
  let table=x.tables.get('ValidezContenido');assert.ok(table);
- const c3=table.find(r=>r[1]==='C3');assert.equal(c3[2],9);assert.equal(c3[3],7);assert.equal(c3[4],7/9);assert.equal(c3[5],'revisar');
+ const c3=table.find(r=>r[1]==='C3'),header=table[0];assert.equal(c3[2],9);assert.equal(c3[3],7);assert.equal(c3[4],7/9);assert.equal(c3[5],'revisar');
+ assert.equal(c3[header.indexOf('n_panel_real')],9);assert.equal(c3[header.indexOf('faltantes')],0);
+ assert.equal(c3[header.indexOf('p_acuerdo_azar')],36/512);assert.ok(c3[header.indexOf('kappa_modificado')]>0.76);
  const summary=table.find(r=>r[1]==='S-CVI/Ave');assert.ok(summary[4]>0.9);
+ assert.ok(table.find(r=>r[1]==='S-CVI/UA'));
  const p=payload();p.response.responseId='panel-9';for(const a of Object.values(p.response.items)){a.skipReason='experience';a.relevance=null;}x.post(p);
  table=x.tables.get('ValidezContenido');assert.equal(table.find(r=>r[1]==='C3')[2],9);
 });
 test('testing records are labelled, excluded from academic validity and summarized separately',()=>{
  const x=boot();
  for(let n=0;n<6;n++) {const p=payload();p.response.responseId='real-panel-'+n;for(const a of Object.values(p.response.items)){a.skipReason='';a.relevance=4;}assert.equal(x.post(p).ok,true);}
- const fake=payload();fake.response.responseId='testing-panel-01';fake.response.profile.name='DATOS DE TESTING · Ana';fake.response.profile.email='testing.ana@example.org';for(const a of Object.values(fake.response.items)){a.skipReason='';a.relevance=1;}assert.equal(x.post(fake).ok,true);
+ const fake=payload();fake.response.responseId='testing-panel-01';fake.response.profile.name='DATOS DE TESTING · Ana';fake.response.profile.email='testing.ana@example.org';for(const a of Object.values(fake.response.items)){a.skipReason='';a.relevance=1;}for(const a of Object.values(fake.response.dimensions))a.relevance=4;assert.equal(x.post(fake).ok,true);
  const participants=x.tables.get('Participantes'),pHeader=participants[0];
  assert.equal(participants.find(r=>r[pHeader.indexOf('participante_id')]==='testing-panel-01')[pHeader.indexOf('es_testing')],true);
  const cvi=x.tables.get('ValidezContenido'),c3=cvi.find(r=>r[1]==='C3');assert.equal(c3[2],6);assert.equal(c3[4],1);
  const summary=x.tables.get('Resumen');assert.ok(summary);assert.match(summary[0][0],/Panel de resultados/);assert.ok(summary.flat().includes('Registros de prueba'));assert.ok(summary.flat().includes(1));
+ const quality=x.tables.get('CalidadDatos'),qHeader=quality[0],fakeQuality=quality.find(r=>r[qHeader.indexOf('participante_id')]==='testing-panel-01');
+ assert.equal(fakeQuality[qHeader.indexOf('es_testing')],true);assert.equal(fakeQuality[qHeader.indexOf('estado_relevancia')],'Completa');
+ const comments=x.tables.get('Comentarios');assert.ok(comments);assert.ok(comments[0].includes('campo'));assert.ok(comments.some(r=>r.includes('DATOS DE TESTING · Ana'))===false);
+ const methods=x.tables.get('Metodologia');assert.ok(methods);assert.ok(methods.some(r=>r[0]==='I-CVI'));assert.ok(methods.some(r=>r[0]==='Kappa modificado'));
 });
 test('aggregate screen events contain no participant archive and reject unknown fields',()=>{
  const x=boot();
