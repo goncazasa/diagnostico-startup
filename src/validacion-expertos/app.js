@@ -46,7 +46,7 @@
   const dimensionLabel = id => 'Dimensión ' + id.slice(1);
   const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]} · ${item.id}`;
   function codeGuide() {
-    return `<details class="code-guide"><summary>Los códigos de las preguntas</summary><p><strong>D1 significa Dimensión 1.</strong> En T1, la letra T identifica Equipo (Team) y el número indica la pregunta. Son referencias para localizarla.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl></details>`;
+    return `<div class="code-guide"><p><strong>Cómo leer los códigos.</strong> D1 significa Dimensión 1. En T1, la T identifica Equipo (Team) y el número indica la pregunta.</p><dl>${Object.entries(codeGroups).map(([code, name]) => `<div><dt>${code}</dt><dd>${esc(name)}</dd></div>`).join('')}</dl></div>`;
   }
   function illustration(id) {
     const drawings = {
@@ -122,7 +122,7 @@
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">¿Este tema queda fuera de tu experiencia? Puedes omitir${kind === 'dimensions' ? ' la dimensión' : ' la pregunta'}.</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No tengo suficiente experiencia</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
+    return `<div class="omission"><label for="${idFor(path)}">Si este tema queda fuera de tu experiencia:</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No tengo suficiente experiencia</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
@@ -156,19 +156,18 @@
       ${nav('Continuar')}</section>`;
   }
   function guide() {
-    return heading('Cómo responder', 'Revisa cada pregunta; no la respondas como si evaluaras una startup.') +
+    return heading('Cómo responder', 'Valora el cuestionario, no una startup concreta.') +
       `<section class="surface guide-sheet"><ol class="guide-steps">
-      <li><strong>Lee la pregunta y sus respuestas.</strong><span>Los niveles 0–3 son las opciones que verá la persona emprendedora.</span></li>
-      <li><strong>Valora la pregunta.</strong><span><b>Relevancia</b>: si merece formar parte del diagnóstico. <b>Claridad y respuestas</b>: si se entiende y las opciones funcionan.</span></li></ol>
-      <p class="guide-note">La relevancia es obligatoria. Si el tema queda fuera de tu experiencia, puedes omitirlo. Las demás valoraciones y las observaciones son opcionales.</p>
-      <details class="extra-fields"><summary>Más criterios de revisión</summary><p>Ten en cuenta la fase y el modelo de negocio. «No aplica todavía» se registra aparte y nunca equivale a 0.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
+      <li><strong>Lee la pregunta.</strong><span>Los niveles 0–3 son las respuestas que verá la persona emprendedora.</span></li>
+      <li><strong>Da tu valoración.</strong><span>Marca la relevancia. Si quieres, valora también la claridad y añade una observación.</span></li></ol>
+      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si un tema queda fuera de tu experiencia, puedes omitirlo. Una omisión nunca cuenta como 0.</p>
+      <details class="reference-panel" data-guide-reference><summary>Consultar códigos y reglas del diagnóstico</summary><div class="reference-content">${codeGuide()}${screeningDesign()}</div></details>${nav('Revisar la primera dimensión')}</section>`;
   }
   function screeningDesign() {
-    return `<details class="design-proposal" data-guide-reference><summary>Cribado y contexto del futuro diagnóstico</summary><p>Estos datos adaptarán el diagnóstico a cada proyecto. Revisa las opciones y las reglas; no los respondas como fundador.</p>
+    return `<div class="screening-reference"><p><strong>Cribado y contexto.</strong> Estos datos adaptarán el futuro diagnóstico a cada proyecto. Revisa su planteamiento; no los respondas como fundador.</p>
       <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
-      <p>Los cinco datos generales no resuelven todas las exclusiones. Las condiciones específicas se muestran junto a cada ítem; una falta de pruebas no oculta la pregunta.</p>
-      <p class="section-label"><strong>Contexto temporal sin puntuación</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
-      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</details>`;
+      <p><strong>Contexto temporal sin puntuación.</strong></p><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
+      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</div>`;
   }
   function itemDesign(item) {
     return (item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('');
@@ -180,6 +179,9 @@
     const terms = instrument.glossary.filter(g => matches(g.term));
     return terms.length ? `<details class="help" open><summary>Términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
   }
+  function observation(path, hint = '') {
+    return `<details class="item-observation" ${valueAt(path) ? 'open' : ''}><summary>Añadir observaciones ${optional}</summary><div class="observation-content">${field(path, 'Observaciones', hint)}</div></details>`;
+  }
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
@@ -190,7 +192,7 @@
       ${itemDesign(item)}
       <div class="expert-response" data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Tu valoración <span>Escala de 1 a 4</span></p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
-      ${field(base + '.comment', 'Observaciones', '')}</div>
+      ${observation(base + '.comment')}</div>
       ${omission('items', item.id)}
       <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Tus puntuaciones no se incluirán en el análisis.</p></article>`;
   }
@@ -202,7 +204,7 @@
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
       <section class="surface dimension-top"><h2>La dimensión en conjunto</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
-      ${field(base + '.comment', 'Observaciones', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
+      ${observation(base + '.comment', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de tu revisión</button>
       ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
@@ -257,10 +259,9 @@
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
       ${reviewCounts()}</section>
       ${summaryMap()}
-      <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}
-      <fieldset class="field"><legend>¿En qué preguntas se espera que casi todas las startups elijan el mismo nivel? ${optional}</legend><div class="choice-list">${instrument.items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${item.id} · ${esc(questionNames[item.id])}</label>`).join('')}</div></fieldset>
-      ${field('designReview.discriminationComment', 'Observaciones sobre la capacidad de distinguir situaciones', 'Este juicio expresa una previsión; las diferencias reales se estudiarán con respuestas de fundadores.')}</section>
-      <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
+      <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2><details class="summary-optional" ${state.final.v2 || state.final.v3 ? 'open' : ''}><summary>Añadir comentarios sobre dimensiones ${optional}</summary><div class="observation-content">${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</div></details>
+      <fieldset class="field discrimination"><legend>¿Qué preguntas podrían dar casi siempre la misma respuesta? ${optional}</legend><p class="fine">Abre una dimensión y marca las preguntas que podrían distinguir poco entre startups.</p><div class="discrimination-groups">${instrument.dimensions.map(dim => { const items=instrument.items.filter(item=>item.dim===dim.id), selected=items.filter(item=>state.designReview.discrimination.includes(item.id)).length; return `<details ${selected ? 'open' : ''}><summary>${dimensionLabel(dim.id)} · ${esc(dim.short)}${selected ? `<span>${selected} seleccionada${selected === 1 ? '' : 's'}</span>` : ''}</summary><div class="choice-list">${items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${item.id} · ${esc(questionNames[item.id])}</label>`).join('')}</div></details>`; }).join('')}</div></fieldset>
+      ${field('designReview.discriminationComment', 'Observaciones sobre estas preguntas', 'Es una previsión. Las diferencias reales se estudiarán después con respuestas de emprendedores.')}</section>
       ${nav('Continuar al envío')}`;
   }
   function designReviewText() {
@@ -306,7 +307,7 @@
       const button = app.querySelector('[data-action="submit"]');
       button.disabled = sending || !!currentSubmission();
       button.textContent = sending ? 'Enviando…' : currentSubmission() ? 'Revisión enviada' : state.submission ? 'Enviar cambios' : 'Enviar revisión';
-      document.getElementById('submit-status').textContent = sending ? 'Enviando tu revisión…' : submissionError || (currentSubmission() ? 'Tu revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Has cambiado respuestas después del envío. Puedes enviar la versión actualizada.' : '');
+      document.getElementById('submit-status').textContent = sending ? 'Guardando tu revisión de forma segura… No cierres esta página.' : submissionError || (currentSubmission() ? 'Tu revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Has cambiado respuestas después del envío. Puedes enviar la versión actualizada.' : '');
       document.querySelector('[data-last-change]').textContent = 'Último cambio: ' + new Date(state.updatedAt).toLocaleString('es-ES');
       const currentExport = model.hasCurrentExport(state);
       document.getElementById('export-receipt').hidden = !currentExport;

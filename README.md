@@ -7,6 +7,7 @@ Formulario con una dimensión por página, veintitrés preguntas, 58 juicios pos
 - [Historia y decisiones del proyecto](docs/HISTORIA-Y-DECISIONES.md)
 - [Metodología y estructura de datos](docs/METODOLOGIA-Y-DATOS.md)
 - [Arquitectura, despliegue y operación](docs/ARQUITECTURA-Y-OPERACION.md)
+- [Revisión UX basada en Yablonski y Krug](docs/REVISION-UX.md)
 - [Registro de cambios por versión](CHANGELOG.md)
 
 ## Configuración

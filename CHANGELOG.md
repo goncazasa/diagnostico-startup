@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## Revisión UX basada en Yablonski y Krug (septiembre de 2026)
+
+- «Cómo responder» se reduce a dos acciones visibles y una única referencia opcional.
+- Las observaciones de preguntas y dimensiones utilizan divulgación progresiva y se reabren cuando contienen texto.
+- Las 23 opciones de discriminación se agrupan en seis dimensiones.
+- Se simplifican los textos de omisión, discriminación y espera durante el envío, sin alterar el banco de preguntas ni sus niveles.
+- La revisión y las pruebas con usuarios pendientes quedan documentadas en `docs/REVISION-UX.md`.
+
 ## Resultados visuales y datos de prueba (septiembre de 2026)
 
 - Se añade la pestaña `Resumen`, con indicadores, resultados por dimensión y resultados por pregunta ordenados para facilitar su revisión.

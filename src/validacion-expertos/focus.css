@@ -26,6 +26,7 @@
   .welcome-art { padding-left: 16px; }
   .welcome-art p { font-size: .875rem; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 135px; }
+  .screening-reference > dl, .discrimination-groups { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   .masthead { padding: 20px 18px; }
@@ -49,6 +50,7 @@
   .guide-number { flex-basis: 28px; width: 28px; height: 28px; }
   .guide-row h2 { font-size: 1rem; margin-top: 0; }
   .guide-note { padding: 16px; }
+  .guide-steps { grid-template-columns: 1fr; gap: 18px; }
   .code-guide dl { grid-template-columns: 1fr; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 82px; gap: 8px; align-items: start; }
   .dimension-heading .dimension-art { margin-top: 18px; }

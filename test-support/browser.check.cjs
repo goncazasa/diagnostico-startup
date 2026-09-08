@@ -37,6 +37,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
    if(step===3){assert.ok(await page.locator('label[for="items-T2-usability-4"]').isVisible());await page.locator('label[for="items-T2-usability-4"]').click();}
   }
   await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),23);
+  await page.locator('.discrimination-groups > details').nth(3).locator('summary').click();
   await page.locator('input[data-path="designReview.discrimination"][value="C3"]').check();
   await page.locator('#designReview-discriminationComment').fill('La concentración puede cambiar con el periodo.');
   await page.setViewportSize({width:375,height:812});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));

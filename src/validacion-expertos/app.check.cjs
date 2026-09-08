@@ -121,6 +121,7 @@ test('questions use two ratings and one observations field, with no applicabilit
   const item = ui.document.querySelector('#item-T1');
   assert.equal(item.querySelectorAll('fieldset.rating-group').length, 2);
   assert.equal(item.querySelectorAll('textarea').length, 1);
+  assert.equal(item.querySelector('.item-observation').open, false);
   assert.equal(item.querySelector('[data-path="items.T1.applicability"]'), null);
   ui.input('[data-path="items.T1.usability"][value="3"]', true);
   ui.input('[data-path="items.T1.comment"]', 'La pregunta es clara; cambiaría la segunda respuesta');
@@ -130,6 +131,8 @@ test('questions use two ratings and one observations field, with no applicabilit
   assert.equal(payload.response.items.T1.clarity, undefined);
   assert.equal(payload.response.items.T1.anchors, undefined);
   assert.equal(payload.response.profile.email, 'experto@example.org');
+  openBlock(ui, 'T1');
+  assert.equal(ui.document.querySelector('#item-T1 .item-observation').open, true);
   ui.dom.window.close();
 });
 function openBlock(ui, id) {
@@ -407,9 +410,23 @@ test('guide keeps the essential instructions visible and secondary reference col
  const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
  assert.equal(ui.document.querySelectorAll('.guide-steps > li').length,2);
  assert.equal(ui.document.querySelectorAll('.guide-sheet > h2').length,0);
+ assert.equal(ui.document.querySelectorAll('.guide-sheet > details').length,1);
  const reference=ui.document.querySelector('[data-guide-reference]');
  assert.ok(reference);assert.equal(reference.open,false);
  ui.dom.window.close();
+});
+test('summary groups the long discrimination choice by dimension',()=>{
+ const ui=boot();start(ui);ui.click('[data-step="9"]');
+ const groups=ui.document.querySelectorAll('.discrimination-groups > details');assert.equal(groups.length,6);
+ assert.equal([...groups].filter(group=>group.open).length,0);
+ ui.input('input[data-path="designReview.discrimination"][value="C3"]',true);
+ ui.click('[data-step="8"]');ui.click('[data-step="9"]');
+ assert.equal(ui.document.querySelector('input[value="C3"]').closest('details').open,true);ui.dom.window.close();
+});
+test('email accepts accidental surrounding spaces',()=>{
+ const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
+ ui.input('[data-path="profile.email"]','  expert@example.org  ');ui.click('[data-action="next"]');
+ assert.equal(ui.stored().profile.email,'expert@example.org');assert.equal(ui.stored().step,2);ui.dom.window.close();
 });
 test('sending with missing relevance stays local and points to unresolved questions',async()=>{
  const ui=boot();start(ui);ui.click('[data-step="10"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
