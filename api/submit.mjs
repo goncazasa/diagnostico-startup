@@ -41,7 +41,7 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
       const response = await fetchImpl(env.GOOGLE_SHEETS_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body, signal: AbortSignal.timeout(15000)
+        body, signal: AbortSignal.timeout(25000)
       });
       if (!response.ok) return fail(502, 'No se ha podido confirmar el envío. Puedes reintentarlo.');
       const data = await response.json();

@@ -150,21 +150,6 @@ function summaryRows_(latest, instruments) {
   return rows;
 }
 function formatWorkbook_(book) {
-  const tableNames = ['Valoraciones','Participantes','Respuestas','Diccionario','RevisionDiseno','DisenoInstrumento','ValidezContenido','Recorrido'];
-  tableNames.forEach(name => {
-    const sheet = book.getSheetByName(name);
-    if (!sheet || !sheet.getLastColumn || !sheet.getLastRow) return;
-    const rows = sheet.getLastRow(), columns = sheet.getLastColumn();
-    if (!rows || !columns) return;
-    sheet.setFrozenRows(1);
-    sheet.getDataRange().setFontFamily('Arial').setFontSize(10).setVerticalAlignment('middle');
-    sheet.getRange(1,1,1,columns).setBackground('#17324d').setFontColor('#ffffff').setFontWeight('bold').setWrap(true);
-    if (sheet.getFilter()) sheet.getFilter().remove();
-    if (rows > 1) sheet.getRange(1,1,rows,columns).createFilter();
-    sheet.autoResizeColumns(1,columns);
-    for (let column=1; column<=columns; column++) sheet.setColumnWidth(column,Math.min(sheet.getColumnWidth(column),320));
-    sheet.setTabColor('#6b8e7d');
-  });
   const summary = book.getSheetByName('Resumen');
   if (!summary || !summary.getLastColumn) return;
   const rows = summary.getLastRow(), columns = summary.getLastColumn();
