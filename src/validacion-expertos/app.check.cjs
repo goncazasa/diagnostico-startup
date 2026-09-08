@@ -7,7 +7,7 @@ if (!jsdomPath) { try { jsdomPath = require.resolve('jsdom'); } catch { jsdomPat
 const { JSDOM } = require(jsdomPath);
 const root = __dirname;
 function boot(saved, denyStorage = false) {
-  const html = process.env.VALIDATION_USE_BUILD !== '0' ? fs.readFileSync(path.resolve(root, '../..', 'Validacion_Expertos_Startup_V1_9.html'), 'utf8') : fs.readFileSync(path.join(root, 'shell.html'), 'utf8')
+  const html = process.env.VALIDATION_USE_BUILD !== '0' ? fs.readFileSync(path.resolve(root, '../..', 'public/index.html'), 'utf8') : fs.readFileSync(path.join(root, 'shell.html'), 'utf8')
     .replace('/*__INSTRUMENT__*/', () => fs.readFileSync(path.join(root, 'instrument.js'), 'utf8'))
     .replace('/*__CORE__*/', () => fs.readFileSync(path.join(root, 'core.js'), 'utf8'))
     .replace('/*__APP__*/', () => fs.readFileSync(path.join(root, 'app.js'), 'utf8'));
@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v1.9', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.0', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v1.9')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.0')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -41,8 +41,14 @@ function start(ui) {
   ui.click('[data-action="next"]');
   ui.click('[data-action="next"]');
 }
+function completeRelevance(ui) {
+  for (let step=3;step<=8;step++) {
+    ui.click('[data-step="'+step+'"]');
+    for(const control of [...ui.document.querySelectorAll('#app input[data-path$=".relevance"][value="3"]')]) ui.input('#'+control.id,true);
+  }
+}
 test('final page has one optional question and confirms only an acknowledged submission', async () => {
-  const ui=boot(); start(ui); ui.click('[data-step="10"]');
+  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="10"]');
   assert.equal(ui.document.querySelectorAll('#app textarea[data-path]').length,1);
   assert.equal(ui.document.querySelector('[data-delivery-email]'),null);
   let request;
@@ -60,7 +66,7 @@ test('final page has one optional question and confirms only an acknowledged sub
   ui.dom.window.close();
 });
 test('a failed submission retains answers and allows retry without a false receipt', async () => {
-  const ui=boot(); start(ui); ui.click('[data-step="10"]');
+  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="10"]');
   ui.dom.window.fetch=async()=>({ok:false,json:async()=>({ok:false})});
   ui.input('[data-path="final.v9"]','Conservar esta respuesta');
   ui.click('[data-action="submit"]');
@@ -174,7 +180,7 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '1.9.0');
+  assert.equal(payload.instrumentVersion, '2.0.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
@@ -252,7 +258,7 @@ test('downloading preserves keyboard focus on the export button', () => {
   assert.equal(ui.document.activeElement, button);
   ui.dom.window.close();
 });
-test('a full review resolves all 27 blocks only after every criterion has an answer', () => {
+test('a full review resolves all 30 blocks when their relevance is answered', () => {
   const ui = boot(); start(ui);
   const blocks = ['T1','T2','T3','T4','T5','T6','D1','PM1','PM2','PM3','PM4','D2','VB1','VB2','VB3','D3','C1','C2','D4','F1','F2','F3','F4','D5','SA1','SA2','D6'];
   for (const block of blocks) {
@@ -262,7 +268,7 @@ test('a full review resolves all 27 blocks only after every criterion has an ans
     }
   }
   ui.click('[data-step="10"]');
-  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '27');
+  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '30');
   assert.equal(ui.document.querySelector('[data-count="pending"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="partial"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '0');
@@ -271,7 +277,7 @@ test('a full review resolves all 27 blocks only after every criterion has an ans
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v1.9', newValue: '{"other":"response"}' }));
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.0', newValue: '{"other":"response"}' }));
   ui.input('[data-path="items.T1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
@@ -296,7 +302,7 @@ test('the downloaded JSON contains normalized answers and restores through the r
   const payload = JSON.parse(raw);
   assert.equal(payload.response.items.T1.relevance, null);
   assert.equal(payload.response.items.T1.skipReason, 'prefer');
-  assert.equal(payload.instrument.items.length, 21);
+  assert.equal(payload.instrument.items.length, 24);
   const id = payload.response.responseId;
   ui.click('#reset-button');
   assert.notEqual(ui.stored().responseId, id);
@@ -350,7 +356,7 @@ test('summary precedes the final step and shows every question with the entered 
   openBlock(ui, 'D6'); ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('#summary-map'));
   assert.equal(ui.document.querySelectorAll('[data-summary-dimension]').length, 6);
-  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 21);
+  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 24);
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.relevance"]').textContent, '4');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.usability"]').textContent, '2');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.anchors"]'), null);
@@ -386,4 +392,19 @@ test('summary hides stale omitted scores and updates after a focused correction'
   ui.click('[data-action="return-summary"]');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T2.relevance"]').textContent, '3');
   ui.dom.window.close();
+});
+
+test('expert guide presents five screening fields without asking for founder answers',()=>{
+ const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
+ assert.equal(ui.document.querySelectorAll('[data-screening-design]').length,5);
+ assert.equal(ui.document.querySelectorAll('[data-context-metadata]').length,2);
+ assert.equal(ui.document.querySelectorAll('[data-screening-design] input, [data-screening-design] select').length,0);
+ ui.input('[data-path="designReview.screeningComment"]','No ocultar finanzas por no buscar inversión.');ui.click('[data-action="next"]');
+ assert.equal(ui.stored().designReview.screeningComment,'No ocultar finanzas por no buscar inversión.');assert.equal(ui.document.querySelectorAll('.item').length,6);
+ assert.ok(ui.document.querySelector('[data-path="designReview.t3Example"]'));ui.dom.window.close();
+});
+test('sending with missing relevance stays local and points to unresolved questions',async()=>{
+ const ui=boot();start(ui);ui.click('[data-step="10"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
+ ui.click('[data-action="submit"]');assert.equal(sent,false);assert.match(ui.document.querySelector('#submit-status').textContent,/relevancia/);
+ assert.ok(ui.document.querySelector('[data-missing-relevance] [data-anchor="item-T1"]'));ui.dom.window.close();
 });

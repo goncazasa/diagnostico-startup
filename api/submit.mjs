@@ -23,9 +23,11 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
       if (!raw) return fail(400, 'Faltan las respuestas.');
       if (Buffer.byteLength(raw, 'utf8') > MAX_BYTES) return fail(413, 'La respuesta supera el tamaño permitido.');
       const incoming = JSON.parse(raw);
-      if (incoming.format !== 'expert-validation/1.9' || incoming.instrumentVersion !== instrument.version) return fail(400, 'Versión de formulario no compatible.');
+      if (incoming.format !== 'expert-validation/2.0' || incoming.instrumentVersion !== instrument.version) return fail(400, 'Versión de formulario no compatible.');
       const state = model.validateState(incoming.response);
       if (!state.initial.lockedAt) return fail(400, 'Completa el inicio del formulario.');
+      const missing = model.deliveryIssues(state);
+      if (missing.length) return res.status(400).json({ ok: false, error: 'Faltan valoraciones de relevancia. Indica una puntuación o un motivo de omisión.', missing });
       // Only validated answers and the server's instrument enter the archive.
       // Navigation, client receipts and export time must not change a retry key.
       state.step = 10; state.focusId = null; state.submission = null;

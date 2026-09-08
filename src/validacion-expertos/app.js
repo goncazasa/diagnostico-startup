@@ -2,7 +2,7 @@
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v1.9';
+  const STORAGE_KEY = 'startup-expert-validation-v2.0';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const email = instrument.researcherEmail;
@@ -34,6 +34,7 @@
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
+    C3: 'Dependencia de clientes', VB4: 'Ingresos y horas de trabajo', F5: 'Financiación pública pendiente',
     T1: 'Perfiles complementarios', T2: 'Conocimiento del cliente', T3: 'Aprendizaje y decisiones', T4: 'Dedicación', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
     PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
     VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
@@ -66,6 +67,12 @@
   const currentSubmission = () => state.submission && /^sheets-[a-f0-9]{64}$/.test(state.submission.id) && state.submission.revision === state.revision;
   let textTimer;
   const pendingText = new Map();
+  const reachedScreens = new Set();
+  function recordProgress(screen) {
+    if (!state.consent || location.protocol === 'file:' || reachedScreens.has(screen) || !navigator.sendBeacon) return;
+    // Aggregate counters only: no response ID, email, answers, timestamps or session token.
+    try { if (navigator.sendBeacon('/api/progress', new Blob([JSON.stringify({ screen })], {type:'application/json'}))) reachedScreens.add(screen); } catch { /* Optional telemetry never blocks answering. */ }
+  }
   const restored = repository.load();
   if (restored.ok && restored.value) {
     try { state = model.validateState(restored.value); }
@@ -108,7 +115,7 @@
     return `<fieldset class="field"><legend>${esc(label)} ${optional}</legend><div class="choice-list">${values.map((v, i) => `<label for="${idFor(path)}-${i}"><input type="checkbox" id="${idFor(path)}-${i}" data-path="${path}" data-list="true" value="${esc(v)}" ${valueAt(path).includes(v) ? 'checked' : ''}>${esc(v)}</label>`).join('')}</div></fieldset>`;
   }
   function rating(path, label, criterion) {
-    return `<fieldset class="rating-group"><legend>${esc(label)}</legend><div class="rating-options">${scaleLabels[criterion].map((label, i) => {
+    return `<fieldset class="rating-group"><legend>${esc(label)} ${criterion === 'relevance' ? '<span class="optional">Obligatoria o con omisión</span>' : optional}</legend><div class="rating-options">${scaleLabels[criterion].map((label, i) => {
       const number = i + 1, id = idFor(path) + '-' + number;
       return `<label class="rating-choice" for="${id}" title="${esc(label)}"><input type="radio" id="${id}" name="${idFor(path)}" data-path="${path}" aria-label="${number}: ${esc(label)}" value="${number}" ${valueAt(path) === number ? 'checked' : ''}><span><b>${number}</b>${esc(shortScales[criterion][i])}</span></label>`;
     }).join('')}</div><div class="rating-tools"><button class="text-button" type="button" data-action="clear" data-target="${path}" ${valueAt(path) === null ? 'hidden' : ''}>Dejar sin respuesta</button></div></fieldset>`;
@@ -123,14 +130,14 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="review-purpose">Revisarás el cuestionario. No necesitas evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>21</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span>A tu ritmo</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+    return `<div class="welcome-hero"><div>${heading('Ayúdanos a mejorar el diagnóstico', 'Revisa un cuestionario de diagnóstico para startups en fase temprana.')}<p class="intro-lead">Indica si las preguntas son relevantes, claras y tienen respuestas adecuadas.</p><p class="review-purpose">Revisarás el cuestionario. No necesitas evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>24</strong> preguntas</span><span><strong>6</strong> dimensiones</span><span>A tu ritmo</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
       `<section class="surface welcome-start"><p>Puedes dejar preguntas sin valorar y añadir observaciones donde lo necesites. Tu avance se guarda en este navegador para que puedas continuar más tarde.</p>
-      <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La escalabilidad no se evalúa como dimensión independiente; puedes comentar esta delimitación en el resumen.</p></details>
+      <details class="extra-fields"><summary>Propósito y alcance del estudio</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>El instrumento está en proceso de validación. No predice el éxito ni sustituye una decisión de inversión. La relación entre ingresos y trabajo se revisa dentro del modelo de negocio.</p></details>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
       <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p>
       <p>Al pulsar «Enviar revisión», tus respuestas se guardan en una hoja privada de Google Sheets del investigador mediante Vercel y Google Apps Script. No incluyas datos confidenciales ni nombres de clientes. También puedes descargar una copia de tu revisión.</p>
-      <p>Puedes solicitar la hoja de información del estudio antes o después de responder en <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>. Incluye responsable, base jurídica, conservación, destinatarios y derechos. Para retirar una respuesta, escribe a ese correo con su identificador. Tras anonimizarla de forma irreversible, puede que ya no sea posible localizarla.</p></details>
+      <p>Se registran contadores agregados de pantallas recibidas para estudiar el recorrido. Esos eventos no incluyen correo, nombre, identificador de respuesta ni valoraciones.</p><p>Puedes solicitar la hoja de información del estudio antes o después de responder en <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>. Incluye responsable, base jurídica, conservación, destinatarios y derechos. Para retirar una respuesta, escribe a ese correo con su identificador. Tras anonimizarla de forma irreversible, puede que ya no sea posible localizarla.</p></details>
       <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído la información y acepto participar voluntariamente y el uso académico de mis respuestas.</span></label>
       ${nav('Empezar la revisión')}</section>`;
   }
@@ -152,8 +159,19 @@
     return heading('Cómo responder', 'En cada pregunta, primero lee la propuesta y después da tu valoración.') +
       `<section class="surface guide-sheet"><div class="guide-row"><span class="guide-number" aria-hidden="true">1</span><div><h2>Lee la pregunta y sus respuestas</h2><p>Los niveles del <strong>0 al 3</strong> son las opciones previstas para la persona emprendedora. Describen situaciones observables; aquí solo tienes que revisarlos.</p></div></div>
       <div class="guide-row"><span class="guide-number" aria-hidden="true">2</span><div><h2>Valora la propuesta del 1 al 4</h2><p><strong>Relevancia:</strong> ¿es útil preguntar por este aspecto?</p><p><strong>Claridad y respuestas:</strong> ¿se entiende y ofrece opciones adecuadas?</p></div></div>
-      <p class="guide-note">Al final de cada dimensión, valorarás su relevancia y si sus preguntas cubren lo necesario. Si detectas un problema, explícalo en Observaciones. Puedes omitir los temas que no conozcas.</p>
-      <details class="extra-fields"><summary>Criterios de esta revisión</summary><p>Ten en cuenta la fase de la startup y su modelo de negocio. Indica si una pregunta solo tiene sentido en determinadas situaciones.</p><p>Los niveles 0–3 no son intervalos equivalentes ni predicen el éxito. «No aplica todavía» se registra aparte y no equivale a 0. Tampoco se asigna una puntuación baja a lo que un experto omite.</p></details>${codeGuide()}${nav('Revisar la primera dimensión')}</section>`;
+      <p class="guide-note">La relevancia requiere una puntuación o un motivo de omisión. Claridad y respuestas es opcional en todos los ítems; la cobertura también es opcional. Las observaciones permiten explicar los cambios propuestos.</p>
+      <details class="extra-fields"><summary>Criterios de esta revisión</summary><p>Ten en cuenta la fase de la startup y su modelo de negocio. Indica si una pregunta solo tiene sentido en determinadas situaciones.</p><p>Los niveles 0–3 no son intervalos equivalentes ni predicen el éxito. «No aplica todavía» se registra aparte y no equivale a 0. Tampoco se asigna una puntuación baja a lo que un experto omite.</p></details>${codeGuide()}${screeningDesign()}${nav('Revisar la primera dimensión')}</section>`;
+  }
+  function screeningDesign() {
+    return `<section class="design-proposal"><h2>Diseño del cribado y del contexto</h2><p>Estas preguntas se utilizarán para adaptar el diagnóstico al proyecto. Se solicita revisar sus opciones y reglas; no responderlas como fundador.</p>
+      <dl>${instrument.screening.map(field => `<div data-screening-design="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.options.join(' · '))}<p>${esc(field.purpose)}</p></dd></div>`).join('')}</dl>
+      <p>Los cinco datos generales no resuelven todas las exclusiones. Las condiciones específicas se muestran junto a cada ítem; una falta de pruebas no oculta la pregunta.</p>
+      <h3>Contexto temporal sin puntuación</h3><dl>${instrument.contextMetadata.map(field => `<div data-context-metadata="${field.id}"><dt>${esc(field.label)}</dt><dd>${esc(field.description)}</dd></div>`).join('')}</dl>
+      ${field('designReview.screeningComment', 'Observaciones sobre el cribado y el contexto')}</section>`;
+  }
+  function itemDesign(item) {
+    return `${(item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('')}
+      ${item.evidenceRequirement ? `<aside class="design-note"><strong>${esc(item.evidenceRequirement.label)}</strong><p>${esc(item.evidenceRequirement.description)}</p></aside>${field('designReview.t3Example', '¿Debe exigirse un ejemplo para seleccionar los niveles 2 y 3?', '', 'select', [['yes','Sí'],['no','No'],['unsure','Sin criterio']])}` : ''}`;
   }
   function glossary(item) {
     const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
@@ -169,6 +187,7 @@
       <p class="level-caption">Respuestas previstas para la persona emprendedora</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
       ${item.conditional ? `<aside class="conditional-note"><p>${esc(item.conditional)}</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
+      ${itemDesign(item)}
       <div class="expert-response" data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Tu valoración <span>Escala de 1 a 4</span></p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
       ${field(base + '.comment', 'Observaciones', '')}</div>
@@ -194,7 +213,9 @@
   function scoreText(record, criteria) { return criteria.map(key => criteriaLabels[key] + ': ' + (record[key] ?? 'sin respuesta')).join(' · '); }
   function delivery() {
     const counts = model.summary(state);
-    return `<p class="fine">${counts.pending + counts.partial ? 'Puedes enviar tu revisión aunque hayas dejado preguntas sin responder.' : 'Tu revisión está lista para enviar.'}</p>
+    const missing = model.deliveryIssues(state);
+    return `<p class="fine">${missing.length ? 'Faltan decisiones de relevancia. Se necesita una puntuación o un motivo de omisión antes del envío.' : 'La revisión está lista para enviar. Los campos opcionales pueden quedar vacíos.'}</p>
+      ${missing.length ? `<div data-missing-relevance><p>Revisar los elementos pendientes:</p><div class="choice-list">${missing.map(id => { const item = instrument.items.find(i => i.id === id), dimId = item ? item.dim : id; return `<button type="button" class="text-button" data-action="jump" data-step="${steps.findIndex(s => s.dim === dimId)}" data-anchor="${item ? 'item' : 'dimension'}-${id}">${esc(item ? id : dimensionLabel(id))}</button>`; }).join('')}</div></div>` : ''}
       <button type="button" class="button" data-action="submit">Enviar revisión</button>
       <p id="submit-status" role="status" aria-live="polite"></p>
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
@@ -236,9 +257,15 @@
       <p class="summary-legend"><span><b class="summary-score">1–4</b> Valor introducido</span><span><b class="summary-score unanswered">—</b> Sin responder</span><span><b class="summary-omitted">Omitida</b> Excluida del análisis</span></p>
       ${reviewCounts()}</section>
       ${summaryMap()}
-      <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2><p class="fine">Puedes comentar también si debería incluirse la escalabilidad.</p>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}</section>
+      <section class="surface summary-feedback"><h2>¿Qué mejorarías del conjunto?</h2>${finalQuestions.filter(([key]) => ['v2','v3'].includes(key)).map(([key, label, hint]) => field('final.' + key, label, hint)).join('')}
+      <fieldset class="field"><legend>¿En qué preguntas se espera que casi todas las startups elijan el mismo nivel? ${optional}</legend><div class="choice-list">${instrument.items.map(item => `<label><input type="checkbox" data-path="designReview.discrimination" data-list="true" value="${item.id}" ${state.designReview.discrimination.includes(item.id) ? 'checked' : ''}>${item.id} · ${esc(questionNames[item.id])}</label>`).join('')}</div></fieldset>
+      ${field('designReview.discriminationComment', 'Observaciones sobre la capacidad de distinguir situaciones', 'Este juicio expresa una previsión; las diferencias reales se estudiarán con respuestas de fundadores.')}</section>
       <div class="actions"><button type="button" class="button secondary" data-action="print-map">Imprimir este resumen</button></div>
       ${nav('Continuar al envío')}`;
+  }
+  function designReviewText() {
+    const d = state.designReview;
+    return 'Cribado: ' + (d.screeningComment || 'Sin observaciones') + '\nEjemplo en T3: ' + ({yes:'Sí',no:'No',unsure:'Sin criterio'}[d.t3Example] || 'Sin respuesta') + '\nPosible falta de discriminación: ' + (d.discrimination.join(', ') || 'Sin selección') + '\nObservaciones: ' + (d.discriminationComment || 'Sin observaciones');
   }
   function profileText() {
     const p = state.profile;
@@ -259,6 +286,7 @@
     refresh();
   }
   function refresh() {
+    recordProgress(steps[state.step].dim || steps[state.step].type);
     const counts = model.summary(state);
     const progress = document.getElementById('progress');
     progress.max = counts.total;
@@ -266,7 +294,7 @@
     progress.setAttribute('aria-valuetext', `${counts.complete} completos, ${counts.skipped} omitidos y ${counts.pending + counts.partial} sin terminar`);
     const completeQuestions = instrument.items.filter(item => model.status(state, item.id) === 'complete').length;
     const completeDimensions = instrument.dimensions.filter(dim => model.status(state, dim.id) === 'complete').length;
-    document.getElementById('progress-text').textContent = `Preguntas: ${completeQuestions}/21 · Dimensiones: ${completeDimensions}/6${counts.skipped ? ' · ' + counts.skipped + ' omitidas' : ''}`;
+    document.getElementById('progress-text').textContent = `Preguntas: ${completeQuestions}/${instrument.items.length} · Dimensiones: ${completeDimensions}/${instrument.dimensions.length}${counts.skipped ? ' · ' + counts.skipped + ' omitidas' : ''}`;
     const otherPhase = app.querySelector('[data-other-phase]');
     if (otherPhase) otherPhase.hidden = !state.profile.phases.includes('Otra');
     document.querySelectorAll('[data-status]').forEach(node => { const status = model.status(state, node.dataset.status); node.className = 'badge ' + status; node.textContent = statusLabels[status]; });
@@ -388,6 +416,7 @@
   async function submitResponses() {
     flushText();
     if (sending || currentSubmission()) return;
+    if (model.deliveryIssues(state).length) { submissionError = 'Faltan valoraciones de relevancia. Selecciona los elementos pendientes e indica una puntuación o un motivo de omisión.'; refresh(); return; }
     if (location.protocol === 'file:') { submissionError = 'Para enviar, abre el enlace web de la encuesta. Desde esta copia local puedes revisar y descargar tus respuestas.'; refresh(); return; }
     const payload = model.exportPayload(state);
     const controller = new AbortController();
@@ -399,6 +428,7 @@
       if (!response.ok || result.ok !== true || typeof result.receiptId !== 'string' || !/^sheets-[a-f0-9]{64}$/.test(result.receiptId)) throw new Error(response.status === 503 ? 'not-configured' : 'failed');
       if (state.responseId === payload.response.responseId) {
         state = model.validateState({ ...state, submission: { id: result.receiptId, revision: payload.response.revision, at: new Date().toISOString() } });
+        recordProgress('completed');
         persist();
       }
     } catch (error) {
@@ -412,7 +442,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V1_9_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_0_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -447,12 +477,12 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V1.9 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.0 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p><p class="print-note">T: Equipo (Team). PM: Problema y mercado. VB: Propuesta de valor y modelo de negocio. C: Evidencia comercial. F: Finanzas. SA: Recursos estratégicos y legitimidad.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V1.9</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V2.0</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
-      <h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
+      <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }
   document.getElementById('import-button').addEventListener('click', () => document.getElementById('import-file').click());
   document.getElementById('import-file').addEventListener('change', async event => {

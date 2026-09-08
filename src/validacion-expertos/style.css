@@ -209,3 +209,14 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 .pre-wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 #print-view { display: none; }
+
+/* Block A: instrument design shown to experts, never founder inputs. */
+.design-proposal { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--line); }
+.design-proposal h2, .design-proposal h3 { margin-bottom: 16px; }
+.design-proposal dl { margin: 24px 0; }
+.design-proposal dt { font-weight: 650; }
+.design-proposal dd { margin: 6px 0 22px; color: var(--muted); font-size: .9375rem; }
+.design-note { padding: 16px; background: var(--soft); border-radius: 8px; margin: 18px 0; font-size: .875rem; }
+.design-note p { margin-top: 8px; }
+[data-missing-relevance] .text-button { padding: 8px 12px; min-height: 44px; }
+.summary-feedback input[type=checkbox] { flex: 0 0 auto; }

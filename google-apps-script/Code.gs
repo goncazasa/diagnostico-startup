@@ -44,7 +44,8 @@ function doPost(e) {
     if (!equal_(signature, envelope.signature)) return json_({ok:false});
     // Full validation happens in the trusted Vercel function before signing.
     const payload = JSON.parse(envelope.payload), response = payload.response;
-    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/1.9') return json_({ok:false});
+    if (payload.format === 'expert-progress/2.0') return recordProgress_(payload, sheetId);
+    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/2.0' || payload.instrumentVersion !== '2.0.0' || payload.instrument.version !== '2.0.0' || response.schemaVersion !== payload.format || response.instrumentVersion !== payload.instrumentVersion) return json_({ok:false});
     const receiptId = 'sheets-' + digest_(envelope.payload);
     lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) return json_({ok:false});
@@ -126,9 +127,12 @@ function rebuild_(book) {
   const contacts = [base.concat(['correo','nombre','roles','anos_experiencia','numero_proyectos','experiencia_pivote','sectores','conflicto_interes','fases','fases_otra'])];
   const responses = [base.concat(['consentimiento','creada_utc','actualizada_utc','opinion_inicial','opinion_bloqueada_utc','global_v2','global_v3','observacion_final','juicios_contestados','juicios_posibles'])];
   const dictionary = [['version','tipo','dimension_id','elemento_id','texto','nota','aplicabilidad','niveles_emprendedor','criterios_experto']];
+  const designReviews = [base.concat(['observacion_cribado','ejemplo_t3','posible_falta_discriminacion','observacion_discriminacion'])];
+  const instrumentDesign = [['version','tipo','elemento_id','definicion_json']];
   Object.keys(latest).sort().forEach(key => {
     const entry = latest[key], p = entry.payload, s = p.response, ins = p.instrument, profile = s.profile;
     const common = [s.responseId,p.instrumentVersion,s.revision,entry.id,entry.at];
+    if (s.designReview) designReviews.push(common.concat([s.designReview.screeningComment,s.designReview.t3Example,s.designReview.discrimination.join(' | '),s.designReview.discriminationComment]));
     let answered = 0;
     ins.dimensions.forEach(d => {
       const a = s.dimensions[d.id];
@@ -148,10 +152,52 @@ function rebuild_(book) {
   Object.keys(instruments).sort().forEach(version => {
     const ins=instruments[version];
     ins.dimensions.forEach(d => dictionary.push([version,'dimension',d.id,d.id,d.name,d.desc,'','','Relevancia y cobertura: 1–4; vacío = sin respuesta.']));
-    ins.items.forEach(i => dictionary.push([version,'pregunta',i.dim,i.id,i.q,i.note,i.applicabilityNote || '',i.levels.map((level,n)=>n+': '+level).join('\n'),JSON.stringify(ins.expertCriteria)]));
+    ins.items.forEach(i => {
+      dictionary.push([version,'pregunta',i.dim,i.id,i.q,i.note,[i.conditional,i.applicabilityNote].filter(Boolean).join('\n'),i.levels.map((level,n)=>n+': '+level).join('\n'),JSON.stringify(ins.expertCriteria)]);
+      if (i.applicability) instrumentDesign.push([version,'reglas_item',i.id,JSON.stringify({applicability:i.applicability,evidenceRequirement:i.evidenceRequirement,designFields:i.designFields,sources:i.sources})]);
+    });
+    (ins.screening || []).forEach(f => instrumentDesign.push([version,'cribado',f.id,JSON.stringify(f)]));
+    (ins.contextMetadata || []).forEach(f => instrumentDesign.push([version,'metadato_no_puntuado',f.id,JSON.stringify(f)]));
   });
   writeTable_(book,'Valoraciones',ratings);
   writeTable_(book,'Participantes',contacts);
   writeTable_(book,'Respuestas',responses);
   writeTable_(book,'Diccionario',dictionary);
+  writeTable_(book,'RevisionDiseno',designReviews);
+  writeTable_(book,'DisenoInstrumento',instrumentDesign);
+  writeTable_(book,'ValidezContenido',contentValidity_(latest,instruments));
+}
+
+function contentValidity_(latest, instruments) {
+  const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones']];
+  Object.keys(instruments).filter(version => version === '2.0.0').forEach(version => {
+    const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version);
+    const results = ins.items.map(item => {
+      const valid = entries.filter(p => !p.response.dimensions[item.dim].skipReason && !p.response.items[item.id].skipReason && Number.isInteger(p.response.items[item.id].relevance) && p.response.items[item.id].relevance >= 1 && p.response.items[item.id].relevance <= 4);
+      const positive = valid.filter(p => p.response.items[item.id].relevance >= 3).length;
+      const omitted = entries.filter(p => p.response.dimensions[item.dim].skipReason || p.response.items[item.id].skipReason).length;
+      const cvi = valid.length ? positive / valid.length : null;
+      rows.push([version,item.id,valid.length,positive,cvi,valid.length < 6 ? 'datos insuficientes' : cvi >= 0.78 ? 'umbral alcanzado' : 'revisar',omitted]);
+      return {n:valid.length,cvi};
+    });
+    const enough = results.length > 0 && results.every(r => r.n >= 6);
+    const average = enough ? results.reduce((sum,r) => sum+r.cvi,0)/results.length : null;
+    rows.push([version,'S-CVI/Ave',entries.length,null,average,!enough ? 'datos insuficientes en uno o más ítems' : average >= 0.90 ? 'umbral global alcanzado; revisar resultados por ítem' : 'revisar',null]);
+  });
+  return rows;
+}
+
+function recordProgress_(payload, sheetId) {
+  const allowed = ['intro','profile','guide','D1','D2','D3','D4','D5','D6','review','final','completed'];
+  if (Object.keys(payload).sort().join(',') !== 'day,format,screen' || !allowed.includes(payload.screen) || !/^\d{4}-\d{2}-\d{2}$/.test(payload.day)) return json_({ok:false});
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return json_({ok:false});
+  try {
+    const book = SpreadsheetApp.openById(sheetId), sheet = book.getSheetByName('Recorrido') || book.insertSheet('Recorrido');
+    if (!sheet.getLastRow()) sheet.getRange(1,1,1,3).setValues([['dia_utc','pantalla','eventos_recibidos']]);
+    const rows = sheet.getDataRange().getValues(), index = rows.findIndex((r,i) => i > 0 && r[0] === payload.day && r[1] === payload.screen);
+    if (index >= 0) sheet.getRange(index+1,3).setValues([[Number(rows[index][2])+1]]);
+    else { ensureSize_(sheet,rows.length+1,3); sheet.getRange(rows.length+1,1,1,3).setValues([[payload.day,payload.screen,1]]); }
+    SpreadsheetApp.flush(); return json_({ok:true});
+  } finally { lock.releaseLock(); }
 }

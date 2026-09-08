@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { createModel, createRepository } = require('./core.js');
 
 const instrument = {
-  version: '1.8.0',
+  version: '2.0.0',
   dimensions: [{ id: 'D1', name: 'Equipo' }, { id: 'D2', name: 'Mercado' }],
   items: [{ id: 'T1', dim: 'D1' }, { id: 'T2', dim: 'D1' }, { id: 'PM1', dim: 'D2' }]
 };
@@ -17,10 +17,10 @@ function memory() {
 test('an untouched response reports pending, never complete', () => {
   assert.deepEqual(model.summary(fresh()), { complete: 0, partial: 0, skipped: 0, pending: 5, total: 5, resolved: 0 });
 });
-test('one relevance rating cannot make a two-criterion item complete', () => {
+test('relevance completes a record while usability remains optional', () => {
   const state = fresh();
   state.items.T1.relevance = 4;
-  assert.equal(model.status(state, 'T1'), 'partial');
+  assert.equal(model.status(state, 'T1'), 'complete');
   state.items.T1.usability = 3;
   assert.equal(model.status(state, 'T1'), 'complete');
 });

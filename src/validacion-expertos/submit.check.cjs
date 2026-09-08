@@ -7,6 +7,7 @@ function payload() {
   let state = model.createState('response-server-test');
   state.consent = true; state.profile.email = 'expert@example.org';
   state = model.sealInitial(state);
+  for(const a of [...Object.values(state.items), ...Object.values(state.dimensions)]) a.relevance=3;
   state.items.T1.relevance = 4; state.items.T1.skipReason = 'experience';
   return model.exportPayload(state);
 }
@@ -42,7 +43,7 @@ test('delivery signs validated data and verifies a stable content receipt', asyn
   assert.equal(sent[0].url,env.GOOGLE_SHEETS_WEBHOOK_URL);
   assert.equal(envelope.signature,createHmac('sha256',env.GOOGLE_SHEETS_SECRET).update(envelope.payload).digest('hex'));
   const attached=JSON.parse(envelope.payload);
-  assert.equal(attached.instrument.items.length,21); assert.equal(attached.response.items.T1.relevance,null);
+  assert.equal(attached.instrument.items.length,24); assert.equal(attached.response.items.T1.relevance,null);
   assert.equal(sent[0].body,sent[1].body);
   assert.equal(attached.response.profile.email,'expert@example.org');
 });
@@ -56,3 +57,5 @@ test('endpoint rejects unsupported methods, cross-origin and oversized bodies', 
   assert.equal((await run(payload(),{env},{headers:{'content-type':'application/json',host:'panel.example.org',origin:'https://other.example.org'}})).statusCode,403);
   assert.equal((await run('x'.repeat(1024*1024+1),{env})).statusCode,413);
 });
+
+test('missing relevance is rejected by the server even if the client bypasses its form',async()=>{const p=payload();p.response.items.VB4.relevance=null;const r=await run(p,{env,fetchImpl:async()=>assert.fail('No send')});assert.equal(r.statusCode,400);assert.deepEqual(r.body.missing,['VB4']);});

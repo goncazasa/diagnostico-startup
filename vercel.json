@@ -7,6 +7,9 @@
   "functions": {
     "api/submit.mjs": {
       "maxDuration": 30
+    },
+    "api/progress.mjs": {
+      "maxDuration": 15
     }
   }
 }
