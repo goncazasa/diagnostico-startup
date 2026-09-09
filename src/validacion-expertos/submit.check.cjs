@@ -20,6 +20,13 @@ async function run(body, options = {}, request = {}) {
   return result;
 }
 const env = { GOOGLE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/test/exec', GOOGLE_SHEETS_SECRET: 'test-secret-not-a-real-credential' };
+test('production allows enough time for Sheets to rebuild the analysis tables', async () => {
+  const submitModule = await import('../../api/submit.mjs');
+  const vercel = require('../../vercel.json');
+  const maxDurationMs = vercel.functions['api/submit.mjs'].maxDuration * 1000;
+  assert.ok(submitModule.SHEETS_TIMEOUT_MS >= 45000);
+  assert.ok(maxDurationMs >= submitModule.SHEETS_TIMEOUT_MS + 5000);
+});
 test('missing Sheets configuration fails without claiming receipt', async () => {
   const result = await run(payload(), { env: {} });
   assert.equal(result.statusCode, 503); assert.equal(result.body.ok, false);

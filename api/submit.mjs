@@ -4,6 +4,7 @@ import instrument from '../src/validacion-expertos/instrument.js';
 
 const model = core.createModel(instrument);
 const MAX_BYTES = 1024 * 1024;
+export const SHEETS_TIMEOUT_MS = 50000;
 
 export function createHandler({ env = process.env, fetchImpl = globalThis.fetch } = {}) {
   return async function submit(req, res) {
@@ -41,7 +42,7 @@ export function createHandler({ env = process.env, fetchImpl = globalThis.fetch 
       const response = await fetchImpl(env.GOOGLE_SHEETS_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body, signal: AbortSignal.timeout(25000)
+        body, signal: AbortSignal.timeout(SHEETS_TIMEOUT_MS)
       });
       if (!response.ok) return fail(502, 'No se ha podido confirmar el envío. Puedes reintentarlo.');
       const data = await response.json();

@@ -11,6 +11,7 @@
 - «Momento perfecto para triunfar» se operacionaliza como evidencia de un buen momento para lanzar; la escalabilidad se expresa como crecimiento de ingresos sin crecimiento proporcional de horas.
 - El esquema pasa a `expert-validation/2.2` y el almacenamiento local a `startup-expert-validation-v2.2` para no mezclar respuestas de bancos distintos.
 - El receptor de Google Apps Script acepta V2.2 y conserva intactas las entregas históricas de versiones anteriores.
+- El envío espera hasta 50 segundos a que Apps Script reconstruya las tablas; la función de Vercel dispone de 60 segundos. Esto evita un falso error en la primera entrega de una revisión nueva.
 
 ## Simplificación de bienvenida e instrucciones (septiembre de 2026)
 
