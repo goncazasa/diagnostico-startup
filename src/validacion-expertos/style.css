@@ -70,9 +70,9 @@ progress::-moz-progress-bar { background: var(--teal); }
 .welcome-art p { font-size: 1rem; color: var(--muted); text-align: center; margin-top: 12px; }
 .welcome-art strong { font-weight: 600; color: var(--ink); }
 .welcome-start { max-width: 100%; padding: 30px 36px; }
-.welcome-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 4px; }
-.welcome-notes p { max-width: 48ch; padding: 14px 16px; border-radius: 8px; background: #f4f7fb; font-size: .875rem; line-height: 1.55; }
-.welcome-notes strong { display: block; color: var(--ink); margin-bottom: 2px; }
+.welcome-objective { max-width: 76ch; }
+.welcome-objective h2 { margin-bottom: 10px; }
+.welcome-objective p { color: var(--muted); font-size: .9375rem; line-height: 1.65; }
 .extra-fields, .privacy, .summary-optional, .item-observation { margin: 20px 0; border-top: 1px solid var(--line); padding-top: 16px; font-size: .875rem; }
 .extra-fields > summary, .privacy > summary, .summary-optional > summary, .item-observation > summary { font-weight: 600; color: var(--ink); }
 .extra-fields[open] > summary, .privacy[open] > summary, .summary-optional[open] > summary, .item-observation[open] > summary { margin-bottom: 16px; }

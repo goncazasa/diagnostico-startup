@@ -39,18 +39,18 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
    for(const label of await page.locator('#app label:has(input[data-path$=".relevance"][value="3"])').all())if(await label.isVisible())await label.click();
    if(step===3){assert.ok(await page.locator('label[for="items-T2-usability-4"]').isVisible());await page.locator('label[for="items-T2-usability-4"]').click();}
   }
-  await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),23);
+  await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),21);
   await page.locator('.discrimination-groups > details').nth(3).locator('summary').click();
-  await page.locator('input[data-path="designReview.discrimination"][value="C3"]').check();
-  await page.locator('#designReview-discriminationComment').fill('La concentración puede cambiar con el periodo.');
+  await page.locator('input[data-path="designReview.discrimination"][value="C2"]').check();
+  await page.locator('#designReview-discriminationComment').fill('La estrategia comercial puede variar según el segmento.');
   await page.setViewportSize({width:375,height:812});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.1');assert.equal(p.instrument.items.length,23);
-  assert.equal(p.response.items.C3.usability,null);assert.equal(p.response.items.T4.relevance,null);assert.equal(p.response.items.PM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['C3']);
-  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,30);
-  assert.ok(events.length>0);assert.ok(events.every(e=>Object.keys(e).join(',')==='screen'));
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.2');assert.equal(p.instrument.items.length,21);
+  assert.equal(p.response.items.C2.usability,null);assert.equal(p.response.items.T4.relevance,null);assert.equal(p.response.items.PM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['C2']);
+  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,28);
+  assert.equal(events.length,0,'The public form no longer sends navigation telemetry');
   await page.reload();assert.ok(await page.locator('[data-action="submit"]').isDisabled());assert.equal(await page.locator('#final-v9').inputValue(),'Prueba local del bloque A.');
   assert.deepEqual(errors,[]);await page.screenshot({path:path.join(out,'v2-sent-mobile.png')});
  } finally {await browser.close();await new Promise(resolve=>server.close(resolve));}

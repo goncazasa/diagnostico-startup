@@ -4,7 +4,7 @@
 
 El panel revisa un instrumento de diagnóstico de startups tempranas. Cada experto evalúa:
 
-- la relevancia de seis dimensiones y 23 preguntas;
+- la relevancia de seis dimensiones y 21 preguntas;
 - la cobertura de cada dimensión;
 - la claridad del enunciado y de las respuestas de cada pregunta;
 - posibles omisiones, redundancias y problemas de discriminación;
@@ -63,7 +63,7 @@ Se muestran siempre `n_validas`, `n_relevantes`, `omisiones` y `faltantes`. La d
 ### S-CVI/Ave y S-CVI/UA
 
 ```text
-S-CVI/Ave = media de los I-CVI de las 23 preguntas
+S-CVI/Ave = media de los I-CVI de las 21 preguntas
 S-CVI/UA  = preguntas con I-CVI = 1 / preguntas evaluadas
 ```
 
@@ -93,7 +93,7 @@ La relevancia esperada excluye los bloques omitidos de forma explícita. Clarida
 ## Procedimiento recomendado
 
 1. **Congelar el corte.** Registrar fecha, commit, versión del instrumento y copia del libro.
-2. **Depurar sin borrar.** Revisar `CalidadDatos`, posibles duplicados y conflictos de interés. Documentar las exclusiones; conservar `Entregas`.
+2. **Depurar sin borrar.** Revisar `CalidadDatos`, posibles duplicados y los criterios de exclusión definidos. Documentar las exclusiones; conservar `Entregas`.
 3. **Describir el panel.** Informar experiencia, roles, fases y sectores. Las categorías multirrespuesta no deben sumar obligatoriamente el tamaño del panel.
 4. **Examinar cada pregunta.** Revisar I-CVI, kappa, n efectivo, faltantes, omisiones y comentarios asociados.
 5. **Examinar dimensiones y escala.** Utilizar cobertura, S-CVI/Ave y S-CVI/UA como síntesis, sin ocultar preguntas problemáticas.

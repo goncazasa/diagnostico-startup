@@ -89,6 +89,27 @@ T3 se eliminó por decisión del investigador. Se retiraron también sus ayudas,
 
 El esquema pasó a `expert-validation/2.1` y el almacenamiento local a `startup-expert-validation-v2.1`. Los borradores y JSON anteriores no se importan porque contienen un banco diferente.
 
+### V2.2: revisión editorial y simplificación del instrumento
+
+La revisión se hizo desde tres perspectivas: comprensión de la persona experta, correspondencia con el diagnóstico que contestará la startup y calidad del juicio académico. El título público pasó a **Diagnóstico de startups en fases iniciales** y la bienvenida explica de forma directa que el panel debe valorar la relevancia, claridad y suficiencia del contenido.
+
+Se igualaron los nombres de las dimensiones en la navegación y en cada página. El perfil sustituyó intervalos por un campo numérico de años de experiencia, adoptó «pivote» y retiró la pregunta sobre conflictos de interés. También se redujo el texto de privacidad mostrado antes de comenzar y se desactivaron los eventos de navegación del cliente, ya que su explicación dejó de formar parte de la interfaz.
+
+Se revisaron los enunciados para que cada uno señale una evidencia concreta y use términos habituales en emprendimiento. Cuando una propuesta podía inducir la respuesta, se conservó su intención con una formulación neutral. Por ejemplo, «momento perfecto para que el proyecto triunfe» pasó a «buen momento para lanzar el proyecto», y la escalabilidad se expresó como la capacidad de aumentar ingresos sin que las horas de trabajo crezcan al mismo ritmo.
+
+C3 y F5 se retiraron por decisión del investigador. El instrumento quedó en seis dimensiones y 21 preguntas:
+
+| Dimensión | Preguntas |
+|---|---:|
+| D1 · Equipo | 5 |
+| D2 · Problema y mercado | 4 |
+| D3 · Propuesta de valor y modelo de negocio | 4 |
+| D4 · Evidencia comercial (tracción y go-to-market) | 2 |
+| D5 · Evidencia financiera | 4 |
+| D6 · Recursos estratégicos y legitimidad | 2 |
+
+El esquema pasó a `expert-validation/2.2` y el almacenamiento local a `startup-expert-validation-v2.2`. Esta separación impide combinar silenciosamente respuestas obtenidas con bancos de preguntas distintos.
+
 ### Presentación y análisis de resultados
 
 **Commits:** `080b75d`, `ddef449`, `976aa40`.

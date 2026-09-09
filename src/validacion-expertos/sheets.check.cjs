@@ -27,7 +27,7 @@ test('analysis uses latest revision, preserves numeric scores and missingness, e
   const x=boot();assert.equal(x.post(payload(2)).ok,true);assert.equal(x.post(payload(1)).ok,true);
   assert.equal(x.tables.get('Entregas').length,3);
   const rows=x.tables.get('Valoraciones'), header=rows[0];
-  assert.equal(rows.length,30);
+  assert.equal(rows.length,28);
   const t1=rows.find(r=>r[header.indexOf('elemento_id')]==='T1');
   assert.equal(t1[header.indexOf('revision')],2);
   assert.equal(t1[header.indexOf('relevancia')],4);
@@ -41,7 +41,7 @@ test('archive survives analysis failure and retry repairs derived tables',()=>{
   const x=boot(),p=payload();x.setFailAnalysis(true);
   assert.equal(x.post(p).ok,true);assert.equal(x.props.ANALYSIS_PENDING,'true');
   x.setFailAnalysis(false);assert.equal(x.post(p).ok,true);
-  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,30);
+  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,28);
   assert.equal(x.props.ANALYSIS_PENDING,undefined);
 });
 test('large unicode observations round trip across archive cells',()=>{
@@ -53,24 +53,24 @@ test('large unicode observations round trip across archive cells',()=>{
 });
 
 test('V2 design judgements and conditional rules are available in analysis tables',()=>{
- const x=boot(),p=payload();p.response.designReview={screeningComment:'Revisar fase',discrimination:['C3','F5'],discriminationComment:'Concentración variable'};
+ const x=boot(),p=payload();p.response.designReview={screeningComment:'Revisar fase',discrimination:['C2','VB4'],discriminationComment:'La estrategia puede variar'};
  assert.equal(x.post(p).ok,true);
  const review=x.tables.get('RevisionDiseno');assert.ok(review);assert.equal(review.length,2);
- assert.ok(review[1].includes('C3 | F5'));
- const dictionary=x.tables.get('Diccionario');const c3=dictionary.find(r=>r[3]==='C3');assert.match(c3[dictionary[0].indexOf('aplicabilidad')],/facturación/);
+ assert.ok(review[1].includes('C2 | VB4'));
+ const dictionary=x.tables.get('Diccionario');const c2=dictionary.find(r=>r[3]==='C2');assert.match(c2[dictionary[0].indexOf('texto')],/estrategia de ventas/);
  assert.ok(x.tables.get('DisenoInstrumento'));
 });
 test('content validity uses exact fractions, minimum counts and all items for the scale',()=>{
  const x=boot();
- for(let n=0;n<9;n++) {const p=payload();p.response.responseId='panel-'+n;for(const a of Object.values(p.response.items)){a.skipReason='';a.relevance=4;}p.response.items.C3.relevance=n<7?4:1;assert.equal(x.post(p).ok,true);}
+ for(let n=0;n<9;n++) {const p=payload();p.response.responseId='panel-'+n;for(const a of Object.values(p.response.items)){a.skipReason='';a.relevance=4;}p.response.items.PM2.relevance=n<7?4:1;assert.equal(x.post(p).ok,true);}
  let table=x.tables.get('ValidezContenido');assert.ok(table);
- const c3=table.find(r=>r[1]==='C3'),header=table[0];assert.equal(c3[2],9);assert.equal(c3[3],7);assert.equal(c3[4],7/9);assert.equal(c3[5],'revisar');
- assert.equal(c3[header.indexOf('n_panel_real')],9);assert.equal(c3[header.indexOf('faltantes')],0);
- assert.equal(c3[header.indexOf('p_acuerdo_azar')],36/512);assert.ok(c3[header.indexOf('kappa_modificado')]>0.76);
+ const pm2=table.find(r=>r[1]==='PM2'),header=table[0];assert.equal(pm2[2],9);assert.equal(pm2[3],7);assert.equal(pm2[4],7/9);assert.equal(pm2[5],'revisar');
+ assert.equal(pm2[header.indexOf('n_panel_real')],9);assert.equal(pm2[header.indexOf('faltantes')],0);
+ assert.equal(pm2[header.indexOf('p_acuerdo_azar')],36/512);assert.ok(pm2[header.indexOf('kappa_modificado')]>0.76);
  const summary=table.find(r=>r[1]==='S-CVI/Ave');assert.ok(summary[4]>0.9);
  assert.ok(table.find(r=>r[1]==='S-CVI/UA'));
  const p=payload();p.response.responseId='panel-9';for(const a of Object.values(p.response.items)){a.skipReason='experience';a.relevance=null;}x.post(p);
- table=x.tables.get('ValidezContenido');assert.equal(table.find(r=>r[1]==='C3')[2],9);
+ table=x.tables.get('ValidezContenido');assert.equal(table.find(r=>r[1]==='PM2')[2],9);
 });
 test('testing records are labelled, excluded from academic validity and summarized separately',()=>{
  const x=boot();
@@ -78,7 +78,7 @@ test('testing records are labelled, excluded from academic validity and summariz
  const fake=payload();fake.response.responseId='testing-panel-01';fake.response.profile.name='DATOS DE TESTING · Ana';fake.response.profile.email='testing.ana@example.org';for(const a of Object.values(fake.response.items)){a.skipReason='';a.relevance=1;}for(const a of Object.values(fake.response.dimensions))a.relevance=4;assert.equal(x.post(fake).ok,true);
  const participants=x.tables.get('Participantes'),pHeader=participants[0];
  assert.equal(participants.find(r=>r[pHeader.indexOf('participante_id')]==='testing-panel-01')[pHeader.indexOf('es_testing')],true);
- const cvi=x.tables.get('ValidezContenido'),c3=cvi.find(r=>r[1]==='C3');assert.equal(c3[2],6);assert.equal(c3[4],1);
+ const cvi=x.tables.get('ValidezContenido'),pm2=cvi.find(r=>r[1]==='PM2');assert.equal(pm2[2],6);assert.equal(pm2[4],1);
  const summary=x.tables.get('Resumen');assert.ok(summary);assert.match(summary[0][0],/Panel de resultados/);assert.ok(summary.flat().includes('Registros de prueba'));assert.ok(summary.flat().includes(1));
  const quality=x.tables.get('CalidadDatos'),qHeader=quality[0],fakeQuality=quality.find(r=>r[qHeader.indexOf('participante_id')]==='testing-panel-01');
  assert.equal(fakeQuality[qHeader.indexOf('es_testing')],true);assert.equal(fakeQuality[qHeader.indexOf('estado_relevancia')],'Completa');
@@ -98,11 +98,11 @@ test('historical V1.9 archives stay intact and separate when rebuilding V2 table
  const x=boot(),p=payload();assert.equal(x.post(p).ok,true);
  const legacy=JSON.parse(JSON.stringify(p));legacy.instrument=require('../../test-support/instrument-v1.9.cjs');legacy.instrumentVersion='1.9.0';legacy.format='expert-validation/1.9';legacy.response.instrumentVersion='1.9.0';legacy.response.schemaVersion='expert-validation/1.9';delete legacy.response.designReview;
  legacy.response.items.T3={relevance:3,usability:null,skipReason:'',comment:'Dato histórico V1.9'};
- for(const id of ['VB4','C3','F5'])delete legacy.response.items[id];
+ delete legacy.response.items.VB4;
  const raw=JSON.stringify(legacy),receipt='sheets-'+crypto.createHash('sha256').update(raw).digest('hex');
  const row=[receipt,legacy.response.responseId,'1.9.0',legacy.response.revision,new Date().toISOString(),Buffer.from(raw).toString('base64')];
  x.tables.get('Entregas').push(row);x.ctx.actualizarAnalisis();
  assert.deepEqual(x.tables.get('Entregas')[2],row);
- const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.1.0').length,29);
+ const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.2.0').length,27);
  assert.equal(x.post(legacy).ok,false,'V2 receiver rejects new V1.9 submissions but preserves archived originals');
 });

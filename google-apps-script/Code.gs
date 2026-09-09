@@ -45,7 +45,10 @@ function doPost(e) {
     // Full validation happens in the trusted Vercel function before signing.
     const payload = JSON.parse(envelope.payload), response = payload.response;
     if (payload.format === 'expert-progress/2.0') return recordProgress_(payload, sheetId);
-    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || payload.format !== 'expert-validation/2.1' || payload.instrumentVersion !== '2.1.0' || payload.instrument.version !== '2.1.0' || response.schemaVersion !== payload.format || response.instrumentVersion !== payload.instrumentVersion) return json_({ok:false});
+    const supportedInstrument =
+      (payload.format === 'expert-validation/2.1' && payload.instrumentVersion === '2.1.0') ||
+      (payload.format === 'expert-validation/2.2' && payload.instrumentVersion === '2.2.0');
+    if (!response || !response.consent || !response.initial.lockedAt || !payload.instrument.items || !supportedInstrument || payload.instrument.version !== payload.instrumentVersion || response.schemaVersion !== payload.format || response.instrumentVersion !== payload.instrumentVersion) return json_({ok:false});
     const receiptId = 'sheets-' + digest_(envelope.payload);
     lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) return json_({ok:false});
@@ -119,11 +122,11 @@ function combination_(n, k) {
 function chanceAgreement_(n, relevant) { return n ? combination_(n,relevant) * Math.pow(0.5,n) : null; }
 function modifiedKappa_(cvi, chance) { return cvi === null || chance === null || chance === 1 ? null : (cvi-chance)/(1-chance); }
 function summaryRows_(latest, instruments) {
-  const entries = Object.keys(latest).map(key => latest[key].payload).filter(payload => payload.instrumentVersion === '2.1.0');
+  const entries = Object.keys(latest).map(key => latest[key].payload).filter(payload => payload.instrumentVersion === '2.2.0');
   const real = entries.filter(payload => !isTestingResponse_(payload.response));
   const testing = entries.filter(payload => isTestingResponse_(payload.response));
   const selected = real.length ? real : testing;
-  const instrument = instruments['2.1.0'];
+  const instrument = instruments['2.2.0'];
   const rows = [
     ['Panel de resultados · Validación de expertos','','','','',''],
     [real.length ? 'Resultados académicos: los registros de prueba están excluidos.' : 'VISTA DEMOSTRATIVA · Todavía no hay respuestas reales. Se muestran únicamente datos de prueba.','','','','',''],
@@ -274,7 +277,7 @@ function rebuild_(book) {
 
 function contentValidity_(latest, instruments) {
   const rows = [['version','elemento_id','n_validas','n_relevantes','cvi','decision','omisiones','n_panel_real','faltantes','p_acuerdo_azar','kappa_modificado']];
-  Object.keys(instruments).filter(version => version === '2.1.0').forEach(version => {
+  Object.keys(instruments).filter(version => version === '2.2.0').forEach(version => {
     const ins = instruments[version], entries = Object.keys(latest).map(k => latest[k].payload).filter(p => p.instrumentVersion === version && !isTestingResponse_(p.response));
     const results = ins.items.map(item => {
       const valid = entries.filter(p => !p.response.dimensions[item.dim].skipReason && !p.response.items[item.id].skipReason && Number.isInteger(p.response.items[item.id].relevance) && p.response.items[item.id].relevance >= 1 && p.response.items[item.id].relevance <= 4);

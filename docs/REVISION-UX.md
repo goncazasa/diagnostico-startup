@@ -1,6 +1,6 @@
 # Revisión UX basada en Yablonski y Krug
 
-Fecha de revisión: 8 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.1 en escritorio y móvil. Se conserva la estructura académica del instrumento. T1 se aclara sin cambiar el constructo evaluado: disponibilidad de perfiles complementarios para ejecutar la startup.
+Fecha de revisión: 9 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.2 en escritorio y móvil. El banco contiene 21 preguntas tras retirar C3 y F5 por decisión del investigador. La revisión modifica enunciados, por lo que se conserva como una versión diferenciada.
 
 ## Criterio de diseño
 
@@ -15,7 +15,7 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 | Ley de Jakob | El formulario podía requerir aprender etiquetas y recorridos propios. | Se mantienen botones, campos, radios, desplegables, pasos y resumen con patrones web convencionales. | Permite usar conocimientos adquiridos en otros formularios. |
 | Ley de Fitts | Las acciones pequeñas o próximas podían favorecer errores, especialmente en móvil. | Botones principales de al menos 48 px, opciones de 44 px y separación entre acciones. | Mejora alcance táctil y reduce pulsaciones accidentales. |
 | Ley de Miller | «Cómo responder» distribuía la referencia en varios bloques, códigos y subtítulos. | Se reduce a dos acciones y una aclaración breve. Se retira toda la referencia de códigos, cribado y contexto. | Permite empezar sin memorizar información que no es necesaria para valorar las preguntas. |
-| Ley de Hick | La revisión de discriminación mostraba 23 casillas a la vez. | Las preguntas se agrupan en seis dimensiones desplegables y se abren automáticamente si contienen una selección. | Reduce opciones simultáneas sin retirar ninguna. |
+| Ley de Hick | La revisión de discriminación mostraba todas las preguntas a la vez. | Las 21 preguntas se agrupan en seis dimensiones desplegables y se abren automáticamente si contienen una selección. | Reduce opciones simultáneas sin retirar ninguna. |
 | Principio de Postel | Los estados inesperados podían perder trabajo. | Persistencia local, importación, reintento, prevención de sobrescritura entre pestañas y mensajes que explican la recuperación. El campo de correo acepta espacios exteriores que el navegador normaliza. | El sistema absorbe errores frecuentes y conserva el trabajo. |
 | Estética–usabilidad | Las primeras versiones parecían candidatas y mostraban jerarquías débiles. | Nombre definitivo, jerarquía única por pantalla, contraste, ritmo espacial e ilustraciones coherentes. | Refuerza confianza sin convertir la estética en decoración. |
 | Reconocimiento visual | Las cuatro puntuaciones se distinguían solo por número y texto. | Se asigna a cada valor un tono suave y estable; número y etiqueta siguen visibles. | Facilita el escaneo sin hacer que el significado dependa del color. |
@@ -32,7 +32,7 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 - Los códigos internos permanecen en el conjunto de datos para conservar la trazabilidad, pero se sustituyen por «Pregunta 1», «Pregunta 2», etc. en la interfaz.
 - Cada dimensión conserva todas sus preguntas en una página, con aclaraciones y respuestas previstas visibles.
 - Los campos de observación cerrados reducen altura sin perder datos existentes.
-- En móvil, las valoraciones se organizan en una matriz 2 × 2 y la revisión de discriminación presenta seis grupos, no 23 opciones simultáneas.
+- En móvil, las valoraciones se organizan en una matriz 2 × 2 y la revisión de discriminación presenta seis grupos, no 21 opciones simultáneas.
 - El resumen permite volver directamente a una pregunta o dimensión.
 - El foco de teclado, el enlace para saltar al contenido, las etiquetas y los mensajes con regiones de estado se conservan.
 - `prefers-reduced-motion` se respeta y no se añaden animaciones automáticas.

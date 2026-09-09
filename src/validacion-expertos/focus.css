@@ -51,7 +51,6 @@
   .guide-row h2 { font-size: 1rem; margin-top: 0; }
   .guide-note { padding: 16px; }
   .guide-steps { grid-template-columns: 1fr; gap: 18px; }
-  .welcome-notes { grid-template-columns: 1fr; gap: 10px; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 82px; gap: 8px; align-items: start; }
   .dimension-heading .dimension-art { margin-top: 18px; }
   .dimension-heading h1 { font-size: 1.8125rem; }

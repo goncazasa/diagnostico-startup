@@ -1,12 +1,12 @@
 (function (root) {
   'use strict';
   const instrument = {
-  "version": "2.1.0",
-  "title": "Validación de expertos",
+  "version": "2.2.0",
+  "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Ofrecer a las personas emprendedoras una visión estructurada de la situación de su startup y de las áreas que requieren atención.",
-  "population": "Personas emprendedoras en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
-  "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
+  "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
+  "source": "Instrumento V2.2 revisado el 9 de septiembre de 2026. Banco de 21 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -15,46 +15,46 @@
     {
       "id": "D1",
       "short": "Equipo",
-      "name": "Equipo y gobernanza",
-      "desc": "Capacidades, aprendizaje, disponibilidad y acuerdos para alcanzar el siguiente objetivo."
+      "name": "Equipo",
+      "desc": "Perfiles, experiencia, disponibilidad, roles y estructura de propiedad para ejecutar el proyecto."
     },
     {
       "id": "D2",
-      "short": "Mercado",
+      "short": "Problema y mercado",
       "name": "Problema y mercado",
-      "desc": "Segmento prioritario, evidencia del problema, mercado accesible y condiciones de adopción."
+      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción."
     },
     {
       "id": "D3",
-      "short": "Propuesta de valor",
+      "short": "Propuesta de valor y modelo de negocio",
       "name": "Propuesta de valor y modelo de negocio",
-      "desc": "Ventaja percibida, hipótesis de monetización y resultados de las pruebas de la solución."
+      "desc": "Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
     },
     {
       "id": "D4",
-      "short": "Evidencia comercial",
+      "short": "Evidencia comercial (tracción y go-to-market)",
       "name": "Evidencia comercial (tracción y go-to-market)",
-      "desc": "Compromisos verificables y pruebas de adquisición de clientes en el segmento elegido. Mide la evidencia obtenida, no el plan comercial previsto."
+      "desc": "Compromisos comerciales y pruebas de la estrategia de llegada y venta al mercado."
     },
     {
       "id": "D5",
-      "short": "Finanzas",
+      "short": "Evidencia financiera",
       "name": "Evidencia financiera",
-      "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente cuando sea aplicable."
+      "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente."
     },
     {
       "id": "D6",
-      "short": "Recursos y confianza",
+      "short": "Recursos estratégicos y legitimidad",
       "name": "Recursos estratégicos y legitimidad",
-      "desc": "Relaciones, legitimidad y evidencias de confianza que facilitan recursos, acceso al mercado o acuerdos. La legitimidad es el reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva."
+      "desc": "Relaciones y evidencias de legitimidad que facilitan recursos, acceso al mercado o acuerdos."
     }
   ],
   "items": [
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿El equipo tiene cubiertos los perfiles necesarios para desarrollar la startup y conseguir clientes?",
-      "note": "Revisa si están cubiertas las funciones clave que exige el modelo de negocio, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
+      "q": "¿El equipo tiene los perfiles necesarios y complementarios para ejecutar con éxito el proyecto?",
+      "note": "Revisa si están cubiertas las funciones clave que exige el proyecto, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
@@ -69,13 +69,13 @@
     {
       "id": "T2",
       "dim": "D1",
-      "q": "¿El equipo dispone de conocimiento directo del cliente, sector o problema para tomar decisiones?",
-      "note": "El conocimiento puede venir de experiencia, investigación o colaboración continua con personas del sector. Incluye quién compra, cómo compra y cuánto tarda en decidir.",
+      "q": "¿El equipo dispone de experiencia relevante en el sector?",
+      "note": "La experiencia puede proceder del trabajo previo, del conocimiento directo del mercado o de una colaboración estable con personas del sector.",
       "levels": [
-        "Las decisiones se apoyan principalmente en supuestos sin contraste directo.",
-        "Hay conocimiento indirecto o contactos puntuales, con lagunas relevantes.",
-        "El equipo dispone de conocimiento directo sobre el cliente y su contexto.",
-        "Ese conocimiento ha permitido corregir supuestos y fundamentar decisiones concretas."
+        "El equipo no dispone de experiencia ni conocimiento directo del sector.",
+        "La experiencia es limitada o indirecta y deja lagunas importantes.",
+        "El equipo cuenta con experiencia directa y relevante para el proyecto.",
+        "Esa experiencia ya ha permitido anticipar dificultades y tomar mejores decisiones."
       ],
       "applicability": {
         "field": null,
@@ -85,13 +85,13 @@
     {
       "id": "T4",
       "dim": "D1",
-      "q": "¿La disponibilidad de los fundadores permite atender las prioridades del proyecto?",
-      "note": "Compara la disponibilidad real de los fundadores con el tiempo que exigen las prioridades de las últimas cuatro semanas. Puede comprobarse con agendas o registros de dedicación.",
+      "q": "¿Los fundadores trabajan a tiempo completo o tienen disponibilidad suficiente para atender las prioridades del proyecto?",
+      "note": "Compara su disponibilidad real con la dedicación que han exigido las prioridades de las últimas cuatro semanas.",
       "levels": [
-        "La disponibilidad de los fundadores no permite atender las prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender solo algunas prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender todas las prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender las prioridades incluso en semanas de mayor carga."
+        "La disponibilidad de los fundadores no permite atender las prioridades actuales.",
+        "La disponibilidad permite atender solo algunas de las prioridades.",
+        "La disponibilidad es suficiente para atender las prioridades actuales.",
+        "Los fundadores trabajan a tiempo completo o mantienen una disponibilidad estable incluso en periodos de mayor carga."
       ],
       "applicability": {
         "field": null,
@@ -101,8 +101,8 @@
     {
       "id": "T5",
       "dim": "D1",
-      "q": "¿Están claros y documentados los acuerdos necesarios para tomar decisiones y distribuir responsabilidades?",
-      "note": "Revisa si están claras las responsabilidades y cómo se toman decisiones. Puede constar en un pacto de socios o en acuerdos escritos con colaboradores.",
+      "q": "¿Están bien definidos los roles y las responsabilidades del equipo para trabajar y tomar decisiones?",
+      "note": "Revisa si cada persona conoce sus responsabilidades y si está claro cómo se toman las decisiones. Puede constar en acuerdos internos o en un pacto de socios.",
       "levels": [
         "No están claros los responsables ni cómo se toman decisiones importantes.",
         "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
@@ -119,8 +119,8 @@
     {
       "id": "T6",
       "dim": "D1",
-      "q": "¿La estructura de propiedad permite decidir con agilidad y no compromete etapas futuras?",
-      "note": "Comprueba si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
+      "q": "¿El cap table permite decidir con agilidad y no compromete el crecimiento ni la orientación futura?",
+      "note": "El cap table recoge el reparto de participaciones. Comprueba si permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",
@@ -137,8 +137,8 @@
     {
       "id": "PM1",
       "dim": "D2",
-      "q": "¿Está definido el segmento prioritario al que se dirigen las pruebas y acciones comerciales?",
-      "note": "Cuando sean diferentes, distingue usuario, comprador y pagador.",
+      "q": "¿Está bien definido el segmento de clientes prioritario?",
+      "note": "El segmento debe permitir identificar a quién se dirigen las pruebas y las acciones comerciales. Cuando sean diferentes, distingue usuario, comprador y pagador.",
       "levels": [
         "El mercado objetivo es amplio y no hay un segmento concreto.",
         "Se han identificado segmentos posibles, sin prioridad justificada.",
@@ -153,7 +153,7 @@
     {
       "id": "PM2",
       "dim": "D2",
-      "q": "¿Hay evidencia directa de que el problema es suficientemente importante para que el cliente actúe?",
+      "q": "¿Hay evidencia directa de que el problema identificado es lo bastante importante para que el cliente actúe?",
       "note": "La importancia puede provenir del coste, frecuencia, riesgo o urgencia. Distingue un problema que ya cuesta dinero o tiempo, y que el cliente intenta resolver, de una mejora que simplemente estaría bien tener. Un problema infrecuente también puede ser relevante.",
       "levels": [
         "No hay evidencia directa del problema.",
@@ -169,7 +169,7 @@
     {
       "id": "PM3",
       "dim": "D2",
-      "q": "¿La estimación del mercado accesible se apoya en supuestos y datos contrastables?",
+      "q": "¿Se ha estimado el tamaño del mercado con datos contrastables?",
       "note": "La estimación debe construirse de abajo arriba: desde clientes identificables, precio y frecuencia de compra. Partir de una cifra global del sector y recortarla con porcentajes sirve solo como contraste. Valora la trazabilidad y los límites de los supuestos.",
       "levels": [
         "No existe una estimación útil del mercado accesible.",
@@ -185,8 +185,8 @@
     {
       "id": "PM4",
       "dim": "D2",
-      "q": "¿Puede explicarse, con datos, por qué este es el momento y qué facilita o dificulta hoy la adopción?",
-      "note": "Incluye hábitos, costes de cambio, tecnología, regulación o ciclos de compra. Un mercado estable puede ser adecuado; no se exige un sector en auge.",
+      "q": "¿Puede explicarse con evidencias por qué este es un buen momento para lanzar el proyecto?",
+      "note": "Considera cambios en hábitos, costes, tecnología, regulación o canales, junto con las barreras que pueden dificultar la adopción. No es necesario que el sector esté en auge.",
       "levels": [
         "No se ha analizado qué hace que este sea el momento ni qué condiciona la adopción.",
         "Se mencionan facilitadores o barreras, principalmente por intuición.",
@@ -201,7 +201,7 @@
     {
       "id": "VB1",
       "dim": "D3",
-      "q": "¿El cliente reconoce una ventaja concreta frente a las alternativas que utiliza hoy?",
+      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
       "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
       "levels": [
         "No se conocen suficientemente las alternativas actuales.",
@@ -217,7 +217,7 @@
     {
       "id": "VB2",
       "dim": "D3",
-      "q": "¿Está contrastado quién pagaría, por qué concepto y bajo qué condiciones?",
+      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
       "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
       "levels": [
         "No se identifica con claridad quién pagaría ni por qué concepto.",
@@ -233,7 +233,7 @@
     {
       "id": "VB3",
       "dim": "D3",
-      "q": "¿Las pruebas con usuarios reales muestran que la solución produce el resultado que promete?",
+      "q": "¿Las pruebas con usuarios reales muestran que la solución funciona como se espera?",
       "applicabilityNote": "Si el uso es puntual, no se exige repetición: valora si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».",
       "note": "El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapta continuidad, repetición o retención al modelo.",
       "levels": [
@@ -250,8 +250,8 @@
     {
       "id": "VB4",
       "dim": "D3",
-      "q": "¿Qué evidencia tienes sobre las horas necesarias para aumentar los ingresos?",
-      "note": "Se compara el ingreso de entregas equivalentes con las horas totales del equipo. Cuentan registros de pedidos y horas, separando cambios de precios.",
+      "q": "¿Hay evidencia de que el proyecto puede aumentar sus ingresos sin que las horas de trabajo crezcan al mismo ritmo?",
+      "note": "Compara los ingresos de entregas equivalentes con las horas totales del equipo. Usa registros de pedidos y horas y separa el efecto de los cambios de precio.",
       "levels": [
         "La relación entre ingresos y horas de trabajo no se ha estimado.",
         "La relación entre ingresos y horas de trabajo se estima sin registros de entregas.",
@@ -283,7 +283,7 @@
     {
       "id": "C1",
       "dim": "D4",
-      "q": "¿Qué compromisos comerciales has conseguido y cuáles se han repetido?",
+      "q": "¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?",
       "note": "Un compromiso comercial implica que el cliente dedica recursos o realiza una compra. La repetición se acredita con ventas en distintos periodos, aunque los compradores sean diferentes.",
       "levels": [
         "No hay compromisos comerciales documentados.",
@@ -299,9 +299,9 @@
     {
       "id": "C2",
       "dim": "D4",
-      "q": "¿Se ha probado una forma de llegar y vender al segmento prioritario?",
+      "q": "¿Se ha contrastado la estrategia de ventas (go-to-market) con el segmento de clientes definido?",
       "applicabilityNote": "En ciclos comerciales largos pueden utilizarse avances verificables del proceso, aunque todavía no haya ventas. No haber probado el canal es una brecha de evidencia, no un «No aplica».",
-      "note": "GTM: estrategia de llegada al mercado. Valora pruebas y resultados en relación con la duración del ciclo comercial.",
+      "note": "Valora las pruebas y sus resultados teniendo en cuenta la duración del ciclo comercial.",
       "levels": [
         "No hay una hipótesis concreta de canal o proceso comercial.",
         "Existe una hipótesis de canal, mensaje y forma de venta para el segmento.",
@@ -314,42 +314,9 @@
       }
     },
     {
-      "id": "C3",
-      "dim": "D4",
-      "q": "¿Qué evidencia tienes sobre la dependencia de tu principal cliente?",
-      "note": "La concentración es la parte de la facturación que aporta el cliente que más compra. Cuentan los registros de ventas y el cálculo del efecto de perder ese cliente.",
-      "levels": [
-        "La dependencia del principal cliente no se ha calculado.",
-        "La dependencia del principal cliente se estima sin contrastarla con la facturación.",
-        "La dependencia del principal cliente se calcula con la facturación del periodo.",
-        "La dependencia del principal cliente se calcula y su pérdida se contrasta con cobros y compromisos."
-      ],
-      "designFields": [
-        {
-          "id": "largestCustomerShare",
-          "label": "Porcentaje del principal cliente",
-          "description": "Dato no puntuado, de 0 a 100, o «No se conoce». Se distingue estimación de cálculo con registros. Periodo: últimos doce meses o desde la primera venta si es más reciente; se registra su duración."
-        }
-      ],
-      "sources": [
-        {
-          "id": "EXT-CONC-2016",
-          "citation": "Dhaliwal, Judd, Serfling y Shaikh (2016). Customer concentration risk and the cost of equity capital. Journal of Accounting and Economics 61(1), 23–48.",
-          "url": "https://doi.org/10.1016/j.jacceco.2015.03.005",
-          "status": "Fuente conceptual externa; no establece los cortes ni valida estos anclajes."
-        }
-      ],
-      "applicability": {
-        "field": "hasRevenue",
-        "question": "Existe facturación en el periodo de referencia.",
-        "exclusion": "No existe facturación en el periodo de referencia."
-      },
-      "conditional": "No aplica todavía: No existe facturación en el periodo de referencia. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "F1",
       "dim": "D5",
-      "q": "¿Conoces el dinero disponible y los cobros y pagos previstos?",
+      "q": "¿Tienes control del dinero disponible y de los cobros y pagos previstos en los próximos meses?",
       "note": "La caja es el dinero disponible para los pagos del negocio. Se revisa con los cobros y pagos previstos; si las salidas superan las entradas, se calcula cuánto tiempo puede sostenerse esa diferencia.",
       "levels": [
         "La información de caja no identifica el dinero disponible ni los principales cobros y pagos.",
@@ -413,56 +380,6 @@
       }
     },
     {
-      "id": "F5",
-      "dim": "D5",
-      "q": "¿Está identificado el efecto de la financiación pública pendiente sobre tu próximo objetivo?",
-      "note": "El próximo objetivo es un resultado verificable, como completar una prueba o conseguir las primeras ventas. Cuentan el presupuesto, las resoluciones y las fechas previstas de disponibilidad de los fondos.",
-      "levels": [
-        "El efecto de la financiación pública pendiente no se ha identificado.",
-        "El efecto de la financiación pública pendiente se estima sin vincularlo al presupuesto.",
-        "El efecto de la financiación pública pendiente se calcula sobre el presupuesto del próximo objetivo.",
-        "El efecto de la financiación pública pendiente se calcula y existe un plan si no llega."
-      ],
-      "designFields": [
-        {
-          "id": "publicFunding",
-          "label": "Programa, tipo y estado de la financiación",
-          "description": "Datos no puntuados. Programa y tipo (préstamo o subvención); estado (prevista, solicitada, concedida o cobrada); recursos totales del objetivo e importe pendiente de concesión. La proporción pendiente se calcula sin duplicar ayudas para el mismo gasto. Un importe desconocido no equivale a cero."
-        },
-        {
-          "id": "publicPrograms",
-          "label": "Ejemplos de financiación pública",
-          "description": "ENISA ofrece préstamos participativos; NEOTEC es un programa del CDTI. Se registran también Kit Digital y programas autonómicos, incluidas ayudas históricas. No se presupone que sus convocatorias estén abiertas. Concedida no equivale a cobrada."
-        }
-      ],
-      "sources": [
-        {
-          "id": "OF-ENISA",
-          "citation": "ENISA. Financiación: préstamos participativos.",
-          "url": "https://www.enisa.es/servicios/financiacion/",
-          "status": "Descripción oficial del programa; no valida los anclajes."
-        },
-        {
-          "id": "OF-CDTI",
-          "citation": "CDTI. Ayudas NEOTEC.",
-          "url": "https://www.cdti.es/ayudas/ayudas-neotec",
-          "status": "Descripción oficial del programa; no valida los anclajes."
-        },
-        {
-          "id": "OF-KIT",
-          "citation": "Red.es. Convocatorias Kit Digital.",
-          "url": "https://kitdigital.red.es/convocatorias",
-          "status": "Fuente oficial para identificar programas, no para afirmar que estén abiertos."
-        }
-      ],
-      "applicability": {
-        "field": "usesPublicFunding",
-        "question": "El plan usa o contempla financiación pública.",
-        "exclusion": "El plan no usa ni contempla financiación pública."
-      },
-      "conditional": "No aplica todavía: El plan no usa ni contempla financiación pública. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "SA1",
       "dim": "D6",
       "q": "¿Las relaciones externas aportan recursos u oportunidades necesarios para el siguiente hito?",
@@ -481,8 +398,8 @@
     {
       "id": "SA2",
       "dim": "D6",
-      "q": "¿Existen evidencias de confianza adecuadas a lo que necesitan clientes o socios para colaborar?",
-      "note": "Es la legitimidad de una empresa nueva: lo que hace que la otra parte se atreva a dar el paso. Pueden ser referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el aval de un cliente o institución de referencia. No se exige tener inversores ni apoyos prestigiosos.",
+      "q": "¿Existen evidencias de legitimidad en el mercado que faciliten la colaboración con clientes o socios?",
+      "note": "Son señales que ayudan a confiar en una empresa nueva: referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el respaldo de clientes e instituciones. No se exige tener inversores ni apoyos prestigiosos.",
       "levels": [
         "No se conoce qué evidencias de confianza necesita el cliente o socio.",
         "Se conocen esas necesidades, pero solo hay afirmaciones o señales informales.",
@@ -502,7 +419,7 @@
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.1",
+  "schema": "expert-validation/2.2",
   "screening": [
     {
       "id": "phase",

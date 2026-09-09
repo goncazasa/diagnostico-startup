@@ -11,6 +11,8 @@ Configuración una sola vez. Los expertos no necesitan una cuenta de Google ni a
 
 Si se modifica `Code.gs`, actualizar la implementación a una **nueva versión**, manteniendo la misma URL. Guardar el editor no cambia por sí solo el código publicado.
 
+La versión actual del receptor procesa el esquema `expert-validation/2.2` y mantiene compatibilidad temporal con V2.1 durante el cambio de despliegue. Después de actualizar el instrumento hay que publicar también `Code.gs` antes de abrir la recogida de respuestas.
+
 Las pestañas de análisis se generan tras la primera entrega. Se pueden reconstruir desde la hoja con **Validación de expertos → Actualizar tablas de análisis** (recargar la hoja para ver el menú). No escribir anotaciones propias en estas pestañas porque se reemplazan; usar otra pestaña. No modificar ni borrar `Entregas`.
 
 `Resumen` ofrece una lectura visual por dimensiones y preguntas. Los perfiles cuyo identificador empieza por `testing-`, cuyo nombre contiene `DATOS DE TESTING` o cuyo correo empieza por `datos.testing`/`testing` quedan marcados en la columna `es_testing`. Se muestran en el resumen cuando todavía no existen respuestas reales, pero se excluyen siempre de `ValidezContenido`.

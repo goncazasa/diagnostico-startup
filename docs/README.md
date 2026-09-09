@@ -11,4 +11,4 @@ Esta carpeta reúne la memoria técnica y metodológica de **Diagnóstico de sta
 | [Registro de cambios](../CHANGELOG.md) | Resume las modificaciones por versión. |
 | [Conexión con Google Sheets](../google-apps-script/LEEME.md) | Contiene el procedimiento específico para configurar o actualizar el receptor. |
 
-Estado documentado: **8 de septiembre de 2026**, aplicación e instrumento `2.1.0`, esquema `expert-validation/2.1`.
+Estado documentado: **9 de septiembre de 2026**, aplicación e instrumento `2.2.0`, esquema `expert-validation/2.2`.

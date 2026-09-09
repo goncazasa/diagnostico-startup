@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Diagnóstico de startups. Revisión por expertos de las preguntas de un instrumento para startups en fase temprana. Investigación doctoral en la Universidad Rey Juan Carlos.">
+  <meta name="description" content="Validación académica de un diagnóstico para startups en fases iniciales. Investigación doctoral en la Universidad Rey Juan Carlos.">
   <meta name="theme-color" content="#183b5b">
-  <title>Diagnóstico de startups | Revisión por expertos</title>
+  <title>Diagnóstico de startups en fases iniciales</title>
   <style>:root {
   color-scheme: light;
   --ink: #183b5b; --muted: #526579; --paper: #f5f7fb; --white: #fff;
@@ -78,9 +78,9 @@ progress::-moz-progress-bar { background: var(--teal); }
 .welcome-art p { font-size: 1rem; color: var(--muted); text-align: center; margin-top: 12px; }
 .welcome-art strong { font-weight: 600; color: var(--ink); }
 .welcome-start { max-width: 100%; padding: 30px 36px; }
-.welcome-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 4px; }
-.welcome-notes p { max-width: 48ch; padding: 14px 16px; border-radius: 8px; background: #f4f7fb; font-size: .875rem; line-height: 1.55; }
-.welcome-notes strong { display: block; color: var(--ink); margin-bottom: 2px; }
+.welcome-objective { max-width: 76ch; }
+.welcome-objective h2 { margin-bottom: 10px; }
+.welcome-objective p { color: var(--muted); font-size: .9375rem; line-height: 1.65; }
 .extra-fields, .privacy, .summary-optional, .item-observation { margin: 20px 0; border-top: 1px solid var(--line); padding-top: 16px; font-size: .875rem; }
 .extra-fields > summary, .privacy > summary, .summary-optional > summary, .item-observation > summary { font-weight: 600; color: var(--ink); }
 .extra-fields[open] > summary, .privacy[open] > summary, .summary-optional[open] > summary, .item-observation[open] > summary { margin-bottom: 16px; }
@@ -306,7 +306,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   .guide-row h2 { font-size: 1rem; margin-top: 0; }
   .guide-note { padding: 16px; }
   .guide-steps { grid-template-columns: 1fr; gap: 18px; }
-  .welcome-notes { grid-template-columns: 1fr; gap: 10px; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 82px; gap: 8px; align-items: start; }
   .dimension-heading .dimension-art { margin-top: 18px; }
   .dimension-heading h1 { font-size: 1.8125rem; }
@@ -363,7 +362,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 <body>
   <a class="skip-link" href="#main">Saltar al contenido</a>
   <header class="masthead">
-    <div class="brand-lockup"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M7 28V12m13 21V7m13 21V12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="19" r="4" fill="currentColor"/><circle cx="20" cy="13" r="4" fill="currentColor"/><circle cx="33" cy="24" r="4" fill="currentColor"/></svg><div><span class="brand">Diagnóstico de startups</span><span class="brand-sub">Revisión por expertos</span></div></div>
+    <div class="brand-lockup"><svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M7 28V12m13 21V7m13 21V12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="7" cy="19" r="4" fill="currentColor"/><circle cx="20" cy="13" r="4" fill="currentColor"/><circle cx="33" cy="24" r="4" fill="currentColor"/></svg><span class="brand">Diagnóstico de startups en fases iniciales</span></div>
     <p class="study-credit">Investigación doctoral<span>Universidad Rey Juan Carlos</span></p>
   </header>
   <div class="workspace">
@@ -375,12 +374,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <div class="progress-box">
         <label for="progress">Tu avance</label>
         <progress id="progress" value="0"></progress>
-        <p id="progress-text">6 dimensiones y 23 preguntas</p>
+        <p id="progress-text">6 dimensiones y 21 preguntas</p>
         <p class="fine">La relevancia es obligatoria; los otros criterios son opcionales.</p>
       </div>
       <details class="draft-tools"><summary>Tu respuesta</summary>
         <button type="button" id="import-button" class="text-button">Importar una copia</button>
-        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.1">
+        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.2">
         <button type="button" id="reset-button" class="text-button">Comenzar otra respuesta</button>
       </details>
     </aside>
@@ -391,17 +390,17 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <footer class="save-footer"><span id="save-state" role="status">Preparando el guardado local…</span><span id="save-time"></span></footer>
     </main>
   </div>
-  <footer class="site-footer"><span>Diagnóstico de startups</span><a href="mailto:luis.gonzalezc@urjc.es">Contactar con el investigador</a></footer>
+  <footer class="site-footer"><span>Diagnóstico de startups en fases iniciales</span><a href="mailto:luis.gonzalezc@urjc.es">Contactar con el investigador</a></footer>
   <div id="print-view"></div>
   <script>(function (root) {
   'use strict';
   const instrument = {
-  "version": "2.1.0",
-  "title": "Validación de expertos",
+  "version": "2.2.0",
+  "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Ofrecer a las personas emprendedoras una visión estructurada de la situación de su startup y de las áreas que requieren atención.",
-  "population": "Personas emprendedoras en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
-  "source": "Instrumento V2.1 aprobado el 8 de septiembre de 2026. Banco de 23 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
+  "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
+  "source": "Instrumento V2.2 revisado el 9 de septiembre de 2026. Banco de 21 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -410,46 +409,46 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "D1",
       "short": "Equipo",
-      "name": "Equipo y gobernanza",
-      "desc": "Capacidades, aprendizaje, disponibilidad y acuerdos para alcanzar el siguiente objetivo."
+      "name": "Equipo",
+      "desc": "Perfiles, experiencia, disponibilidad, roles y estructura de propiedad para ejecutar el proyecto."
     },
     {
       "id": "D2",
-      "short": "Mercado",
+      "short": "Problema y mercado",
       "name": "Problema y mercado",
-      "desc": "Segmento prioritario, evidencia del problema, mercado accesible y condiciones de adopción."
+      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción."
     },
     {
       "id": "D3",
-      "short": "Propuesta de valor",
+      "short": "Propuesta de valor y modelo de negocio",
       "name": "Propuesta de valor y modelo de negocio",
-      "desc": "Ventaja percibida, hipótesis de monetización y resultados de las pruebas de la solución."
+      "desc": "Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
     },
     {
       "id": "D4",
-      "short": "Evidencia comercial",
+      "short": "Evidencia comercial (tracción y go-to-market)",
       "name": "Evidencia comercial (tracción y go-to-market)",
-      "desc": "Compromisos verificables y pruebas de adquisición de clientes en el segmento elegido. Mide la evidencia obtenida, no el plan comercial previsto."
+      "desc": "Compromisos comerciales y pruebas de la estrategia de llegada y venta al mercado."
     },
     {
       "id": "D5",
-      "short": "Finanzas",
+      "short": "Evidencia financiera",
       "name": "Evidencia financiera",
-      "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente cuando sea aplicable."
+      "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente."
     },
     {
       "id": "D6",
-      "short": "Recursos y confianza",
+      "short": "Recursos estratégicos y legitimidad",
       "name": "Recursos estratégicos y legitimidad",
-      "desc": "Relaciones, legitimidad y evidencias de confianza que facilitan recursos, acceso al mercado o acuerdos. La legitimidad es el reconocimiento externo que hace que un cliente, socio o inversor se atreva a trabajar con una empresa nueva."
+      "desc": "Relaciones y evidencias de legitimidad que facilitan recursos, acceso al mercado o acuerdos."
     }
   ],
   "items": [
     {
       "id": "T1",
       "dim": "D1",
-      "q": "¿El equipo tiene cubiertos los perfiles necesarios para desarrollar la startup y conseguir clientes?",
-      "note": "Revisa si están cubiertas las funciones clave que exige el modelo de negocio, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
+      "q": "¿El equipo tiene los perfiles necesarios y complementarios para ejecutar con éxito el proyecto?",
+      "note": "Revisa si están cubiertas las funciones clave que exige el proyecto, como producto, operaciones y ventas. Pueden asumirlas personas del equipo o colaboradores con un compromiso estable.",
       "levels": [
         "No se ha analizado qué perfiles exige este modelo de negocio.",
         "Se sabe qué perfiles faltan, pero su cobertura todavía no está asegurada.",
@@ -464,13 +463,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T2",
       "dim": "D1",
-      "q": "¿El equipo dispone de conocimiento directo del cliente, sector o problema para tomar decisiones?",
-      "note": "El conocimiento puede venir de experiencia, investigación o colaboración continua con personas del sector. Incluye quién compra, cómo compra y cuánto tarda en decidir.",
+      "q": "¿El equipo dispone de experiencia relevante en el sector?",
+      "note": "La experiencia puede proceder del trabajo previo, del conocimiento directo del mercado o de una colaboración estable con personas del sector.",
       "levels": [
-        "Las decisiones se apoyan principalmente en supuestos sin contraste directo.",
-        "Hay conocimiento indirecto o contactos puntuales, con lagunas relevantes.",
-        "El equipo dispone de conocimiento directo sobre el cliente y su contexto.",
-        "Ese conocimiento ha permitido corregir supuestos y fundamentar decisiones concretas."
+        "El equipo no dispone de experiencia ni conocimiento directo del sector.",
+        "La experiencia es limitada o indirecta y deja lagunas importantes.",
+        "El equipo cuenta con experiencia directa y relevante para el proyecto.",
+        "Esa experiencia ya ha permitido anticipar dificultades y tomar mejores decisiones."
       ],
       "applicability": {
         "field": null,
@@ -480,13 +479,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T4",
       "dim": "D1",
-      "q": "¿La disponibilidad de los fundadores permite atender las prioridades del proyecto?",
-      "note": "Compara la disponibilidad real de los fundadores con el tiempo que exigen las prioridades de las últimas cuatro semanas. Puede comprobarse con agendas o registros de dedicación.",
+      "q": "¿Los fundadores trabajan a tiempo completo o tienen disponibilidad suficiente para atender las prioridades del proyecto?",
+      "note": "Compara su disponibilidad real con la dedicación que han exigido las prioridades de las últimas cuatro semanas.",
       "levels": [
-        "La disponibilidad de los fundadores no permite atender las prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender solo algunas prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender todas las prioridades del periodo.",
-        "La disponibilidad de los fundadores permite atender las prioridades incluso en semanas de mayor carga."
+        "La disponibilidad de los fundadores no permite atender las prioridades actuales.",
+        "La disponibilidad permite atender solo algunas de las prioridades.",
+        "La disponibilidad es suficiente para atender las prioridades actuales.",
+        "Los fundadores trabajan a tiempo completo o mantienen una disponibilidad estable incluso en periodos de mayor carga."
       ],
       "applicability": {
         "field": null,
@@ -496,8 +495,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T5",
       "dim": "D1",
-      "q": "¿Están claros y documentados los acuerdos necesarios para tomar decisiones y distribuir responsabilidades?",
-      "note": "Revisa si están claras las responsabilidades y cómo se toman decisiones. Puede constar en un pacto de socios o en acuerdos escritos con colaboradores.",
+      "q": "¿Están bien definidos los roles y las responsabilidades del equipo para trabajar y tomar decisiones?",
+      "note": "Revisa si cada persona conoce sus responsabilidades y si está claro cómo se toman las decisiones. Puede constar en acuerdos internos o en un pacto de socios.",
       "levels": [
         "No están claros los responsables ni cómo se toman decisiones importantes.",
         "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
@@ -514,8 +513,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "T6",
       "dim": "D1",
-      "q": "¿La estructura de propiedad permite decidir con agilidad y no compromete etapas futuras?",
-      "note": "Comprueba si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
+      "q": "¿El cap table permite decidir con agilidad y no compromete el crecimiento ni la orientación futura?",
+      "note": "El cap table recoge el reparto de participaciones. Comprueba si permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",
@@ -532,8 +531,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "PM1",
       "dim": "D2",
-      "q": "¿Está definido el segmento prioritario al que se dirigen las pruebas y acciones comerciales?",
-      "note": "Cuando sean diferentes, distingue usuario, comprador y pagador.",
+      "q": "¿Está bien definido el segmento de clientes prioritario?",
+      "note": "El segmento debe permitir identificar a quién se dirigen las pruebas y las acciones comerciales. Cuando sean diferentes, distingue usuario, comprador y pagador.",
       "levels": [
         "El mercado objetivo es amplio y no hay un segmento concreto.",
         "Se han identificado segmentos posibles, sin prioridad justificada.",
@@ -548,7 +547,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "PM2",
       "dim": "D2",
-      "q": "¿Hay evidencia directa de que el problema es suficientemente importante para que el cliente actúe?",
+      "q": "¿Hay evidencia directa de que el problema identificado es lo bastante importante para que el cliente actúe?",
       "note": "La importancia puede provenir del coste, frecuencia, riesgo o urgencia. Distingue un problema que ya cuesta dinero o tiempo, y que el cliente intenta resolver, de una mejora que simplemente estaría bien tener. Un problema infrecuente también puede ser relevante.",
       "levels": [
         "No hay evidencia directa del problema.",
@@ -564,7 +563,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "PM3",
       "dim": "D2",
-      "q": "¿La estimación del mercado accesible se apoya en supuestos y datos contrastables?",
+      "q": "¿Se ha estimado el tamaño del mercado con datos contrastables?",
       "note": "La estimación debe construirse de abajo arriba: desde clientes identificables, precio y frecuencia de compra. Partir de una cifra global del sector y recortarla con porcentajes sirve solo como contraste. Valora la trazabilidad y los límites de los supuestos.",
       "levels": [
         "No existe una estimación útil del mercado accesible.",
@@ -580,8 +579,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "PM4",
       "dim": "D2",
-      "q": "¿Puede explicarse, con datos, por qué este es el momento y qué facilita o dificulta hoy la adopción?",
-      "note": "Incluye hábitos, costes de cambio, tecnología, regulación o ciclos de compra. Un mercado estable puede ser adecuado; no se exige un sector en auge.",
+      "q": "¿Puede explicarse con evidencias por qué este es un buen momento para lanzar el proyecto?",
+      "note": "Considera cambios en hábitos, costes, tecnología, regulación o canales, junto con las barreras que pueden dificultar la adopción. No es necesario que el sector esté en auge.",
       "levels": [
         "No se ha analizado qué hace que este sea el momento ni qué condiciona la adopción.",
         "Se mencionan facilitadores o barreras, principalmente por intuición.",
@@ -596,7 +595,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "VB1",
       "dim": "D3",
-      "q": "¿El cliente reconoce una ventaja concreta frente a las alternativas que utiliza hoy?",
+      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
       "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
       "levels": [
         "No se conocen suficientemente las alternativas actuales.",
@@ -612,7 +611,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "VB2",
       "dim": "D3",
-      "q": "¿Está contrastado quién pagaría, por qué concepto y bajo qué condiciones?",
+      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
       "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
       "levels": [
         "No se identifica con claridad quién pagaría ni por qué concepto.",
@@ -628,7 +627,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "VB3",
       "dim": "D3",
-      "q": "¿Las pruebas con usuarios reales muestran que la solución produce el resultado que promete?",
+      "q": "¿Las pruebas con usuarios reales muestran que la solución funciona como se espera?",
       "applicabilityNote": "Si el uso es puntual, no se exige repetición: valora si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».",
       "note": "El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapta continuidad, repetición o retención al modelo.",
       "levels": [
@@ -645,8 +644,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "VB4",
       "dim": "D3",
-      "q": "¿Qué evidencia tienes sobre las horas necesarias para aumentar los ingresos?",
-      "note": "Se compara el ingreso de entregas equivalentes con las horas totales del equipo. Cuentan registros de pedidos y horas, separando cambios de precios.",
+      "q": "¿Hay evidencia de que el proyecto puede aumentar sus ingresos sin que las horas de trabajo crezcan al mismo ritmo?",
+      "note": "Compara los ingresos de entregas equivalentes con las horas totales del equipo. Usa registros de pedidos y horas y separa el efecto de los cambios de precio.",
       "levels": [
         "La relación entre ingresos y horas de trabajo no se ha estimado.",
         "La relación entre ingresos y horas de trabajo se estima sin registros de entregas.",
@@ -678,7 +677,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "C1",
       "dim": "D4",
-      "q": "¿Qué compromisos comerciales has conseguido y cuáles se han repetido?",
+      "q": "¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?",
       "note": "Un compromiso comercial implica que el cliente dedica recursos o realiza una compra. La repetición se acredita con ventas en distintos periodos, aunque los compradores sean diferentes.",
       "levels": [
         "No hay compromisos comerciales documentados.",
@@ -694,9 +693,9 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "C2",
       "dim": "D4",
-      "q": "¿Se ha probado una forma de llegar y vender al segmento prioritario?",
+      "q": "¿Se ha contrastado la estrategia de ventas (go-to-market) con el segmento de clientes definido?",
       "applicabilityNote": "En ciclos comerciales largos pueden utilizarse avances verificables del proceso, aunque todavía no haya ventas. No haber probado el canal es una brecha de evidencia, no un «No aplica».",
-      "note": "GTM: estrategia de llegada al mercado. Valora pruebas y resultados en relación con la duración del ciclo comercial.",
+      "note": "Valora las pruebas y sus resultados teniendo en cuenta la duración del ciclo comercial.",
       "levels": [
         "No hay una hipótesis concreta de canal o proceso comercial.",
         "Existe una hipótesis de canal, mensaje y forma de venta para el segmento.",
@@ -709,42 +708,9 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       }
     },
     {
-      "id": "C3",
-      "dim": "D4",
-      "q": "¿Qué evidencia tienes sobre la dependencia de tu principal cliente?",
-      "note": "La concentración es la parte de la facturación que aporta el cliente que más compra. Cuentan los registros de ventas y el cálculo del efecto de perder ese cliente.",
-      "levels": [
-        "La dependencia del principal cliente no se ha calculado.",
-        "La dependencia del principal cliente se estima sin contrastarla con la facturación.",
-        "La dependencia del principal cliente se calcula con la facturación del periodo.",
-        "La dependencia del principal cliente se calcula y su pérdida se contrasta con cobros y compromisos."
-      ],
-      "designFields": [
-        {
-          "id": "largestCustomerShare",
-          "label": "Porcentaje del principal cliente",
-          "description": "Dato no puntuado, de 0 a 100, o «No se conoce». Se distingue estimación de cálculo con registros. Periodo: últimos doce meses o desde la primera venta si es más reciente; se registra su duración."
-        }
-      ],
-      "sources": [
-        {
-          "id": "EXT-CONC-2016",
-          "citation": "Dhaliwal, Judd, Serfling y Shaikh (2016). Customer concentration risk and the cost of equity capital. Journal of Accounting and Economics 61(1), 23–48.",
-          "url": "https://doi.org/10.1016/j.jacceco.2015.03.005",
-          "status": "Fuente conceptual externa; no establece los cortes ni valida estos anclajes."
-        }
-      ],
-      "applicability": {
-        "field": "hasRevenue",
-        "question": "Existe facturación en el periodo de referencia.",
-        "exclusion": "No existe facturación en el periodo de referencia."
-      },
-      "conditional": "No aplica todavía: No existe facturación en el periodo de referencia. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "F1",
       "dim": "D5",
-      "q": "¿Conoces el dinero disponible y los cobros y pagos previstos?",
+      "q": "¿Tienes control del dinero disponible y de los cobros y pagos previstos en los próximos meses?",
       "note": "La caja es el dinero disponible para los pagos del negocio. Se revisa con los cobros y pagos previstos; si las salidas superan las entradas, se calcula cuánto tiempo puede sostenerse esa diferencia.",
       "levels": [
         "La información de caja no identifica el dinero disponible ni los principales cobros y pagos.",
@@ -808,56 +774,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       }
     },
     {
-      "id": "F5",
-      "dim": "D5",
-      "q": "¿Está identificado el efecto de la financiación pública pendiente sobre tu próximo objetivo?",
-      "note": "El próximo objetivo es un resultado verificable, como completar una prueba o conseguir las primeras ventas. Cuentan el presupuesto, las resoluciones y las fechas previstas de disponibilidad de los fondos.",
-      "levels": [
-        "El efecto de la financiación pública pendiente no se ha identificado.",
-        "El efecto de la financiación pública pendiente se estima sin vincularlo al presupuesto.",
-        "El efecto de la financiación pública pendiente se calcula sobre el presupuesto del próximo objetivo.",
-        "El efecto de la financiación pública pendiente se calcula y existe un plan si no llega."
-      ],
-      "designFields": [
-        {
-          "id": "publicFunding",
-          "label": "Programa, tipo y estado de la financiación",
-          "description": "Datos no puntuados. Programa y tipo (préstamo o subvención); estado (prevista, solicitada, concedida o cobrada); recursos totales del objetivo e importe pendiente de concesión. La proporción pendiente se calcula sin duplicar ayudas para el mismo gasto. Un importe desconocido no equivale a cero."
-        },
-        {
-          "id": "publicPrograms",
-          "label": "Ejemplos de financiación pública",
-          "description": "ENISA ofrece préstamos participativos; NEOTEC es un programa del CDTI. Se registran también Kit Digital y programas autonómicos, incluidas ayudas históricas. No se presupone que sus convocatorias estén abiertas. Concedida no equivale a cobrada."
-        }
-      ],
-      "sources": [
-        {
-          "id": "OF-ENISA",
-          "citation": "ENISA. Financiación: préstamos participativos.",
-          "url": "https://www.enisa.es/servicios/financiacion/",
-          "status": "Descripción oficial del programa; no valida los anclajes."
-        },
-        {
-          "id": "OF-CDTI",
-          "citation": "CDTI. Ayudas NEOTEC.",
-          "url": "https://www.cdti.es/ayudas/ayudas-neotec",
-          "status": "Descripción oficial del programa; no valida los anclajes."
-        },
-        {
-          "id": "OF-KIT",
-          "citation": "Red.es. Convocatorias Kit Digital.",
-          "url": "https://kitdigital.red.es/convocatorias",
-          "status": "Fuente oficial para identificar programas, no para afirmar que estén abiertos."
-        }
-      ],
-      "applicability": {
-        "field": "usesPublicFunding",
-        "question": "El plan usa o contempla financiación pública.",
-        "exclusion": "El plan no usa ni contempla financiación pública."
-      },
-      "conditional": "No aplica todavía: El plan no usa ni contempla financiación pública. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "SA1",
       "dim": "D6",
       "q": "¿Las relaciones externas aportan recursos u oportunidades necesarios para el siguiente hito?",
@@ -876,8 +792,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     {
       "id": "SA2",
       "dim": "D6",
-      "q": "¿Existen evidencias de confianza adecuadas a lo que necesitan clientes o socios para colaborar?",
-      "note": "Es la legitimidad de una empresa nueva: lo que hace que la otra parte se atreva a dar el paso. Pueden ser referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el aval de un cliente o institución de referencia. No se exige tener inversores ni apoyos prestigiosos.",
+      "q": "¿Existen evidencias de legitimidad en el mercado que faciliten la colaboración con clientes o socios?",
+      "note": "Son señales que ayudan a confiar en una empresa nueva: referencias, resultados de pruebas, experiencia demostrada, acreditaciones pertinentes o el respaldo de clientes e instituciones. No se exige tener inversores ni apoyos prestigiosos.",
       "levels": [
         "No se conoce qué evidencias de confianza necesita el cliente o socio.",
         "Se conocen esas necesidades, pero solo hay afirmaciones o señales informales.",
@@ -897,7 +813,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.1",
+  "schema": "expert-validation/2.2",
   "screening": [
     {
       "id": "phase",
@@ -972,7 +888,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 </script>
   <script>(function (root) {
   'use strict';
-  const SCHEMA = 'expert-validation/2.1';
+  const SCHEMA = 'expert-validation/2.2';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
   const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
@@ -1005,7 +921,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.1.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.2.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -1129,7 +1045,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.1. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.2. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }
@@ -1151,10 +1067,9 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.1';
+  const STORAGE_KEY = 'startup-expert-validation-v2.2';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
-  const email = instrument.researcherEmail;
   const statusLabels = { complete: 'Completo', partial: 'Parcial', pending: 'Pendiente', skipped: 'Omitido' };
   const criteriaLabels = { relevance: 'Relevancia', coverage: 'Cobertura', usability: 'Claridad y respuestas' };
   const scaleLabels = {
@@ -1183,8 +1098,8 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
-    C3: 'Dependencia de clientes', VB4: 'Ingresos y horas de trabajo', F5: 'Financiación pública pendiente',
-    T1: 'Perfiles complementarios', T2: 'Conocimiento del cliente', T4: 'Disponibilidad', T5: 'Acuerdos y responsabilidades', T6: 'Estructura de propiedad',
+    VB4: 'Crecimiento e ingresos',
+    T1: 'Perfiles complementarios', T2: 'Experiencia en el sector', T4: 'Disponibilidad', T5: 'Roles y responsabilidades', T6: 'Estructura de propiedad',
     PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
     VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
     C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente',
@@ -1192,7 +1107,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     SA1: 'Aportación de la red', SA2: 'Evidencias de confianza'
   };
   const dimensionLabel = id => 'Dimensión ' + id.slice(1);
-  const questionLabel = item => `Pregunta ${item.id.match(/\d+$/)[0]}`;
+  const questionLabel = item => `Pregunta ${instrument.items.filter(candidate => candidate.dim === item.dim).findIndex(candidate => candidate.id === item.id) + 1}`;
   function illustration(id) {
     const drawings = {
       D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
@@ -1212,12 +1127,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   const currentSubmission = () => state.submission && /^sheets-[a-f0-9]{64}$/.test(state.submission.id) && state.submission.revision === state.revision;
   let textTimer;
   const pendingText = new Map();
-  const reachedScreens = new Set();
-  function recordProgress(screen) {
-    if (!state.consent || location.protocol === 'file:' || reachedScreens.has(screen) || !navigator.sendBeacon) return;
-    // Aggregate counters only: no response ID, email, answers, timestamps or session token.
-    try { if (navigator.sendBeacon('/api/progress', new Blob([JSON.stringify({ screen })], {type:'application/json'}))) reachedScreens.add(screen); } catch { /* Optional telemetry never blocks answering. */ }
-  }
   const restored = repository.load();
   if (restored.ok && restored.value) {
     try { state = model.validateState(restored.value); }
@@ -1275,14 +1184,11 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Revisión experta del diagnóstico de startups', 'Ayúdanos a validar un cuestionario dirigido a personas emprendedoras en fases iniciales.')}<p class="intro-lead">Como experto, analizarás si las preguntas son relevantes para diagnosticar con rigor la situación de una startup y si se entienden con facilidad.</p><p class="key-instruction">Tu tarea es valorar el cuestionario. No debes evaluar una startup concreta.</p><div class="welcome-facts"><span><strong>23</strong> preguntas</span><span><strong>6</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
-      `<section class="surface welcome-start"><div class="welcome-notes"><p><strong>Responde con tu criterio.</strong> Puedes omitir los temas que queden fuera de tu experiencia.</p><p><strong>Guardado automático.</strong> Puedes continuar más tarde en este navegador.</p></div>
-      <details class="extra-fields"><summary>Sobre el diagnóstico</summary><p>${esc(instrument.purpose)}</p><p>${esc(instrument.population)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></details>
+    return `<div class="welcome-hero"><div>${heading('Diagnóstico de startups en fases iniciales', 'Como experto o experta en emprendimiento, ayúdanos a validar un cuestionario dirigido a startups en fases iniciales.')}<p class="intro-lead">Analizarás si las preguntas y el contenido del diagnóstico son relevantes para evaluar la situación de una startup.</p><p class="key-instruction">Puedes omitir los temas que queden fuera de tu experiencia.</p><div class="welcome-facts"><span><strong>21</strong> preguntas</span><span><strong>6</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+      `<section class="surface welcome-start"><div class="welcome-objective"><h2>Objetivo del diagnóstico</h2><p>${esc(instrument.purpose)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></div>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
-      <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p>
-      <p>Al pulsar «Enviar revisión», tus respuestas se guardan en una hoja privada de Google Sheets del investigador mediante Vercel y Google Apps Script. No incluyas datos confidenciales ni nombres de clientes. También puedes descargar una copia de tu revisión.</p>
-      <p>Se registran contadores agregados de pantallas recibidas para estudiar el recorrido. Esos eventos no incluyen correo, nombre, identificador de respuesta ni valoraciones.</p><p>Puedes solicitar la hoja de información del estudio antes o después de responder en <a href="mailto:${email}?subject=Hoja%20de%20informaci%C3%B3n%20del%20estudio">${email}</a>. Incluye responsable, base jurídica, conservación, destinatarios y derechos. Para retirar una respuesta, escribe a ese correo con su identificador. Tras anonimizarla de forma irreversible, puede que ya no sea posible localizarla.</p></details>
+      <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p></details>
       <label class="check-line" for="consent"><input id="consent" type="checkbox" data-path="consent" ${state.consent ? 'checked' : ''}><span>He leído la información y acepto participar voluntariamente y el uso académico de mis respuestas.</span></label>
       ${nav('Empezar la revisión')}</section>`;
   }
@@ -1290,13 +1196,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
       `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups? (puedes marcar varias)', model.roles)}
       ${field('profile.years', 'Años de experiencia con startups', '', 'number')}
-      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot || state.profile.conflict ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
+      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
       ${checks('profile.phases', 'Fases con las que tienes experiencia (puedes marcar varias)', model.phases)}
       <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
-      ${field('profile.pivot', '¿Has vivido un cambio de rumbo, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}
-      ${field('profile.conflict', 'Conflictos de interés o circunstancias relevantes', 'No incluyas nombres de personas o empresas.')}</details>
+      ${field('profile.pivot', '¿Has vivido un pivote, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}</details>
       <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué dimensiones evaluarías para diagnosticar una startup en fase inicial?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe las grandes áreas que revisarías; al continuar se guardará la respuesta y ya no podrás editarla.')}</div>
       ${nav('Continuar')}</section>`;
   }
@@ -1410,7 +1315,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function profileText() {
     const p = state.profile;
-    return [['Correo', p.email], ['Nombre', p.name], ['Perfiles', p.roles.join(', ')], ['Años', p.years], ['Startups', p.ventures], ['Fases', p.phases.join(', ')], ['Sectores', p.sectors], ['Pivote, cierre o fracaso', p.pivot], ['Conflictos de interés', p.conflict]].map(([label, value]) => label + ': ' + (value || 'Sin respuesta')).join('\n');
+    return [['Correo', p.email], ['Nombre', p.name], ['Perfiles', p.roles.join(', ')], ['Años', p.years], ['Startups', p.ventures], ['Fases', p.phases.join(', ')], ['Sectores', p.sectors], ['Pivote, cierre o fracaso', p.pivot]].map(([label, value]) => label + ': ' + (value || 'Sin respuesta')).join('\n');
   }
   function render() {
     const step = steps[state.step];
@@ -1427,7 +1332,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     refresh();
   }
   function refresh() {
-    recordProgress(steps[state.step].dim || steps[state.step].type);
     const counts = model.summary(state);
     const progress = document.getElementById('progress');
     progress.max = counts.total;
@@ -1569,7 +1473,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       if (!response.ok || result.ok !== true || typeof result.receiptId !== 'string' || !/^sheets-[a-f0-9]{64}$/.test(result.receiptId)) throw new Error(response.status === 503 ? 'not-configured' : 'failed');
       if (state.responseId === payload.response.responseId) {
         state = model.validateState({ ...state, submission: { id: result.receiptId, revision: payload.response.revision, at: new Date().toISOString() } });
-        recordProgress('completed');
         persist();
       }
     } catch (error) {
@@ -1583,7 +1486,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_1_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_2_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -1618,10 +1521,10 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.1 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.2 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups</h1><p>Revisión por expertos · Instrumento V2.1</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.2</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

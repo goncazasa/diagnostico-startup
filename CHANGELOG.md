@@ -1,5 +1,17 @@
 # Registro de cambios
 
+## V2.2 — revisión de contenido y simplificación (septiembre de 2026)
+
+- El título público pasa a **Diagnóstico de startups en fases iniciales** y se retira «Revisión por expertos» de la marca.
+- La bienvenida explica la tarea experta y muestra de forma directa el objetivo, la población y el alcance del diagnóstico.
+- Se retiran de la bienvenida las explicaciones técnicas de Google Sheets, Vercel y Apps Script, la referencia a la hoja informativa y el aviso de telemetría. El cliente deja de enviar eventos de navegación.
+- El perfil mantiene los años como campo numérico, usa «pivote» y deja de mostrar conflictos de interés.
+- Los nombres del lateral coinciden con los títulos de las seis dimensiones y la numeración visible de preguntas es consecutiva.
+- Se revisan los enunciados de las seis dimensiones y se retiran C3 y F5. El banco queda en 21 preguntas y 54 juicios posibles.
+- «Momento perfecto para triunfar» se operacionaliza como evidencia de un buen momento para lanzar; la escalabilidad se expresa como crecimiento de ingresos sin crecimiento proporcional de horas.
+- El esquema pasa a `expert-validation/2.2` y el almacenamiento local a `startup-expert-validation-v2.2` para no mezclar respuestas de bancos distintos.
+- El receptor de Google Apps Script acepta V2.2 y conserva intactas las entregas históricas de versiones anteriores.
+
 ## Simplificación de bienvenida e instrucciones (septiembre de 2026)
 
 - La portada explica de forma directa que el experto valida preguntas destinadas a personas emprendedoras en fases iniciales.

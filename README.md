@@ -1,6 +1,6 @@
 # Diagnóstico startup · Panel de expertos
 
-Formulario con una dimensión por página, veintitrés preguntas, 58 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
+Formulario con una dimensión por página, veintiuna preguntas, 54 juicios posibles y una observación final opcional. **Enviar revisión** guarda los datos en Google Sheets mediante una función de Vercel y un receptor de Google Apps Script. No necesita un servicio de correo ni un dominio propio.
 
 ## Documentación
 
@@ -23,7 +23,7 @@ La hoja privada vinculada a producción se abre desde **[Resultados del panel en
 | Pestaña | Contenido |
 |---|---|
 | Resumen | Lectura visual del panel: tamaño de muestra, resultados por dimensión y preguntas ordenadas por prioridad de revisión. Si todavía no hay respuestas reales, muestra una vista demostrativa con los registros de prueba. |
-| Valoraciones | Una fila por participante y elemento: seis dimensiones y veintitrés preguntas; puntuaciones numéricas, omisiones y observaciones. |
+| Valoraciones | Una fila por participante y elemento: seis dimensiones y veintiuna preguntas; puntuaciones numéricas, omisiones y observaciones. |
 | Respuestas | Una fila por participante y versión: opinión inicial, respuestas globales, observación final y número de juicios contestados. |
 | Participantes | Contacto y perfil, separados de las puntuaciones mediante un identificador. |
 | CalidadDatos | Completitud de la relevancia obligatoria, cobertura, claridad y omisiones explícitas por participante. Revisar antes de calcular indicadores. |
@@ -71,6 +71,6 @@ npm install
 npm test
 ```
 
-Genera `Validacion_Expertos_Startup_V2_1.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
+Genera `Validacion_Expertos_Startup_V2_2.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
 
-Aplicación e instrumento `2.1.0`; esquema `expert-validation/2.1`; almacenamiento local `startup-expert-validation-v2.1`. V2.1 retira T3 del banco, por lo que no recupera borradores ni importa copias de versiones anteriores. Los HTML históricos se conservan localmente como antecedentes.
+Aplicación e instrumento `2.2.0`; esquema `expert-validation/2.2`; almacenamiento local `startup-expert-validation-v2.2`. V2.2 revisa el contenido y retira C3 y F5. Por ello no recupera borradores ni importa copias de versiones anteriores. Los HTML históricos se conservan localmente como antecedentes.

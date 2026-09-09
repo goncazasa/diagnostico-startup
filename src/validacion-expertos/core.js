@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  const SCHEMA = 'expert-validation/2.1';
+  const SCHEMA = 'expert-validation/2.2';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
   const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
@@ -33,7 +33,7 @@
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.1.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.2.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -157,7 +157,7 @@
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.1. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.2. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }

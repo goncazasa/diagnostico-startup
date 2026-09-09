@@ -4,19 +4,19 @@
 
 ```mermaid
 flowchart LR
-    E[Experto en el navegador] -->|HTTPS · JSON V2.1| V[Vercel /api/submit]
+    E[Experto en el navegador] -->|HTTPS · JSON V2.2| V[Vercel /api/submit]
     V -->|Validación y firma HMAC| G[Google Apps Script]
     G -->|Original inmutable| A[(Entregas)]
     A --> R[Tablas derivadas]
     R --> S[Resumen y análisis]
-    E -->|Borrador| L[(localStorage V2.1)]
+    E -->|Borrador| L[(localStorage V2.2)]
 ```
 
 - `src/validacion-expertos/`: fuente del instrumento, modelo de estado, interfaz y estilos.
 - `src/validacion-expertos/build.mjs`: genera el HTML autónomo y `public/index.html`.
 - `public/`: artefacto servido por Vercel.
 - `api/submit.mjs`: valida la entrega, utiliza la versión del instrumento del servidor, firma el contenido y comprueba el justificante.
-- `api/progress.mjs`: envía únicamente contadores agregados de pantalla y día.
+- `api/progress.mjs`: receptor histórico de contadores agregados. El formulario V2.2 ya no envía telemetría de navegación.
 - `google-apps-script/Code.gs`: receptor vinculado al libro privado y generador de tablas.
 - `test-support/`: instrumentos históricos y simuladores usados en pruebas.
 
@@ -82,7 +82,7 @@ Guardar el editor sin actualizar la implementación no modifica el receptor que 
 
 ## Pruebas y controles
 
-La suite cubre modelo, interfaz, API, receptor y contrato V2.1. Al cierre documentado ejecuta 64 pruebas automatizadas. Entre otros casos verifica:
+La suite cubre modelo, interfaz, API, receptor y contrato V2.2. Entre otros casos verifica:
 
 - validación de importación, versión y puntuaciones;
 - navegación, guardado, concurrencia de pestañas y recuperación;
