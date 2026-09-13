@@ -374,12 +374,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       <div class="progress-box">
         <label for="progress">Tu avance</label>
         <progress id="progress" value="0"></progress>
-        <p id="progress-text">6 dimensiones y 21 preguntas</p>
+        <p id="progress-text">5 dimensiones y 19 preguntas</p>
         <p class="fine">La relevancia es obligatoria; los otros criterios son opcionales.</p>
       </div>
       <details class="draft-tools"><summary>Tu respuesta</summary>
         <button type="button" id="import-button" class="text-button">Importar una copia</button>
-        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.2">
+        <input id="import-file" type="file" accept=".json,application/json" hidden aria-label="Archivo de respuestas V2.3">
         <button type="button" id="reset-button" class="text-button">Comenzar otra respuesta</button>
       </details>
     </aside>
@@ -395,12 +395,12 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   <script>(function (root) {
   'use strict';
   const instrument = {
-  "version": "2.2.0",
+  "version": "2.3.0",
   "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
   "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
   "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
-  "source": "Instrumento V2.2 revisado el 9 de septiembre de 2026. Banco de 21 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "source": "Instrumento V2.3 revisado el 11 de septiembre de 2026. Banco de 19 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -414,32 +414,26 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     },
     {
       "id": "D2",
-      "short": "Problema y mercado",
-      "name": "Problema y mercado",
-      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción."
-    },
-    {
-      "id": "D3",
-      "short": "Propuesta de valor y modelo de negocio",
-      "name": "Propuesta de valor y modelo de negocio",
-      "desc": "Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
+      "short": "Adaptación al mercado",
+      "name": "Adaptación al mercado",
+      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción. Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
     },
     {
       "id": "D4",
-      "short": "Evidencia comercial (tracción y go-to-market)",
-      "name": "Evidencia comercial (tracción y go-to-market)",
+      "short": "Marketing y ventas",
+      "name": "Marketing y ventas",
       "desc": "Compromisos comerciales y pruebas de la estrategia de llegada y venta al mercado."
     },
     {
       "id": "D5",
-      "short": "Evidencia financiera",
-      "name": "Evidencia financiera",
+      "short": "Gestión financiera",
+      "name": "Gestión financiera",
       "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente."
     },
     {
       "id": "D6",
-      "short": "Recursos estratégicos y legitimidad",
-      "name": "Recursos estratégicos y legitimidad",
+      "short": "Gestión de recursos y relaciones",
+      "name": "Gestión de recursos y relaciones",
       "desc": "Relaciones y evidencias de legitimidad que facilitan recursos, acceso al mercado o acuerdos."
     }
   ],
@@ -493,28 +487,10 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       }
     },
     {
-      "id": "T5",
-      "dim": "D1",
-      "q": "¿Están bien definidos los roles y las responsabilidades del equipo para trabajar y tomar decisiones?",
-      "note": "Revisa si cada persona conoce sus responsabilidades y si está claro cómo se toman las decisiones. Puede constar en acuerdos internos o en un pacto de socios.",
-      "levels": [
-        "No están claros los responsables ni cómo se toman decisiones importantes.",
-        "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
-        "Los acuerdos relevantes para la estructura actual están documentados y son conocidos.",
-        "Se revisan ante cambios del equipo y contemplan cómo resolver desacuerdos, ausencias o salidas."
-      ],
-      "applicability": {
-        "field": "hasDecisionAgreements",
-        "question": "Hay socios o colaboradores con quienes acordar decisiones.",
-        "exclusion": "No existen socios ni colaboradores con quienes acordar decisiones."
-      },
-      "conditional": "No aplica todavía: No existen socios ni colaboradores con quienes acordar decisiones. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "T6",
       "dim": "D1",
-      "q": "¿El cap table permite decidir con agilidad y no compromete el crecimiento ni la orientación futura?",
-      "note": "El cap table recoge el reparto de participaciones. Comprueba si permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
+      "q": "¿El reparto de participaciones permite tomar decisiones sin bloqueos y deja margen para incorporar personas clave o inversores?",
+      "note": "Revisa cómo está distribuida la propiedad de la startup. Si todavía no existe una sociedad ni un reparto acordado, puedes indicar «No aplica todavía».",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",
@@ -561,6 +537,38 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       }
     },
     {
+      "id": "VB1",
+      "dim": "D2",
+      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
+      "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
+      "levels": [
+        "No se conocen suficientemente las alternativas actuales.",
+        "La ventaja propuesta es principalmente una hipótesis interna.",
+        "Personas del segmento reconocen una ventaja específica frente a sus alternativas.",
+        "Esa ventaja explica decisiones observadas de uso, elección o compra en distintos casos."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
+      "id": "VB2",
+      "dim": "D2",
+      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
+      "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
+      "levels": [
+        "No se identifica con claridad quién pagaría ni por qué concepto.",
+        "Existe una hipótesis de pagador, precio y forma de cobro.",
+        "La hipótesis se ha contrastado con posibles pagadores y se conocen sus objeciones.",
+        "Las pruebas de oferta o negociación han permitido ajustar precio y condiciones, y el precio es coherente con el coste y la duración del ciclo de venta."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
       "id": "PM3",
       "dim": "D2",
       "q": "¿Se ha estimado el tamaño del mercado con datos contrastables?",
@@ -593,88 +601,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       }
     },
     {
-      "id": "VB1",
-      "dim": "D3",
-      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
-      "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
-      "levels": [
-        "No se conocen suficientemente las alternativas actuales.",
-        "La ventaja propuesta es principalmente una hipótesis interna.",
-        "Personas del segmento reconocen una ventaja específica frente a sus alternativas.",
-        "Esa ventaja explica decisiones observadas de uso, elección o compra en distintos casos."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB2",
-      "dim": "D3",
-      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
-      "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
-      "levels": [
-        "No se identifica con claridad quién pagaría ni por qué concepto.",
-        "Existe una hipótesis de pagador, precio y forma de cobro.",
-        "La hipótesis se ha contrastado con posibles pagadores y se conocen sus objeciones.",
-        "Las pruebas de oferta o negociación han permitido ajustar precio y condiciones, y el precio es coherente con el coste y la duración del ciclo de venta."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB3",
-      "dim": "D3",
-      "q": "¿Las pruebas con usuarios reales muestran que la solución funciona como se espera?",
-      "applicabilityNote": "Si el uso es puntual, no se exige repetición: valora si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».",
-      "note": "El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapta continuidad, repetición o retención al modelo.",
-      "levels": [
-        "La solución todavía no se ha probado con usuarios del segmento.",
-        "Se ha mostrado un concepto o demo, sin observar el resultado de uso.",
-        "Usuarios del segmento han probado la solución y se ha observado el resultado obtenido.",
-        "El resultado se confirma en distintos casos y hay continuidad o repetición de uso cuando corresponde."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB4",
-      "dim": "D3",
-      "q": "¿Hay evidencia de que el proyecto puede aumentar sus ingresos sin que las horas de trabajo crezcan al mismo ritmo?",
-      "note": "Compara los ingresos de entregas equivalentes con las horas totales del equipo. Usa registros de pedidos y horas y separa el efecto de los cambios de precio.",
-      "levels": [
-        "La relación entre ingresos y horas de trabajo no se ha estimado.",
-        "La relación entre ingresos y horas de trabajo se estima sin registros de entregas.",
-        "La relación entre ingresos y horas de trabajo se calcula con registros de entregas.",
-        "La relación entre ingresos y horas de trabajo se contrasta entre periodos con distinto volumen de entregas."
-      ],
-      "designFields": [
-        {
-          "id": "hoursRevenue",
-          "label": "Relación entre ingresos y horas del equipo",
-          "description": "Dato no puntuado. Al aumentar las entregas, las horas crecen más, aproximadamente igual o menos que los ingresos; también puede registrarse «No se conoce». Incluye fundador, personal y colaboradores."
-        }
-      ],
-      "sources": [
-        {
-          "id": "EXT-SCALE-2024",
-          "citation": "What is scaling? Journal of Business Venturing 39(1), 106355 (2024).",
-          "url": "https://doi.org/10.1016/j.jbusvent.2023.106355",
-          "status": "Fuente conceptual externa; pertenencia a la SLR y validación de anclajes pendientes."
-        }
-      ],
-      "applicability": {
-        "field": "deliveryDefined",
-        "question": "Está definida la forma de entregar el producto o servicio.",
-        "exclusion": "Todavía no está definida la forma de entrega."
-      },
-      "conditional": "No aplica todavía: Todavía no está definida la forma de entrega. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "C1",
       "dim": "D4",
       "q": "¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?",
@@ -701,6 +627,22 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
         "Existe una hipótesis de canal, mensaje y forma de venta para el segmento.",
         "Se ha probado con clientes reales y se registran contactos, conversiones u otros resultados pertinentes.",
         "Pruebas sucesivas muestran resultados comparables y se conoce cuánto tiempo y cuánto coste requiere conseguir un cliente por ese canal."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
+      "id": "C4",
+      "dim": "D4",
+      "q": "¿Se registran las oportunidades comerciales y las razones por las que avanzan, se detienen o se pierden?",
+      "note": "Revisa si existe un registro actualizado de las oportunidades y si el equipo documenta por qué cambian de estado.",
+      "levels": [
+        "Las oportunidades comerciales no se registran de forma sistemática.",
+        "Existe un listado básico, sin documentar por qué avanzan, se detienen o se pierden.",
+        "Las oportunidades se registran por etapas y se anotan las principales razones de cada cambio.",
+        "El equipo revisa periódicamente esos datos y los utiliza para ajustar el proceso comercial."
       ],
       "applicability": {
         "field": null,
@@ -813,7 +755,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.2",
+  "schema": "expert-validation/2.3",
   "screening": [
     {
       "id": "phase",
@@ -888,7 +830,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
 </script>
   <script>(function (root) {
   'use strict';
-  const SCHEMA = 'expert-validation/2.2';
+  const SCHEMA = 'expert-validation/2.3';
   const SKIPS = ['', 'experience', 'prefer', 'dimension'];
   const ROLES = ['Fundador/a', 'Inversor/a', 'Mentor/a o aceleradora', 'Académico/a', 'Consultor/a', 'Otro'];
   const PHASES = ['Idea', 'Validación', 'Primeras ventas', 'Repetición comercial', 'Escalado', 'Otra'];
@@ -921,7 +863,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     }
     function validateState(candidate) {
       check(plain(candidate), 'El archivo no contiene una respuesta válida.');
-      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.2.');
+      check(candidate.schemaVersion === SCHEMA && candidate.instrumentVersion === instrument.version, 'Este archivo pertenece a otra versión. Usa una copia exportada desde V2.3.');
       check(text(candidate.responseId, 100) && /^[a-zA-Z0-9_-]{8,100}$/.test(candidate.responseId), 'El identificador de respuesta no es válido.');
       check(date(candidate.createdAt) && date(candidate.updatedAt), 'Las fechas del archivo no son válidas.');
       check(Number.isSafeInteger(candidate.revision) && candidate.revision >= 0, 'La revisión no es válida.');
@@ -1045,7 +987,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       return { format: SCHEMA, instrumentVersion: instrument.version, exportedAt: now, summary: summary(response), instrument: clone(instrument), response };
     }
     function importPayload(payload) {
-      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.2. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
+      check(plain(payload) && payload.format === SCHEMA && payload.instrumentVersion === instrument.version, 'Selecciona una copia de V2.3. Las versiones anteriores tienen preguntas o criterios distintos y deben abrirse en su formulario original.');
       return validateState(payload.response);
     }
     function markExport(state) { return { ...state, exportedRevision: state.revision }; }
@@ -1067,7 +1009,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.2';
+  const STORAGE_KEY = 'startup-expert-validation-v2.3';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const statusLabels = { complete: 'Completo', partial: 'Parcial', pending: 'Pendiente', skipped: 'Omitido' };
@@ -1098,15 +1040,14 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
-    VB4: 'Crecimiento e ingresos',
-    T1: 'Perfiles complementarios', T2: 'Experiencia en el sector', T4: 'Disponibilidad', T5: 'Roles y responsabilidades', T6: 'Estructura de propiedad',
+    T1: 'Perfiles complementarios', T2: 'Experiencia en el sector', T4: 'Disponibilidad', T6: 'Estructura de propiedad',
     PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
-    VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo', VB3: 'Resultado de uso',
-    C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente',
+    VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo',
+    C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente', C4: 'Seguimiento de oportunidades',
     F1: 'Caja disponible', F2: 'Previsión de caja', F3: 'Recursos para el hito', F4: 'Costes y margen por cliente',
     SA1: 'Aportación de la red', SA2: 'Evidencias de confianza'
   };
-  const dimensionLabel = id => 'Dimensión ' + id.slice(1);
+  const dimensionLabel = id => 'Dimensión ' + (instrument.dimensions.findIndex(dimension => dimension.id === id) + 1);
   const questionLabel = item => `Pregunta ${instrument.items.filter(candidate => candidate.dim === item.dim).findIndex(candidate => candidate.id === item.id) + 1}`;
   function illustration(id) {
     const drawings = {
@@ -1184,7 +1125,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Diagnóstico de startups en fases iniciales', 'Como experto o experta en emprendimiento, ayúdanos a validar un cuestionario dirigido a startups en fases iniciales.')}<p class="intro-lead">Analizarás si las preguntas y el contenido del diagnóstico son relevantes para evaluar la situación de una startup.</p><p class="key-instruction">Puedes omitir los temas que queden fuera de tu experiencia.</p><div class="welcome-facts"><span><strong>21</strong> preguntas</span><span><strong>6</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+    return `<div class="welcome-hero"><div>${heading('Diagnóstico de startups en fases iniciales', 'Como experto o experta en emprendimiento, ayúdanos a validar un cuestionario dirigido a startups en fases iniciales.')}<p class="intro-lead">Analizarás si las preguntas y el contenido del diagnóstico son relevantes para evaluar la situación de una startup.</p><p class="key-instruction">Puedes omitir los temas que queden fuera de tu experiencia.</p><div class="welcome-facts"><span><strong>${instrument.items.length}</strong> preguntas</span><span><strong>${instrument.dimensions.length}</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
       `<section class="surface welcome-start"><div class="welcome-objective"><h2>Objetivo del diagnóstico</h2><p>${esc(instrument.purpose)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></div>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
@@ -1242,7 +1183,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de 6 <span>${items.length} preguntas</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
+    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de ${instrument.dimensions.length} <span>${items.length} preguntas</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
       `<section class="dimension-intro" id="dimension-${id}">${omission('dimensions', id)}</section>
       <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
@@ -1250,7 +1191,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
       ${observation(base + '.comment', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de tu revisión</button>
-      ${nav(record.skipReason ? 'Continuar' : state.step === 8 ? 'Ver resumen' : 'Siguiente dimensión')}`;
+      ${nav(record.skipReason ? 'Continuar' : steps[state.step + 1]?.type === 'review' ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {
     return heading('Envía tu revisión', 'Gracias por aportar tu experiencia. Puedes añadir un último comentario antes de enviar.') +
@@ -1445,7 +1386,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       if (action === 'back') advance(-1);
       if (action === 'next') advance(1);
       if (action === 'jump') goTo(Number(button.dataset.step), button.dataset.anchor);
-      if (action === 'return-summary') goTo(9);
+      if (action === 'return-summary') goTo(steps.findIndex(step => step.type === 'review'));
       if (action === 'clear') {
         state = model.edit(state, button.dataset.target.split('.'), null);
         app.querySelectorAll(`input[data-path="${button.dataset.target}"]`).forEach(node => { node.checked = false; });
@@ -1486,7 +1427,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_2_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_3_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -1521,10 +1462,10 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.2 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.3 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.2</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.3</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

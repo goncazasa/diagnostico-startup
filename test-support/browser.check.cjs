@@ -29,27 +29,27 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.guide-steps > li').count(),2);
   assert.equal(await page.locator('[data-guide-reference],[data-screening-design],.code-guide').count(),0);
   await page.screenshot({path:path.join(out,'v2-guide.png'),fullPage:true});
-  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),5);
+  await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),4);
   await page.screenshot({path:path.join(out,'v2-d1.png'),fullPage:true});
-  await page.locator('#step-nav [data-step="10"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
-  for(let step=3;step<=8;step++) {
+  await page.locator('#step-nav [data-step="9"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
+  for(let step=3;step<=7;step++) {
    await page.locator('#step-nav [data-step="'+step+'"]').click();
    if(step===3) await page.locator('#items-T4-skipReason').selectOption('experience');
    if(step===4) {await page.locator('#dimensions-D2-skipReason').selectOption('prefer');continue;}
    for(const label of await page.locator('#app label:has(input[data-path$=".relevance"][value="3"])').all())if(await label.isVisible())await label.click();
    if(step===3){assert.ok(await page.locator('label[for="items-T2-usability-4"]').isVisible());await page.locator('label[for="items-T2-usability-4"]').click();}
   }
-  await page.locator('#step-nav [data-step="9"]').click();assert.equal(await page.locator('[data-summary-item]').count(),21);
-  await page.locator('.discrimination-groups > details').nth(3).locator('summary').click();
+  await page.locator('#step-nav [data-step="8"]').click();assert.equal(await page.locator('[data-summary-item]').count(),19);
+  await page.locator('.discrimination-groups > details').nth(2).locator('summary').click();
   await page.locator('input[data-path="designReview.discrimination"][value="C2"]').check();
   await page.locator('#designReview-discriminationComment').fill('La estrategia comercial puede variar según el segmento.');
   await page.setViewportSize({width:375,height:812});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.2');assert.equal(p.instrument.items.length,21);
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.3');assert.equal(p.instrument.items.length,19);
   assert.equal(p.response.items.C2.usability,null);assert.equal(p.response.items.T4.relevance,null);assert.equal(p.response.items.PM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['C2']);
-  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,28);
+  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,25);
   assert.equal(events.length,0,'The public form no longer sends navigation telemetry');
   await page.reload();assert.ok(await page.locator('[data-action="submit"]').isDisabled());assert.equal(await page.locator('#final-v9').inputValue(),'Prueba local del bloque A.');
   assert.deepEqual(errors,[]);await page.screenshot({path:path.join(out,'v2-sent-mobile.png')});

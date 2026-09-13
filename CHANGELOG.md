@@ -1,5 +1,15 @@
 # Registro de cambios
 
+## V2.3 — reorganización del banco (septiembre de 2026)
+
+- El banco pasa a cinco dimensiones y 19 preguntas: se retira T5 y se fusionan las anteriores dimensiones 2 y 3 bajo **Adaptación al mercado**.
+- Se retiran VB3 y VB4. Las preguntas conservadas mantienen íntegros sus enunciados, aclaraciones, niveles y reglas, salvo el cambio aprobado de T6.
+- T6 sustituye «cap table» por una formulación directa sobre el reparto de participaciones.
+- La dimensión comercial pasa a llamarse **Marketing y ventas** e incorpora C4 sobre el registro y seguimiento de oportunidades comerciales.
+- **Evidencia financiera** pasa a llamarse **Gestión financiera** y **Recursos estratégicos y legitimidad** pasa a **Gestión de recursos y relaciones**.
+- El esquema pasa a `expert-validation/2.3` y el almacenamiento local a `startup-expert-validation-v2.3` para separar bancos incompatibles.
+- Se actualizan la API, Apps Script, las tablas de análisis, el HTML y las pruebas para la nueva estructura.
+
 ## V2.2 — revisión de contenido y simplificación (septiembre de 2026)
 
 - El título público pasa a **Diagnóstico de startups en fases iniciales** y se retira «Revisión por expertos» de la marca.

@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v2.2', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.3', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.2')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.3')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -42,13 +42,13 @@ function start(ui) {
   ui.click('[data-action="next"]');
 }
 function completeRelevance(ui) {
-  for (let step=3;step<=8;step++) {
+  for (let step=3;step<=7;step++) {
     ui.click('[data-step="'+step+'"]');
     for(const control of [...ui.document.querySelectorAll('#app input[data-path$=".relevance"][value="3"]')]) ui.input('#'+control.id,true);
   }
 }
 test('final page has one optional question and confirms only an acknowledged submission', async () => {
-  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="10"]');
+  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="9"]');
   assert.equal(ui.document.querySelectorAll('#app textarea[data-path]').length,1);
   assert.equal(ui.document.querySelector('[data-delivery-email]'),null);
   let request;
@@ -66,7 +66,7 @@ test('final page has one optional question and confirms only an acknowledged sub
   ui.dom.window.close();
 });
 test('a failed submission retains answers and allows retry without a false receipt', async () => {
-  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="10"]');
+  const ui=boot(); start(ui); completeRelevance(ui); ui.click('[data-step="9"]');
   ui.dom.window.fetch=async()=>({ok:false,json:async()=>({ok:false})});
   ui.input('[data-path="final.v9"]','Conservar esta respuesta');
   ui.click('[data-action="submit"]');
@@ -125,7 +125,7 @@ test('questions use two ratings and one observations field, with no applicabilit
   assert.equal(item.querySelector('[data-path="items.T1.applicability"]'), null);
   ui.input('[data-path="items.T1.usability"][value="3"]', true);
   ui.input('[data-path="items.T1.comment"]', 'La pregunta es clara; cambiaría la segunda respuesta');
-  ui.click('[data-step="10"]'); ui.click('[data-action="export"]');
+  ui.click('[data-step="9"]'); ui.click('[data-action="export"]');
   const payload = JSON.parse(await readBlob(ui, ui.dom.window.downloadBlob));
   assert.equal(payload.response.items.T1.usability, 3);
   assert.equal(payload.response.items.T1.clarity, undefined);
@@ -136,7 +136,7 @@ test('questions use two ratings and one observations field, with no applicabilit
   ui.dom.window.close();
 });
 function openBlock(ui, id) {
-  ui.click('[data-step="9"]');
+  ui.click('[data-step="8"]');
   ui.click(id.startsWith('D') ? `[data-summary-dimension="${id}"] h2 button` : `[data-summary-item="${id}"] [data-action="jump"]`);
 }
 function readBlob(ui, blob) {
@@ -166,7 +166,7 @@ test('pending text is saved on pagehide and before a download without waiting', 
   ui.input('[data-path="items.T1.comment"]', 'Último carácter ñ');
   ui.dom.window.dispatchEvent(new ui.dom.window.Event('pagehide'));
   assert.equal(ui.stored().items.T1.comment, 'Último carácter ñ');
-  ui.click('[data-step="10"]');
+  ui.click('[data-step="9"]');
   ui.input('[data-path="final.v9"]', 'Observación de cierre');
   ui.click('[data-action="export"]');
   const payload = JSON.parse(await readBlob(ui, ui.dom.window.downloadBlob));
@@ -175,7 +175,7 @@ test('pending text is saved on pagehide and before a download without waiting', 
 });
 
 test('backup clipboard export contains pending answers', async () => {
-  const ui = boot(); start(ui); ui.click('[data-step="10"]');
+  const ui = boot(); start(ui); ui.click('[data-step="9"]');
   let copied;
   Object.defineProperty(ui.dom.window.navigator, 'clipboard', { value: { writeText: async raw => { copied = raw; } } });
   ui.input('[data-path="final.v9"]', 'Observación copiada');
@@ -183,14 +183,14 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '2.2.0');
+  assert.equal(payload.instrumentVersion, '2.3.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
 });
 
 test('denied clipboard leaves a selectable, safe copy and no false receipt', async () => {
-  const ui = boot(); start(ui); ui.click('[data-step="10"]');
+  const ui = boot(); start(ui); ui.click('[data-step="9"]');
   Object.defineProperty(ui.dom.window.navigator, 'clipboard', { value: { writeText: async () => { throw new Error('Denied'); } } });
   ui.input('[data-path="final.v9"]', '</textarea><img src=x>');
   ui.click('[data-action="copy"]');
@@ -204,7 +204,7 @@ test('denied clipboard leaves a selectable, safe copy and no false receipt', asy
 });
 
 test('summary feedback survives navigation and stays out of the final questions', () => {
-  const ui = boot(); start(ui); ui.click('[data-step="9"]');
+  const ui = boot(); start(ui); ui.click('[data-step="8"]');
   ui.input('[data-path="final.v2"]', 'No eliminaría ninguna');
   ui.input('[data-path="final.v3"]', 'Falta comprobar la entrega de la solución');
   ui.click('[data-action="next"]');
@@ -230,8 +230,8 @@ test('omission hides scoring controls and the review separately counts skipped b
   ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
   ui.input('[data-path="dimensions.D1.skipReason"]', 'experience');
   assert.equal(ui.document.querySelector('[data-dimension-content="D1"]').hidden, true);
-  ui.click('[data-step="10"]');
-  assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '6');
+  ui.click('[data-step="9"]');
+  assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '5');
   assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '0');
   ui.dom.window.close();
 });
@@ -242,36 +242,36 @@ test('visible error replaces the save promise when browser storage is unavailabl
   ui.dom.window.close();
 });
 test('export is marked only after a download request and an edit invalidates it', () => {
-  const ui = boot(); start(ui); ui.click('[data-step="10"]');
+  const ui = boot(); start(ui); ui.click('[data-step="9"]');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.click('[data-action="export"]');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, false);
   assert.equal(ui.stored().exportedRevision, ui.stored().revision);
   ui.click('[data-step="3"]');
   ui.input('[data-path="items.T1.comment"]', 'Cambio posterior');
-  ui.click('[data-step="10"]');
+  ui.click('[data-step="9"]');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   assert.ok(ui.stored().revision > ui.stored().exportedRevision);
   ui.dom.window.close();
 });
 test('downloading preserves keyboard focus on the export button', () => {
-  const ui = boot(); start(ui); ui.click('[data-step="10"]');
+  const ui = boot(); start(ui); ui.click('[data-step="9"]');
   const button = ui.document.querySelector('[data-action="export"]');
   button.focus(); button.click();
   assert.equal(ui.document.activeElement, button);
   ui.dom.window.close();
 });
-test('a full review resolves all 27 blocks when their relevance is answered', () => {
+test('a full review resolves all 24 blocks when their relevance is answered', () => {
   const ui = boot(); start(ui);
-  const blocks = ['T1','T2','T4','T5','T6','D1','PM1','PM2','PM3','PM4','D2','VB1','VB2','VB3','D3','C1','C2','D4','F1','F2','F3','F4','D5','SA1','SA2','D6'];
+  const blocks = ['T1','T2','T4','T6','D1','PM1','PM2','VB1','VB2','PM3','PM4','D2','C1','C2','C4','D4','F1','F2','F3','F4','D5','SA1','SA2','D6'];
   for (const block of blocks) {
     openBlock(ui, block);
     for (const radio of [...ui.document.querySelectorAll('input[type="radio"][value="3"]')]) {
       ui.input('input[data-path="' + radio.dataset.path + '"][value="3"]', true);
     }
   }
-  ui.click('[data-step="10"]');
-  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '27');
+  ui.click('[data-step="9"]');
+  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '24');
   assert.equal(ui.document.querySelector('[data-count="pending"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="partial"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '0');
@@ -280,7 +280,7 @@ test('a full review resolves all 27 blocks when their relevance is answered', ()
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.2', newValue: '{"other":"response"}' }));
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.3', newValue: '{"other":"response"}' }));
   ui.input('[data-path="items.T1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
@@ -300,12 +300,12 @@ test('the downloaded JSON contains normalized answers and restores through the r
   ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
   ui.input('[data-path="items.T1.comment"]', 'Acentos y texto: <img src=x>');
   ui.input('[data-path="items.T1.skipReason"]', 'prefer');
-  ui.click('[data-step="10"]'); ui.click('[data-action="export"]');
+  ui.click('[data-step="9"]'); ui.click('[data-action="export"]');
   const raw = await readBlob(ui, ui.dom.window.downloadBlob);
   const payload = JSON.parse(raw);
   assert.equal(payload.response.items.T1.relevance, null);
   assert.equal(payload.response.items.T1.skipReason, 'prefer');
-  assert.equal(payload.instrument.items.length, 21);
+  assert.equal(payload.instrument.items.length, 19);
   const id = payload.response.responseId;
   ui.click('#reset-button');
   assert.notEqual(ui.stored().responseId, id);
@@ -330,7 +330,7 @@ test('an incompatible import leaves the current response intact', async () => {
 test('free text is inert when restored and when included in the printable report', () => {
   const ui = boot(); start(ui);
   ui.input('[data-path="items.T1.comment"]', '<img src=x onerror="window.pwned=true">');
-  ui.click('[data-step="10"]');
+  ui.click('[data-step="9"]');
   ui.dom.window.print = () => {};
   ui.click('[data-action="print"]');
   assert.equal(ui.document.querySelector('#print-view img'), null);
@@ -339,7 +339,7 @@ test('free text is inert when restored and when included in the printable report
 });
 test('all generated fields have labels and DOM ids remain unique on every page', () => {
   const ui = boot(); start(ui);
-  for (const step of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+  for (const step of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
     ui.click('[data-step="' + step + '"]');
     const ids = [...ui.document.querySelectorAll('[id]')].map(n => n.id);
     assert.equal(new Set(ids).size, ids.length, 'Unique ids at step ' + step);
@@ -358,8 +358,8 @@ test('summary precedes the final step and shows every question with the entered 
   ui.input('input[data-path="dimensions.D1.coverage"][value="3"]', true);
   openBlock(ui, 'D6'); ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('#summary-map'));
-  assert.equal(ui.document.querySelectorAll('[data-summary-dimension]').length, 6);
-  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 21);
+  assert.equal(ui.document.querySelectorAll('[data-summary-dimension]').length, 5);
+  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 19);
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.relevance"]').textContent, '4');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.usability"]').textContent, '2');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.anchors"]'), null);
@@ -371,14 +371,14 @@ test('summary precedes the final step and shows every question with the entered 
 });
 test('each dimension shows all its questions and continues to the next dimension', () => {
   const ui = boot(); start(ui);
-  assert.equal(ui.document.querySelectorAll('#app article.item').length, 5);
-  assert.ok(ui.document.querySelector('[data-path="dimensions.D1.coverage"]'));
-  ui.input('[data-path="items.T5.comment"]', 'Observación al final de la dimensión');
-  ui.click('[data-action="next"]');
   assert.equal(ui.document.querySelectorAll('#app article.item').length, 4);
+  assert.ok(ui.document.querySelector('[data-path="dimensions.D1.coverage"]'));
+  ui.input('[data-path="items.T6.comment"]', 'Observación al final de la dimensión');
+  ui.click('[data-action="next"]');
+  assert.equal(ui.document.querySelectorAll('#app article.item').length, 6);
   assert.ok(ui.document.querySelector('#item-PM1'));
   ui.click('[data-action="back"]');
-  assert.equal(ui.document.querySelector('[data-path="items.T5.comment"]').value, 'Observación al final de la dimensión');
+  assert.equal(ui.document.querySelector('[data-path="items.T6.comment"]').value, 'Observación al final de la dimensión');
   ui.dom.window.close();
 });
 
@@ -386,7 +386,7 @@ test('summary hides stale omitted scores and updates after a focused correction'
   const ui = boot(); start(ui);
   ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
   ui.input('[data-path="items.T1.skipReason"]', 'prefer');
-  ui.click('[data-step="9"]');
+  ui.click('[data-step="8"]');
   assert.equal(ui.document.querySelector('[data-summary-value="items.T1.relevance"]'), null);
   assert.match(ui.document.querySelector('[data-summary-item="T1"]').textContent, /Omitid/);
   ui.click('[data-summary-item="T2"] [data-action="jump"]');
@@ -422,7 +422,7 @@ test('profile uses numeric experience, pivot wording and no conflict field',()=>
  ui.dom.window.close();
 });
 test('sidebar dimension names match their page titles and question numbers are sequential',()=>{
- const ui=boot();start(ui);const expected=['Equipo','Problema y mercado','Propuesta de valor y modelo de negocio','Evidencia comercial (tracción y go-to-market)','Evidencia financiera','Recursos estratégicos y legitimidad'];
+ const ui=boot();start(ui);const expected=['Equipo','Adaptación al mercado','Marketing y ventas','Gestión financiera','Gestión de recursos y relaciones'];
  expected.forEach((title,index)=>{
   const step=index+3;ui.click(`[data-step="${step}"]`);
   assert.equal(ui.document.querySelector('#page-title').textContent,title);
@@ -449,7 +449,7 @@ test('visible question labels avoid internal codes and rating choices use four d
  assert.match(item.querySelector('h2').textContent,/perfiles necesarios y complementarios/i);
  assert.match(item.querySelector('h2').textContent,/proyecto/i);
  for(let score=1;score<=4;score++) assert.equal(item.querySelectorAll('.rating-choice.score-'+score).length,2);
- ui.input('input[data-path="items.T1.relevance"][value="4"]',true);ui.click('[data-step="9"]');
+ ui.input('input[data-path="items.T1.relevance"][value="4"]',true);ui.click('[data-step="8"]');
  assert.ok(ui.document.querySelector('[data-summary-value="items.T1.relevance"].score-4'));
  assert.doesNotMatch(ui.document.querySelector('[data-summary-item="T1"]').textContent,/T1/);
  ui.dom.window.dispatchEvent(new ui.dom.window.Event('beforeprint'));
@@ -457,11 +457,11 @@ test('visible question labels avoid internal codes and rating choices use four d
  ui.dom.window.close();
 });
 test('summary groups the long discrimination choice by dimension',()=>{
- const ui=boot();start(ui);ui.click('[data-step="9"]');
- const groups=ui.document.querySelectorAll('.discrimination-groups > details');assert.equal(groups.length,6);
+ const ui=boot();start(ui);ui.click('[data-step="8"]');
+ const groups=ui.document.querySelectorAll('.discrimination-groups > details');assert.equal(groups.length,5);
  assert.equal([...groups].filter(group=>group.open).length,0);
  ui.input('input[data-path="designReview.discrimination"][value="C2"]',true);
- ui.click('[data-step="8"]');ui.click('[data-step="9"]');
+ ui.click('[data-step="7"]');ui.click('[data-step="8"]');
  assert.equal(ui.document.querySelector('input[value="C2"]').closest('details').open,true);ui.dom.window.close();
 });
 test('email accepts accidental surrounding spaces',()=>{
@@ -470,7 +470,7 @@ test('email accepts accidental surrounding spaces',()=>{
  assert.equal(ui.stored().profile.email,'expert@example.org');assert.equal(ui.stored().step,2);ui.dom.window.close();
 });
 test('sending with missing relevance stays local and points to unresolved questions',async()=>{
- const ui=boot();start(ui);ui.click('[data-step="10"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
+ const ui=boot();start(ui);ui.click('[data-step="9"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
  ui.click('[data-action="submit"]');assert.equal(sent,false);assert.match(ui.document.querySelector('#submit-status').textContent,/relevancia/);
  assert.ok(ui.document.querySelector('[data-missing-relevance] [data-anchor="item-T1"]'));ui.dom.window.close();
 });

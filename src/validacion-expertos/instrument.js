@@ -1,12 +1,12 @@
 (function (root) {
   'use strict';
   const instrument = {
-  "version": "2.2.0",
+  "version": "2.3.0",
   "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
   "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
   "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
-  "source": "Instrumento V2.2 revisado el 9 de septiembre de 2026. Banco de 21 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
+  "source": "Instrumento V2.3 revisado el 11 de septiembre de 2026. Banco de 19 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
     "relevance": "Relevancia de 1 a 4; obligatoria al enviar, salvo omisión explícita.",
     "usability": "Claridad y respuestas, de 1 a 4; opcional para todos los ítems, según la decisión aprobada para V2."
@@ -20,32 +20,26 @@
     },
     {
       "id": "D2",
-      "short": "Problema y mercado",
-      "name": "Problema y mercado",
-      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción."
-    },
-    {
-      "id": "D3",
-      "short": "Propuesta de valor y modelo de negocio",
-      "name": "Propuesta de valor y modelo de negocio",
-      "desc": "Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
+      "short": "Adaptación al mercado",
+      "name": "Adaptación al mercado",
+      "desc": "Segmento de clientes, importancia del problema, tamaño de mercado y momento de adopción. Propuesta de valor, monetización, pruebas con usuarios y capacidad de crecimiento."
     },
     {
       "id": "D4",
-      "short": "Evidencia comercial (tracción y go-to-market)",
-      "name": "Evidencia comercial (tracción y go-to-market)",
+      "short": "Marketing y ventas",
+      "name": "Marketing y ventas",
       "desc": "Compromisos comerciales y pruebas de la estrategia de llegada y venta al mercado."
     },
     {
       "id": "D5",
-      "short": "Evidencia financiera",
-      "name": "Evidencia financiera",
+      "short": "Gestión financiera",
+      "name": "Gestión financiera",
       "desc": "Control de caja, previsión, recursos para el siguiente hito y economía del cliente."
     },
     {
       "id": "D6",
-      "short": "Recursos estratégicos y legitimidad",
-      "name": "Recursos estratégicos y legitimidad",
+      "short": "Gestión de recursos y relaciones",
+      "name": "Gestión de recursos y relaciones",
       "desc": "Relaciones y evidencias de legitimidad que facilitan recursos, acceso al mercado o acuerdos."
     }
   ],
@@ -99,28 +93,10 @@
       }
     },
     {
-      "id": "T5",
-      "dim": "D1",
-      "q": "¿Están bien definidos los roles y las responsabilidades del equipo para trabajar y tomar decisiones?",
-      "note": "Revisa si cada persona conoce sus responsabilidades y si está claro cómo se toman las decisiones. Puede constar en acuerdos internos o en un pacto de socios.",
-      "levels": [
-        "No están claros los responsables ni cómo se toman decisiones importantes.",
-        "Existen acuerdos verbales o parciales sobre responsabilidades y decisiones.",
-        "Los acuerdos relevantes para la estructura actual están documentados y son conocidos.",
-        "Se revisan ante cambios del equipo y contemplan cómo resolver desacuerdos, ausencias o salidas."
-      ],
-      "applicability": {
-        "field": "hasDecisionAgreements",
-        "question": "Hay socios o colaboradores con quienes acordar decisiones.",
-        "exclusion": "No existen socios ni colaboradores con quienes acordar decisiones."
-      },
-      "conditional": "No aplica todavía: No existen socios ni colaboradores con quienes acordar decisiones. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "T6",
       "dim": "D1",
-      "q": "¿El cap table permite decidir con agilidad y no compromete el crecimiento ni la orientación futura?",
-      "note": "El cap table recoge el reparto de participaciones. Comprueba si permite decidir sin bloqueos y deja margen para incorporar personas o recibir inversión.",
+      "q": "¿El reparto de participaciones permite tomar decisiones sin bloqueos y deja margen para incorporar personas clave o inversores?",
+      "note": "Revisa cómo está distribuida la propiedad de la startup. Si todavía no existe una sociedad ni un reparto acordado, puedes indicar «No aplica todavía».",
       "conditional": "No aplica todavía: No existe estructura de participaciones ni compromisos de reparto. Se registra aparte y se excluye del denominador; nunca puntúa 0.",
       "levels": [
         "No se ha revisado cómo afecta el reparto a la toma de decisiones.",
@@ -167,6 +143,38 @@
       }
     },
     {
+      "id": "VB1",
+      "dim": "D2",
+      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
+      "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
+      "levels": [
+        "No se conocen suficientemente las alternativas actuales.",
+        "La ventaja propuesta es principalmente una hipótesis interna.",
+        "Personas del segmento reconocen una ventaja específica frente a sus alternativas.",
+        "Esa ventaja explica decisiones observadas de uso, elección o compra en distintos casos."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
+      "id": "VB2",
+      "dim": "D2",
+      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
+      "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
+      "levels": [
+        "No se identifica con claridad quién pagaría ni por qué concepto.",
+        "Existe una hipótesis de pagador, precio y forma de cobro.",
+        "La hipótesis se ha contrastado con posibles pagadores y se conocen sus objeciones.",
+        "Las pruebas de oferta o negociación han permitido ajustar precio y condiciones, y el precio es coherente con el coste y la duración del ciclo de venta."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
       "id": "PM3",
       "dim": "D2",
       "q": "¿Se ha estimado el tamaño del mercado con datos contrastables?",
@@ -199,88 +207,6 @@
       }
     },
     {
-      "id": "VB1",
-      "dim": "D3",
-      "q": "¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?",
-      "note": "Incluye competidores, sustitutos, soluciones improvisadas (workarounds) y la opción de no hacer nada.",
-      "levels": [
-        "No se conocen suficientemente las alternativas actuales.",
-        "La ventaja propuesta es principalmente una hipótesis interna.",
-        "Personas del segmento reconocen una ventaja específica frente a sus alternativas.",
-        "Esa ventaja explica decisiones observadas de uso, elección o compra en distintos casos."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB2",
-      "dim": "D3",
-      "q": "¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?",
-      "note": "Evalúa la lógica de monetización. Los pagos y compromisos reales se examinan específicamente en C1.",
-      "levels": [
-        "No se identifica con claridad quién pagaría ni por qué concepto.",
-        "Existe una hipótesis de pagador, precio y forma de cobro.",
-        "La hipótesis se ha contrastado con posibles pagadores y se conocen sus objeciones.",
-        "Las pruebas de oferta o negociación han permitido ajustar precio y condiciones, y el precio es coherente con el coste y la duración del ciclo de venta."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB3",
-      "dim": "D3",
-      "q": "¿Las pruebas con usuarios reales muestran que la solución funciona como se espera?",
-      "applicabilityNote": "Si el uso es puntual, no se exige repetición: valora si el resultado se confirma en distintos casos. No haber realizado pruebas se refleja en el nivel 0; no equivale a «No aplica».",
-      "note": "El resultado puede ser ahorro de tiempo, reducción de errores u otro beneficio relevante. Adapta continuidad, repetición o retención al modelo.",
-      "levels": [
-        "La solución todavía no se ha probado con usuarios del segmento.",
-        "Se ha mostrado un concepto o demo, sin observar el resultado de uso.",
-        "Usuarios del segmento han probado la solución y se ha observado el resultado obtenido.",
-        "El resultado se confirma en distintos casos y hay continuidad o repetición de uso cuando corresponde."
-      ],
-      "applicability": {
-        "field": null,
-        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
-      }
-    },
-    {
-      "id": "VB4",
-      "dim": "D3",
-      "q": "¿Hay evidencia de que el proyecto puede aumentar sus ingresos sin que las horas de trabajo crezcan al mismo ritmo?",
-      "note": "Compara los ingresos de entregas equivalentes con las horas totales del equipo. Usa registros de pedidos y horas y separa el efecto de los cambios de precio.",
-      "levels": [
-        "La relación entre ingresos y horas de trabajo no se ha estimado.",
-        "La relación entre ingresos y horas de trabajo se estima sin registros de entregas.",
-        "La relación entre ingresos y horas de trabajo se calcula con registros de entregas.",
-        "La relación entre ingresos y horas de trabajo se contrasta entre periodos con distinto volumen de entregas."
-      ],
-      "designFields": [
-        {
-          "id": "hoursRevenue",
-          "label": "Relación entre ingresos y horas del equipo",
-          "description": "Dato no puntuado. Al aumentar las entregas, las horas crecen más, aproximadamente igual o menos que los ingresos; también puede registrarse «No se conoce». Incluye fundador, personal y colaboradores."
-        }
-      ],
-      "sources": [
-        {
-          "id": "EXT-SCALE-2024",
-          "citation": "What is scaling? Journal of Business Venturing 39(1), 106355 (2024).",
-          "url": "https://doi.org/10.1016/j.jbusvent.2023.106355",
-          "status": "Fuente conceptual externa; pertenencia a la SLR y validación de anclajes pendientes."
-        }
-      ],
-      "applicability": {
-        "field": "deliveryDefined",
-        "question": "Está definida la forma de entregar el producto o servicio.",
-        "exclusion": "Todavía no está definida la forma de entrega."
-      },
-      "conditional": "No aplica todavía: Todavía no está definida la forma de entrega. Se registra aparte y se excluye del denominador; nunca puntúa 0."
-    },
-    {
       "id": "C1",
       "dim": "D4",
       "q": "¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?",
@@ -307,6 +233,22 @@
         "Existe una hipótesis de canal, mensaje y forma de venta para el segmento.",
         "Se ha probado con clientes reales y se registran contactos, conversiones u otros resultados pertinentes.",
         "Pruebas sucesivas muestran resultados comparables y se conoce cuánto tiempo y cuánto coste requiere conseguir un cliente por ese canal."
+      ],
+      "applicability": {
+        "field": null,
+        "question": "Se revisa en todas las rutas. La ausencia de pruebas no implica exclusión."
+      }
+    },
+    {
+      "id": "C4",
+      "dim": "D4",
+      "q": "¿Se registran las oportunidades comerciales y las razones por las que avanzan, se detienen o se pierden?",
+      "note": "Revisa si existe un registro actualizado de las oportunidades y si el equipo documenta por qué cambian de estado.",
+      "levels": [
+        "Las oportunidades comerciales no se registran de forma sistemática.",
+        "Existe un listado básico, sin documentar por qué avanzan, se detienen o se pierden.",
+        "Las oportunidades se registran por etapas y se anotan las principales razones de cada cambio.",
+        "El equipo revisa periódicamente esos datos y los utiliza para ajustar el proceso comercial."
       ],
       "applicability": {
         "field": null,
@@ -419,7 +361,7 @@
       "definition": "Adquisición progresiva de derechos sobre participaciones, sujeta a plazos o condiciones acordadas."
     }
   ],
-  "schema": "expert-validation/2.2",
+  "schema": "expert-validation/2.3",
   "screening": [
     {
       "id": "phase",

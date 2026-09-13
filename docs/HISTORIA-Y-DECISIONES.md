@@ -110,6 +110,14 @@ C3 y F5 se retiraron por decisión del investigador. El instrumento quedó en se
 
 El esquema pasó a `expert-validation/2.2` y el almacenamiento local a `startup-expert-validation-v2.2`. Esta separación impide combinar silenciosamente respuestas obtenidas con bancos de preguntas distintos.
 
+### V2.3: reorganización aprobada del banco
+
+Se retiró T5 y se fusionaron las anteriores dimensiones **Problema y mercado** y **Propuesta de valor y modelo de negocio** bajo **Adaptación al mercado**. Dentro de la dimensión fusionada se mantuvieron PM1, PM2, VB1 y VB2 antes de PM3 y PM4. También se retiraron VB3 y VB4.
+
+La dimensión comercial pasó a llamarse **Marketing y ventas** e incorporó C4, que pregunta por el registro de oportunidades comerciales y las razones por las que avanzan, se detienen o se pierden. **Evidencia financiera** pasó a **Gestión financiera** y **Recursos estratégicos y legitimidad** a **Gestión de recursos y relaciones**.
+
+T6 dejó de usar el anglicismo «cap table» y formula directamente el efecto del reparto de participaciones. No se modificó el contenido de las demás preguntas conservadas. El banco resultante contiene cinco dimensiones y 19 preguntas, con 48 juicios posibles. El esquema pasó a `expert-validation/2.3` y el almacenamiento local a `startup-expert-validation-v2.3`.
+
 ### Presentación y análisis de resultados
 
 **Commits:** `080b75d`, `ddef449`, `976aa40`.

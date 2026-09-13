@@ -50,7 +50,7 @@ test('delivery signs validated data and verifies a stable content receipt', asyn
   assert.equal(sent[0].url,env.GOOGLE_SHEETS_WEBHOOK_URL);
   assert.equal(envelope.signature,createHmac('sha256',env.GOOGLE_SHEETS_SECRET).update(envelope.payload).digest('hex'));
   const attached=JSON.parse(envelope.payload);
-  assert.equal(attached.instrument.items.length,21); assert.equal(attached.response.items.T1.relevance,null);
+  assert.equal(attached.instrument.items.length,19); assert.equal(attached.response.items.T1.relevance,null);
   assert.equal(sent[0].body,sent[1].body);
   assert.equal(attached.response.profile.email,'expert@example.org');
 });
@@ -65,4 +65,4 @@ test('endpoint rejects unsupported methods, cross-origin and oversized bodies', 
   assert.equal((await run('x'.repeat(1024*1024+1),{env})).statusCode,413);
 });
 
-test('missing relevance is rejected by the server even if the client bypasses its form',async()=>{const p=payload();p.response.items.VB4.relevance=null;const r=await run(p,{env,fetchImpl:async()=>assert.fail('No send')});assert.equal(r.statusCode,400);assert.deepEqual(r.body.missing,['VB4']);});
+test('missing relevance is rejected by the server even if the client bypasses its form',async()=>{const p=payload();p.response.items.C4.relevance=null;const r=await run(p,{env,fetchImpl:async()=>assert.fail('No send')});assert.equal(r.statusCode,400);assert.deepEqual(r.body.missing,['C4']);});
