@@ -656,6 +656,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   };
   const dimensionLabel = id => 'Dimensión ' + (instrument.dimensions.findIndex(dimension => dimension.id === id) + 1);
   const questionLabel = item => `Pregunta ${instrument.items.filter(candidate => candidate.dim === item.dim).findIndex(candidate => candidate.id === item.id) + 1}`;
+  function dimensionQuestionCount(id) {
+    const items = instrument.items.filter(item => item.dim === id);
+    const omitted = items.filter(item => state.items[item.id].skipReason).length;
+    const pending = items.length - omitted;
+    const plural = (count, singular, pluralForm) => `${count} ${count === 1 ? singular : pluralForm}`;
+    return `${plural(pending, 'pregunta', 'preguntas')} por valorar${omitted ? ` · ${plural(omitted, 'omitida', 'omitidas')}` : ''}`;
+  }
   function illustration(id) {
     const drawings = {
       D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
@@ -788,7 +795,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de ${instrument.dimensions.length} <span>${items.length} preguntas</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
+    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de ${instrument.dimensions.length} <span data-dimension-question-count="${id}">${dimensionQuestionCount(id)}</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
       `<section class="dimension-intro" id="dimension-${id}">${omission('dimensions', id)}</section>
       <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
@@ -906,6 +913,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     const currentDim = steps[state.step].dim;
     if (currentDim) {
       const omitted = !!state.dimensions[currentDim].skipReason;
+      app.querySelector(`[data-dimension-question-count="${currentDim}"]`).textContent = dimensionQuestionCount(currentDim);
       app.querySelector('[data-dimension-content]').hidden = omitted;
       app.querySelector('[data-dimension-omitted]').hidden = !omitted;
       instrument.items.filter(i => i.dim === currentDim).forEach(item => {

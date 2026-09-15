@@ -234,6 +234,16 @@ test('omission hides scoring controls and the review separately counts skipped b
   assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '0');
   ui.dom.window.close();
 });
+test('dimension heading distinguishes questions to assess from omitted questions', () => {
+  const ui = boot(); start(ui);
+  const count = () => ui.document.querySelector('[data-dimension-question-count="D1"]').textContent;
+  assert.equal(count(), '4 preguntas por valorar');
+  ui.input('[data-path="items.E1.skipReason"]', 'prefer');
+  assert.equal(count(), '3 preguntas por valorar · 1 omitida');
+  ui.input('[data-path="items.E2.skipReason"]', 'prefer');
+  assert.equal(count(), '2 preguntas por valorar · 2 omitidas');
+  ui.dom.window.close();
+});
 test('visible error replaces the save promise when browser storage is unavailable', () => {
   const ui = boot(undefined, true);
   ui.input('[data-path="consent"]', true);
