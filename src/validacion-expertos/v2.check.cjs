@@ -3,79 +3,24 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const instrument=require('./instrument.js');
 const model=require('./core.js').createModel(instrument);
+const ids=['E1','E2','E3','E4','AM1','AM2','AM3','AM4','AM5','AM6','AM7','AM8','AM9','MV1','MV2','MV3','GF1','GF2','GF3','GF4','GR1','GR2'];
+const questions=['¿El equipo tiene los perfiles necesarios y complementarios para ejecutar el proyecto?','¿El equipo conoce de primera mano al cliente, el sector y el problema que intenta resolver?','¿La disponibilidad real del equipo permite ejecutar las prioridades de esta fase?','¿El equipo convierte la evidencia y los aprendizajes en decisiones sobre el proyecto?','¿Está claramente definido el segmento de clientes prioritario?','¿Existe evidencia de que el problema es suficientemente importante para que el cliente actúe?','¿Se conoce suficientemente el mercado al que puede acceder realmente la startup?','¿Se monitorizan los cambios que pueden afectar a la relevancia del problema o a la oportunidad de mercado?','¿Se conocen las principales alternativas del cliente y existe una ventaja difícil de replicar?','¿Está definido y contrastado quién paga, por qué paga y cómo lo hace?','¿Las pruebas con usuarios muestran que comprenden la solución y que esta resuelve su problema?','¿Las funcionalidades se priorizan y mejoran utilizando evidencia de los usuarios?','¿Se han identificado los principales cuellos de botella que podrían limitar el crecimiento de la startup?','¿Qué grado de compromiso comercial real ha conseguido la startup?','¿Se ha probado una forma concreta de llegar y vender al segmento prioritario?','¿Se registran las oportunidades comerciales y las razones por las que avanzan, se detienen o se pierden?','¿Se conoce el dinero disponible y los principales cobros y pagos de la startup?','¿Existe una previsión que permita anticipar las necesidades financieras de los próximos meses?','¿Se conocen los recursos necesarios y cómo se financiarán para alcanzar el siguiente hito?','¿Se conoce cuánto cuesta conseguir y atender a un cliente y qué margen genera?','¿La startup ha desarrollado colaboraciones que aporten recursos o ventajas relevantes?','¿Existen señales externas de confianza que faciliten trabajar con clientes, socios u otros actores relevantes?'];
 
-test('V2.3 contract keeps five dimensions and the approved bank of 19 questions',()=>{
- assert.equal(instrument.version,'2.3.0'); assert.equal(instrument.schema,'expert-validation/2.3');
- assert.deepEqual(instrument.dimensions.map(d=>d.id),['D1','D2','D4','D5','D6']);
+test('V2.4 has the approved five-dimensional bank of 22 universal questions',()=>{
+ assert.equal(instrument.version,'2.4.0');assert.equal(instrument.schema,'expert-validation/2.4');
  assert.deepEqual(instrument.dimensions.map(d=>d.name),['Equipo','Adaptación al mercado','Marketing y ventas','Gestión financiera','Gestión de recursos y relaciones']);
- assert.deepEqual(instrument.items.map(item=>item.id),['T1','T2','T4','T6','PM1','PM2','VB1','VB2','PM3','PM4','C1','C2','C4','F1','F2','F3','F4','SA1','SA2']);
- for(const id of ['T3','T5','C3','VB3','VB4','F5']) assert.equal(instrument.items.some(item=>item.id===id),false);
- assert.deepEqual(instrument.dimensions.map(d=>instrument.items.filter(i=>i.dim===d.id).length),[4,6,3,4,2]);
- assert.equal(instrument.screening.length,5); assert.equal(instrument.contextMetadata.length,2);
- assert.deepEqual(instrument.dimensions.map(d=>d.short),instrument.dimensions.map(d=>d.name));
+ assert.deepEqual(instrument.items.map(i=>i.id),ids);assert.deepEqual(instrument.items.map(i=>i.q),questions);
+ assert.deepEqual(instrument.dimensions.map(d=>instrument.items.filter(i=>i.dim===d.id).length),[4,9,3,4,2]);
 });
-
-test('V2.3 changes only the approved question copy',()=>{
- const expected={
-  T1:'¿El equipo tiene los perfiles necesarios y complementarios para ejecutar con éxito el proyecto?',
-  T2:'¿El equipo dispone de experiencia relevante en el sector?',
-  T4:'¿Los fundadores trabajan a tiempo completo o tienen disponibilidad suficiente para atender las prioridades del proyecto?',
-  T6:'¿El reparto de participaciones permite tomar decisiones sin bloqueos y deja margen para incorporar personas clave o inversores?',
-  PM1:'¿Está bien definido el segmento de clientes prioritario?',
-  PM2:'¿Hay evidencia directa de que el problema identificado es lo bastante importante para que el cliente actúe?',
-  VB1:'¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?',
-  VB2:'¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?',
-  PM3:'¿Sabes cuántos clientes de tu segmento podrías alcanzar realmente, a qué precio y con qué frecuencia comprarían?',
-  PM4:'¿Puede explicarse con evidencias por qué este es un buen momento para lanzar el proyecto?',
-  C1:'¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?',
-  C2:'¿Se ha contrastado la estrategia de ventas (go-to-market) con el segmento de clientes definido?',
-  C4:'¿Se registran las oportunidades comerciales y las razones por las que avanzan, se detienen o se pierden?',
-  F1:'¿Tienes control del dinero disponible y de los cobros y pagos previstos en los próximos meses?',
-  F2:'¿Existe una previsión de caja que permita anticipar las necesidades de los próximos meses?',
-  F3:'¿Se conocen los recursos necesarios y su financiación para alcanzar el siguiente hito?',
-  F4:'¿Se conoce lo que cuesta conseguir y atender a un cliente y el margen que deja?',
-  SA1:'¿Las relaciones externas aportan recursos u oportunidades necesarios para el siguiente hito?',
-  SA2:'¿Existen evidencias de legitimidad en el mercado que faciliten la colaboración con clientes o socios?'
- };
- assert.deepEqual(Object.fromEntries(instrument.items.map(item=>[item.id,item.q])),expected);
- assert.equal(instrument.items.find(item=>item.id==='C4').levels.length,4);
- assert.doesNotMatch(JSON.stringify(instrument.items.find(item=>item.id==='T6')),/cap table/i);
+test('V2.4 uses four evidence levels and no conditional question route',()=>{
+ for(const item of instrument.items){assert.equal(item.levels.length,4,item.id);assert.equal(item.conditional,undefined,item.id);assert.equal(item.applicability,undefined,item.id);assert.notEqual(item.levels[0],'',item.id);}
 });
-
-test('delivery requires relevance or explicit omission, never optional usability or coverage',()=>{
- assert.equal(typeof model.deliveryIssues,'function');
- let s=model.createState('v2-mandatory'); s.consent=true;s.profile.email='expert@example.org';s=model.sealInitial(s);
- assert.equal(model.deliveryIssues(s).length,24);
- for(const a of Object.values(s.items))a.relevance=3;
- for(const a of Object.values(s.dimensions))a.relevance=3;
- assert.deepEqual(model.deliveryIssues(s),[]); assert.equal(model.status(s,'T1'),'complete');
- s.items.T1.relevance=null;assert.deepEqual(model.deliveryIssues(s),['T1']);
- s.items.T1.skipReason='experience';assert.deepEqual(model.deliveryIssues(s),[]);
- s.dimensions.D1.skipReason='prefer';for(const id of ['T1','T2','T4','T6'])s.items[id].relevance=null;
- assert.deepEqual(model.deliveryIssues(s),[]);
+test('V2.4 has no prohibited scored topic',()=>{
+ const questions=instrument.items.map(i=>i.q).join('\n');for(const term of [/reparto de participaciones/i,/propiedad intelectual/i,/dependencia de proveedores/i,/\bNPS\b/i,/productos alternativos/i,/productos complementarios/i])assert.doesNotMatch(questions,term);
 });
-
-test('applicability never hides absent tests, bootstrapped finance or sole-founder capabilities',()=>{
- assert.equal(typeof model.applicability,'function');
- for(const id of ['T1','T2','T4','PM1','PM2','VB1','VB2','PM3','PM4','C1','C2','C4','F1','F2','F3','SA1','SA2']) assert.equal(model.applicability(id,{phase:'idea',company:false,founders:1,funding:'none'}).status,'applicable',id);
- for(const [id,field] of [['T6','hasOwnership'],['F4','hasEstimationBasis']]) {
-  assert.equal(model.applicability(id,{}).status,'needs_context');
-  assert.equal(model.applicability(id,{[field]:false}).status,'not_applicable');
-  assert.equal(model.applicability(id,{[field]:true}).status,'applicable');
- }
- assert.throws(()=>model.applicability('missing',{}));
+test('V2.4 calculations require all 27 relevance blocks and isolate V2.3 imports',()=>{
+ let s=model.createState('v24-check');s.consent=true;s.profile.email='expert@example.org';s=model.sealInitial(s);assert.equal(model.deliveryIssues(s).length,27);
+ for(const a of [...Object.values(s.items),...Object.values(s.dimensions)])a.relevance=3;assert.deepEqual(model.deliveryIssues(s),[]);
+ const payload=model.exportPayload(s);assert.equal(payload.format,'expert-validation/2.4');payload.format='expert-validation/2.3';assert.throws(()=>model.importPayload(payload),/V2\.4/);
 });
-
-test('new expert judgements survive export and reject unknown item selections',()=>{
- let s=model.createState('v2-design-review');assert.ok(s.designReview);
- s.consent=true;s.profile.email='expert@example.org';s=model.sealInitial(s);
- s=model.edit(s,['designReview','discrimination'],['C2','C4']);
- s=model.edit(s,['designReview','screeningComment'],'Revisar la fecha de primera venta.');
- const imported=model.importPayload(model.exportPayload(s));assert.deepEqual(imported.designReview,s.designReview);
- assert.throws(()=>model.edit(s,['designReview','discrimination'],['bad']));
- s.schemaVersion='expert-validation/2.2';assert.throws(()=>model.validateState(s));
-});
-
-test('browser tests read the current public build rather than a versioned stale filename',()=>{
- assert.match(fs.readFileSync('src/validacion-expertos/app.check.cjs','utf8'),/public\/index\.html/);
-});
+test('browser tests use the generated current public build',()=>assert.match(fs.readFileSync('src/validacion-expertos/app.check.cjs','utf8'),/public\/index\.html/));

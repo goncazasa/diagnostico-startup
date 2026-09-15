@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v2.3', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.4', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.3')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.4')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -85,13 +85,13 @@ test('welcome hides navigation tools and the profile requests an email with opti
   assert.equal(email.required, true);
   assert.equal(ui.document.querySelector('[data-path="profile.name"]').required, false);
   ui.click('[data-action="next"]');
-  assert.equal(ui.document.querySelector('#item-T1'), null);
+  assert.equal(ui.document.querySelector('#item-E1'), null);
   ui.input('[data-path="profile.email"]', 'experto@example.org');
   ui.click('[data-action="next"]');
   assert.equal(ui.stored().step, 2, 'Instructions precede the first dimension');
-  assert.equal(ui.document.querySelector('#item-T1'), null);
+  assert.equal(ui.document.querySelector('#item-E1'), null);
   ui.click('[data-action="next"]');
-  assert.ok(ui.document.querySelector('#item-T1'));
+  assert.ok(ui.document.querySelector('#item-E1'));
   ui.dom.window.close();
 });
 
@@ -117,21 +117,21 @@ test('other phase can be entered immediately and survives navigation without los
 
 test('questions use two ratings and one observations field, with no applicability dropdown', async () => {
   const ui = boot(); start(ui);
-  const item = ui.document.querySelector('#item-T1');
+  const item = ui.document.querySelector('#item-E1');
   assert.equal(item.querySelectorAll('fieldset.rating-group').length, 2);
   assert.equal(item.querySelectorAll('textarea').length, 1);
   assert.equal(item.querySelector('.item-observation').open, false);
-  assert.equal(item.querySelector('[data-path="items.T1.applicability"]'), null);
-  ui.input('[data-path="items.T1.usability"][value="3"]', true);
-  ui.input('[data-path="items.T1.comment"]', 'La pregunta es clara; cambiaría la segunda respuesta');
+  assert.equal(item.querySelector('[data-path="items.E1.applicability"]'), null);
+  ui.input('[data-path="items.E1.usability"][value="3"]', true);
+  ui.input('[data-path="items.E1.comment"]', 'La pregunta es clara; cambiaría la segunda respuesta');
   ui.click('[data-step="9"]'); ui.click('[data-action="export"]');
   const payload = JSON.parse(await readBlob(ui, ui.dom.window.downloadBlob));
-  assert.equal(payload.response.items.T1.usability, 3);
-  assert.equal(payload.response.items.T1.clarity, undefined);
-  assert.equal(payload.response.items.T1.anchors, undefined);
+  assert.equal(payload.response.items.E1.usability, 3);
+  assert.equal(payload.response.items.E1.clarity, undefined);
+  assert.equal(payload.response.items.E1.anchors, undefined);
   assert.equal(payload.response.profile.email, 'experto@example.org');
-  openBlock(ui, 'T1');
-  assert.equal(ui.document.querySelector('#item-T1 .item-observation').open, true);
+  openBlock(ui, 'E1');
+  assert.equal(ui.document.querySelector('#item-E1 .item-observation').open, true);
   ui.dom.window.close();
 });
 function openBlock(ui, id) {
@@ -148,23 +148,23 @@ async function until(predicate) {
 test('typing is grouped into one saved edit and the latest text is restored', async () => {
   const ui = boot(); start(ui);
   const revision = ui.stored().revision;
-  ui.input('[data-path="items.T1.comment"]', 'Sin cambiar');
-  ui.input('[data-path="items.T1.comment"]', 'Sin cambiar de pantalla');
+  ui.input('[data-path="items.E1.comment"]', 'Sin cambiar');
+  ui.input('[data-path="items.E1.comment"]', 'Sin cambiar de pantalla');
   assert.equal(ui.stored().revision, revision, 'Typing should wait for a short pause');
   await new Promise(resolve => setTimeout(resolve, 550));
   const saved = ui.stored();
   assert.equal(saved.revision, revision + 1);
-  assert.equal(saved.items.T1.comment, 'Sin cambiar de pantalla');
+  assert.equal(saved.items.E1.comment, 'Sin cambiar de pantalla');
   const restored = boot(JSON.stringify(saved));
-  assert.equal(restored.document.querySelector('[data-path="items.T1.comment"]').value, 'Sin cambiar de pantalla');
+  assert.equal(restored.document.querySelector('[data-path="items.E1.comment"]').value, 'Sin cambiar de pantalla');
   ui.dom.window.close(); restored.dom.window.close();
 });
 
 test('pending text is saved on pagehide and before a download without waiting', async () => {
   const ui = boot(); start(ui);
-  ui.input('[data-path="items.T1.comment"]', 'Último carácter ñ');
+  ui.input('[data-path="items.E1.comment"]', 'Último carácter ñ');
   ui.dom.window.dispatchEvent(new ui.dom.window.Event('pagehide'));
-  assert.equal(ui.stored().items.T1.comment, 'Último carácter ñ');
+  assert.equal(ui.stored().items.E1.comment, 'Último carácter ñ');
   ui.click('[data-step="9"]');
   ui.input('[data-path="final.v9"]', 'Observación de cierre');
   ui.click('[data-action="export"]');
@@ -182,7 +182,7 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '2.3.0');
+  assert.equal(payload.instrumentVersion, '2.4.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
@@ -226,7 +226,7 @@ test('the UI does not expose the instrument until the profile is complete and om
 });
 test('omission hides scoring controls and the review separately counts skipped blocks', () => {
   const ui = boot(); start(ui);
-  ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
+  ui.input('input[data-path="items.E1.relevance"][value="4"]', true);
   ui.input('[data-path="dimensions.D1.skipReason"]', 'prefer');
   assert.equal(ui.document.querySelector('[data-dimension-content="D1"]').hidden, true);
   ui.click('[data-step="9"]');
@@ -247,7 +247,7 @@ test('export is marked only after a download request and an edit invalidates it'
   assert.equal(ui.document.querySelector('#export-receipt').hidden, false);
   assert.equal(ui.stored().exportedRevision, ui.stored().revision);
   ui.click('[data-step="3"]');
-  ui.input('[data-path="items.T1.comment"]', 'Cambio posterior');
+  ui.input('[data-path="items.E1.comment"]', 'Cambio posterior');
   ui.click('[data-step="9"]');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   assert.ok(ui.stored().revision > ui.stored().exportedRevision);
@@ -260,9 +260,9 @@ test('downloading preserves keyboard focus on the export button', () => {
   assert.equal(ui.document.activeElement, button);
   ui.dom.window.close();
 });
-test('a full review resolves all 24 blocks when their relevance is answered', () => {
+test('a full review resolves all 27 blocks when their relevance is answered', () => {
   const ui = boot(); start(ui);
-  const blocks = ['T1','T2','T4','T6','D1','PM1','PM2','VB1','VB2','PM3','PM4','D2','C1','C2','C4','D4','F1','F2','F3','F4','D5','SA1','SA2','D6'];
+  const blocks = ['E1','E2','E3','E4','D1','AM1','AM2','AM5','AM6','AM3','AM4','D2','MV1','MV2','MV3','D4','GF1','GF2','GF3','GF4','D5','GR1','GR2','D6'];
   for (const block of blocks) {
     openBlock(ui, block);
     for (const radio of [...ui.document.querySelectorAll('input[type="radio"][value="3"]')]) {
@@ -270,7 +270,7 @@ test('a full review resolves all 24 blocks when their relevance is answered', ()
     }
   }
   ui.click('[data-step="9"]');
-  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '24');
+  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '27');
   assert.equal(ui.document.querySelector('[data-count="pending"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="partial"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '0');
@@ -279,11 +279,11 @@ test('a full review resolves all 24 blocks when their relevance is answered', ()
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.3', newValue: '{"other":"response"}' }));
-  ui.input('[data-path="items.T1.comment"]', 'Mi copia local');
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.4', newValue: '{"other":"response"}' }));
+  ui.input('[data-path="items.E1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
-  assert.equal(ui.document.querySelector('[data-path="items.T1.comment"]').value, 'Mi copia local');
+  assert.equal(ui.document.querySelector('[data-path="items.E1.comment"]').value, 'Mi copia local');
   ui.dom.window.close();
 });
 test('canceling a new response preserves the existing draft', () => {
@@ -296,15 +296,15 @@ test('canceling a new response preserves the existing draft', () => {
 });
 test('the downloaded JSON contains normalized answers and restores through the real file input', async () => {
   const ui = boot(); start(ui);
-  ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
-  ui.input('[data-path="items.T1.comment"]', 'Acentos y texto: <img src=x>');
-  ui.input('[data-path="items.T1.skipReason"]', 'prefer');
+  ui.input('input[data-path="items.E1.relevance"][value="4"]', true);
+  ui.input('[data-path="items.E1.comment"]', 'Acentos y texto: <img src=x>');
+  ui.input('[data-path="items.E1.skipReason"]', 'prefer');
   ui.click('[data-step="9"]'); ui.click('[data-action="export"]');
   const raw = await readBlob(ui, ui.dom.window.downloadBlob);
   const payload = JSON.parse(raw);
-  assert.equal(payload.response.items.T1.relevance, null);
-  assert.equal(payload.response.items.T1.skipReason, 'prefer');
-  assert.equal(payload.instrument.items.length, 19);
+  assert.equal(payload.response.items.E1.relevance, null);
+  assert.equal(payload.response.items.E1.skipReason, 'prefer');
+  assert.equal(payload.instrument.items.length, 22);
   const id = payload.response.responseId;
   ui.click('#reset-button');
   assert.notEqual(ui.stored().responseId, id);
@@ -312,7 +312,7 @@ test('the downloaded JSON contains normalized answers and restores through the r
   Object.defineProperty(input, 'files', { value: [new ui.dom.window.File([raw], 'respuestas.json', { type: 'application/json' })], configurable: true });
   input.dispatchEvent(new ui.dom.window.Event('change', { bubbles: true }));
   await until(() => ui.stored().responseId === id);
-  assert.equal(ui.stored().items.T1.comment, 'Acentos y texto: <img src=x>');
+  assert.equal(ui.stored().items.E1.comment, 'Acentos y texto: <img src=x>');
   assert.equal(ui.document.querySelector('#app img'), null);
   ui.dom.window.close();
 });
@@ -328,7 +328,7 @@ test('an incompatible import leaves the current response intact', async () => {
 });
 test('free text is inert when restored and when included in the printable report', () => {
   const ui = boot(); start(ui);
-  ui.input('[data-path="items.T1.comment"]', '<img src=x onerror="window.pwned=true">');
+  ui.input('[data-path="items.E1.comment"]', '<img src=x onerror="window.pwned=true">');
   ui.click('[data-step="9"]');
   ui.dom.window.print = () => {};
   ui.click('[data-action="print"]');
@@ -351,17 +351,17 @@ test('all generated fields have labels and DOM ids remain unique on every page',
 });
 test('summary precedes the final step and shows every question with the entered criterion values', () => {
   const ui = boot(); start(ui);
-  ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
-  ui.input('input[data-path="items.T1.usability"][value="2"]', true);
+  ui.input('input[data-path="items.E1.relevance"][value="4"]', true);
+  ui.input('input[data-path="items.E1.usability"][value="2"]', true);
   openBlock(ui, 'D1');
   ui.input('input[data-path="dimensions.D1.coverage"][value="3"]', true);
   openBlock(ui, 'D6'); ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('#summary-map'));
   assert.equal(ui.document.querySelectorAll('[data-summary-dimension]').length, 5);
-  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 19);
-  assert.equal(ui.document.querySelector('[data-summary-value="items.T1.relevance"]').textContent, '4');
-  assert.equal(ui.document.querySelector('[data-summary-value="items.T1.usability"]').textContent, '2');
-  assert.equal(ui.document.querySelector('[data-summary-value="items.T1.anchors"]'), null);
+  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 22);
+  assert.equal(ui.document.querySelector('[data-summary-value="items.E1.relevance"]').textContent, '4');
+  assert.equal(ui.document.querySelector('[data-summary-value="items.E1.usability"]').textContent, '2');
+  assert.equal(ui.document.querySelector('[data-summary-value="items.E1.anchors"]'), null);
   assert.equal(ui.document.querySelector('[data-summary-value="dimensions.D1.coverage"]').textContent, '3');
   ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('[data-path="final.v9"]'));
@@ -372,27 +372,27 @@ test('each dimension shows all its questions and continues to the next dimension
   const ui = boot(); start(ui);
   assert.equal(ui.document.querySelectorAll('#app article.item').length, 4);
   assert.ok(ui.document.querySelector('[data-path="dimensions.D1.coverage"]'));
-  ui.input('[data-path="items.T6.comment"]', 'Observación al final de la dimensión');
+  ui.input('[data-path="items.E4.comment"]', 'Observación al final de la dimensión');
   ui.click('[data-action="next"]');
-  assert.equal(ui.document.querySelectorAll('#app article.item').length, 6);
-  assert.ok(ui.document.querySelector('#item-PM1'));
+  assert.equal(ui.document.querySelectorAll('#app article.item').length, 9);
+  assert.ok(ui.document.querySelector('#item-AM1'));
   ui.click('[data-action="back"]');
-  assert.equal(ui.document.querySelector('[data-path="items.T6.comment"]').value, 'Observación al final de la dimensión');
+  assert.equal(ui.document.querySelector('[data-path="items.E4.comment"]').value, 'Observación al final de la dimensión');
   ui.dom.window.close();
 });
 
 test('summary hides stale omitted scores and updates after a focused correction', () => {
   const ui = boot(); start(ui);
-  ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
-  ui.input('[data-path="items.T1.skipReason"]', 'prefer');
+  ui.input('input[data-path="items.E1.relevance"][value="4"]', true);
+  ui.input('[data-path="items.E1.skipReason"]', 'prefer');
   ui.click('[data-step="8"]');
-  assert.equal(ui.document.querySelector('[data-summary-value="items.T1.relevance"]'), null);
-  assert.match(ui.document.querySelector('[data-summary-item="T1"]').textContent, /Omitid/);
-  ui.click('[data-summary-item="T2"] [data-action="jump"]');
-  assert.equal(ui.document.activeElement.id, 'item-T2');
-  ui.input('input[data-path="items.T2.relevance"][value="3"]', true);
+  assert.equal(ui.document.querySelector('[data-summary-value="items.E1.relevance"]'), null);
+  assert.match(ui.document.querySelector('[data-summary-item="E1"]').textContent, /Omitid/);
+  ui.click('[data-summary-item="E2"] [data-action="jump"]');
+  assert.equal(ui.document.activeElement.id, 'item-E2');
+  ui.input('input[data-path="items.E2.relevance"][value="3"]', true);
   ui.click('[data-action="return-summary"]');
-  assert.equal(ui.document.querySelector('[data-summary-value="items.T2.relevance"]').textContent, '3');
+  assert.equal(ui.document.querySelector('[data-summary-value="items.E2.relevance"]').textContent, '3');
   ui.dom.window.close();
 });
 
@@ -453,26 +453,26 @@ test('omission controls offer only valuation or a preference not to respond',()=
  ui.dom.window.close();
 });
 test('visible question labels avoid internal codes and rating choices use four distinct tones',()=>{
- const ui=boot();start(ui);const item=ui.document.querySelector('#item-T1');
+ const ui=boot();start(ui);const item=ui.document.querySelector('#item-E1');
  assert.match(item.querySelector('.item-id').textContent,/Pregunta 1/);
- assert.doesNotMatch(item.querySelector('.item-id').textContent,/T1/);
+ assert.doesNotMatch(item.querySelector('.item-id').textContent,/E1/);
  assert.match(item.querySelector('h2').textContent,/perfiles necesarios y complementarios/i);
  assert.match(item.querySelector('h2').textContent,/proyecto/i);
  for(let score=1;score<=4;score++) assert.equal(item.querySelectorAll('.rating-choice.score-'+score).length,2);
- ui.input('input[data-path="items.T1.relevance"][value="4"]',true);ui.click('[data-step="8"]');
- assert.ok(ui.document.querySelector('[data-summary-value="items.T1.relevance"].score-4'));
- assert.doesNotMatch(ui.document.querySelector('[data-summary-item="T1"]').textContent,/T1/);
+ ui.input('input[data-path="items.E1.relevance"][value="4"]',true);ui.click('[data-step="8"]');
+ assert.ok(ui.document.querySelector('[data-summary-value="items.E1.relevance"].score-4'));
+ assert.doesNotMatch(ui.document.querySelector('[data-summary-item="E1"]').textContent,/E1/);
  ui.dom.window.dispatchEvent(new ui.dom.window.Event('beforeprint'));
- assert.doesNotMatch(ui.document.querySelector('#print-view').textContent,/T: Equipo|PM: Problema|T1/);
+ assert.doesNotMatch(ui.document.querySelector('#print-view').textContent,/T: Equipo|PM: Problema|E1/);
  ui.dom.window.close();
 });
 test('summary groups the long discrimination choice by dimension',()=>{
  const ui=boot();start(ui);ui.click('[data-step="8"]');
  const groups=ui.document.querySelectorAll('.discrimination-groups > details');assert.equal(groups.length,5);
  assert.equal([...groups].filter(group=>group.open).length,0);
- ui.input('input[data-path="designReview.discrimination"][value="C2"]',true);
+ ui.input('input[data-path="designReview.discrimination"][value="MV2"]',true);
  ui.click('[data-step="7"]');ui.click('[data-step="8"]');
- assert.equal(ui.document.querySelector('input[value="C2"]').closest('details').open,true);ui.dom.window.close();
+ assert.equal(ui.document.querySelector('input[value="MV2"]').closest('details').open,true);ui.dom.window.close();
 });
 test('email accepts accidental surrounding spaces',()=>{
  const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
@@ -482,5 +482,5 @@ test('email accepts accidental surrounding spaces',()=>{
 test('sending with missing relevance stays local and points to unresolved questions',async()=>{
  const ui=boot();start(ui);ui.click('[data-step="9"]');let sent=false;ui.dom.window.fetch=async()=>{sent=true;throw Error('Must remain local');};
  ui.click('[data-action="submit"]');assert.equal(sent,false);assert.match(ui.document.querySelector('#submit-status').textContent,/relevancia/);
- assert.ok(ui.document.querySelector('[data-missing-relevance] [data-anchor="item-T1"]'));ui.dom.window.close();
+ assert.ok(ui.document.querySelector('[data-missing-relevance] [data-anchor="item-E1"]'));ui.dom.window.close();
 });

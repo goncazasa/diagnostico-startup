@@ -18,6 +18,14 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.4: banco universal de 22 preguntas
+
+La V2.4 mantiene las cinco dimensiones y adopta los IDs funcionales E, AM, MV, GF y GR. El cambio es incompatible con V2.3 y se acompaña de `expert-validation/2.4` y una clave de almacenamiento nueva; por tanto, los borradores, exportaciones y análisis V2.3 permanecen históricos y no se reinterpretan.
+
+El banco retira estructura de propiedad e incorpora aprendizaje del equipo, conocimiento directo del cliente y sector, validación de solución, priorización por evidencia, competencia y defensibilidad, evolución del mercado y cuellos de botella. Marketing y ventas distingue compromiso, llegada y seguimiento; finanzas conserva caja, previsión, recursos y economía del cliente; GR1 y GR2 mantienen separadas colaboración y confianza.
+
+No se incluyen reparto de participaciones, propiedad intelectual, dependencia de proveedores, NPS ni productos alternativos puntuables. Son decisiones del investigador para un MVP universal y no resultados científicos. Se documentó la revisión de Blitz Canvas / iVenture como fuente de ideas y contraste conceptual, sin presentarla como validación científica ni adaptación del instrumento.
+
 ### Base funcional y simplificación inicial
 
 **Commits:** `bfa1dcd`, `fa128d2`.

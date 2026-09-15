@@ -2,7 +2,7 @@
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.3';
+  const STORAGE_KEY = 'startup-expert-validation-v2.4';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const statusLabels = { complete: 'Completo', partial: 'Parcial', pending: 'Pendiente', skipped: 'Omitido' };
@@ -33,12 +33,11 @@
   const valueAt = path => path.split('.').reduce((value, key) => value[key], state);
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
-    T1: 'Perfiles complementarios', T2: 'Experiencia en el sector', T4: 'Disponibilidad', T6: 'Estructura de propiedad',
-    PM1: 'Segmento prioritario', PM2: 'Importancia del problema', PM3: 'Mercado accesible', PM4: 'Momento y adopción',
-    VB1: 'Ventaja frente a alternativas', VB2: 'Quién paga y cómo',
-    C1: 'Compromiso comercial', C2: 'Llegada y venta al cliente', C4: 'Seguimiento de oportunidades',
-    F1: 'Caja disponible', F2: 'Previsión de caja', F3: 'Recursos para el hito', F4: 'Costes y margen por cliente',
-    SA1: 'Aportación de la red', SA2: 'Evidencias de confianza'
+    E1:'Perfiles complementarios',E2:'Conocimiento del cliente y sector',E3:'Disponibilidad',E4:'Aprendizaje y toma de decisiones',
+    AM1:'Segmento prioritario',AM2:'Importancia del problema',AM3:'Conocimiento del mercado',AM4:'Evolución del mercado',AM5:'Competencia y defensibilidad',AM6:'Monetización',AM7:'Validación de la solución',AM8:'Priorización y mejora del producto',AM9:'Cuellos de botella para crecer',
+    MV1:'Compromiso comercial',MV2:'Estrategia de llegada y venta',MV3:'Seguimiento comercial',
+    GF1:'Control de caja',GF2:'Previsión de caja',GF3:'Recursos para el siguiente hito',GF4:'Economía del cliente',
+    GR1:'Colaboraciones estratégicas',GR2:'Confianza y legitimidad'
   };
   const dimensionLabel = id => 'Dimensión ' + (instrument.dimensions.findIndex(dimension => dimension.id === id) + 1);
   const questionLabel = item => `Pregunta ${instrument.items.filter(candidate => candidate.dim === item.dim).findIndex(candidate => candidate.id === item.id) + 1}`;
@@ -418,7 +417,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_3_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_4_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -453,10 +452,10 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.3 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.4 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.3</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.4</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

@@ -1,5 +1,14 @@
 # Registro de cambios
 
+## V2.4 — revisión del banco y ampliación de adaptación al mercado (septiembre de 2026)
+
+- El banco mantiene cinco dimensiones y pasa de 19 a 22 preguntas, con distribución 4/9/3/4/2.
+- Se retira T6 sobre estructura de propiedad y se incorporan aprendizaje del equipo, validación de la solución, priorización basada en evidencia, competencia y defensibilidad, monitorización del mercado y cuellos de botella.
+- Colaboraciones se reformula como aportación de recursos o ventajas; se mantiene la confianza y legitimidad como dimensión complementaria.
+- No se incluyen como preguntas del MVP reparto de participaciones, propiedad intelectual, dependencia de proveedores, NPS ni productos alternativos o complementarios.
+- El esquema pasa a `expert-validation/2.4` y el almacenamiento local a `startup-expert-validation-v2.4`; V2.3 no se importa ni se mezcla en las tablas de análisis V2.4.
+- Se añade la trazabilidad conceptual de Blitz Canvas / iVenture en `docs/REFERENCIAS-Y-TRAZABILIDAD-CONCEPTUAL.md`.
+
 ## V2.3 — reorganización del banco (septiembre de 2026)
 
 - El banco pasa a cinco dimensiones y 19 preguntas: se retira T5 y se fusionan las anteriores dimensiones 2 y 3 bajo **Adaptación al mercado**.
