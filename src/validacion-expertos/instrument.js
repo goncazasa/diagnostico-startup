@@ -177,7 +177,7 @@
     {
       "id": "PM3",
       "dim": "D2",
-      "q": "¿Se ha estimado el tamaño del mercado con datos contrastables?",
+      "q": "¿Sabes cuántos clientes de tu segmento podrías alcanzar realmente, a qué precio y con qué frecuencia comprarían?",
       "note": "La estimación debe construirse de abajo arriba: desde clientes identificables, precio y frecuencia de compra. Partir de una cifra global del sector y recortarla con porcentajes sirve solo como contraste. Valora la trazabilidad y los límites de los supuestos.",
       "levels": [
         "No existe una estimación útil del mercado accesible.",

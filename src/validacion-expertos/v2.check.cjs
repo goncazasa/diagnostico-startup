@@ -25,7 +25,7 @@ test('V2.3 changes only the approved question copy',()=>{
   PM2:'¿Hay evidencia directa de que el problema identificado es lo bastante importante para que el cliente actúe?',
   VB1:'¿Está bien definida la propuesta de valor y el cliente reconoce una ventaja frente a otras alternativas?',
   VB2:'¿Se ha definido y validado quién paga, por qué paga y cómo lo hace?',
-  PM3:'¿Se ha estimado el tamaño del mercado con datos contrastables?',
+  PM3:'¿Sabes cuántos clientes de tu segmento podrías alcanzar realmente, a qué precio y con qué frecuencia comprarían?',
   PM4:'¿Puede explicarse con evidencias por qué este es un buen momento para lanzar el proyecto?',
   C1:'¿Qué compromisos comerciales se han conseguido y cuáles se han repetido?',
   C2:'¿Se ha contrastado la estrategia de ventas (go-to-market) con el segmento de clientes definido?',
