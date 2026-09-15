@@ -398,7 +398,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   "version": "2.3.0",
   "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
+  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan (inversores, mentores e incubadoras) un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
   "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
   "source": "Instrumento V2.3 revisado el 11 de septiembre de 2026. Banco de 19 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {
@@ -1096,14 +1096,14 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
     setSaveStatus(result.ok);
     return result.ok;
   }
-  function field(path, label, hint = '', type = 'textarea', options = []) {
+  function field(path, label, hint = '', type = 'textarea', options = [], placeholder = '') {
     const id = idFor(path), value = valueAt(path);
     const required = path === 'profile.email';
     const attrs = `id="${id}" data-path="${path}" ${required ? 'required autocomplete="email"' : path === 'profile.name' ? 'autocomplete="name"' : ''} ${hint ? `aria-describedby="${id}-help"` : ''}`;
     let control;
     if (type === 'select') control = `<select ${attrs}><option value="">Sin respuesta</option>${options.map(([v, l]) => `<option value="${esc(v)}" ${value === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>`;
     else if (type === 'textarea') control = `<textarea ${attrs} maxlength="6000" ${path === 'initial.text' && state.initial.lockedAt ? 'disabled' : ''}>${esc(value)}</textarea>`;
-    else control = `<input ${attrs} type="${type}" value="${esc(value)}" ${type === 'number' ? 'min="0" max="100" step="1" inputmode="numeric"' : `maxlength="${required ? 254 : ['profile.name', 'profile.phasesOther'].includes(path) ? 200 : 6000}"`}>`;
+    else control = `<input ${attrs} type="${type}" value="${esc(value)}" ${placeholder ? `placeholder="${esc(placeholder)}"` : ''} ${type === 'number' ? 'min="0" max="100" step="1" inputmode="numeric"' : `maxlength="${required ? 254 : ['profile.name', 'profile.phasesOther'].includes(path) ? 200 : 6000}"`}>`;
     return `<div class="field"><label for="${id}">${esc(label)} ${required ? '' : optional}</label>${control}${hint ? `<p class="fine" id="${id}-help">${esc(hint)}</p>` : ''}</div>`;
   }
   function checks(path, label, values) {
@@ -1117,7 +1117,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Si este tema queda fuera de tu experiencia:</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="experience" ${current === 'experience' ? 'selected' : ''}>No tengo suficiente experiencia</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option>${current === 'dimension' ? '<option value="dimension" selected>Omitida con la dimensión</option>' : ''}</select></div>`;
+    return `<div class="omission"><label for="${idFor(path)}">Esta valoración:</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option></select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
@@ -1136,14 +1136,13 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   function profile() {
     return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
       `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups? (puedes marcar varias)', model.roles)}
-      ${field('profile.years', 'Años de experiencia con startups', '', 'number')}
+      ${field('profile.years', 'Años de experiencia con startups', '', 'number', [], '0')}
       <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
       ${checks('profile.phases', 'Fases con las que tienes experiencia (puedes marcar varias)', model.phases)}
       <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
       ${field('profile.sectors', 'Sectores o modelos que conoces mejor', 'Por ejemplo: servicios, software para empresas o industria.', 'text')}
       ${field('profile.pivot', '¿Has vivido un pivote, cierre o fracaso de una startup?', '', 'select', ['Sí', 'No', 'Prefiero no responder'].map(x => [x, x]))}</details>
-      <div class="initial-question">${field('initial.text', 'Antes de ver las preguntas: ¿qué dimensiones evaluarías para diagnosticar una startup en fase inicial?', state.initial.lockedAt ? 'Esta respuesta ya está registrada. Puedes añadir ideas en el resumen.' : 'No hay una respuesta correcta. Escribe las grandes áreas que revisarías; al continuar se guardará la respuesta y ya no podrás editarla.')}</div>
       ${nav('Continuar')}</section>`;
   }
   function guide() {
@@ -1151,7 +1150,6 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
       `<section class="surface guide-sheet"><ol class="guide-steps">
       <li><strong>Lee la pregunta y las cuatro respuestas posibles.</strong><span>Son las opciones que verá la persona emprendedora.</span></li>
       <li><strong>Valora su calidad.</strong><span>Indica si es relevante. Si lo necesitas, valora también su claridad y escribe una observación.</span></li></ol>
-      <p class="guide-note"><strong>Solo la relevancia es obligatoria.</strong> Si el tema queda fuera de tu experiencia, selecciona «No tengo suficiente experiencia».</p>
       ${nav('Revisar la primera dimensión')}</section>`;
   }
   function itemDesign(item) {

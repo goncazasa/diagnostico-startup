@@ -4,7 +4,7 @@
   "version": "2.3.0",
   "title": "Diagnóstico de startups en fases iniciales",
   "researcherEmail": "luis.gonzalezc@urjc.es",
-  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan —inversores, mentores e incubadoras— un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
+  "purpose": "Ofrecer a las startups en fases iniciales y a quienes las acompañan o evalúan (inversores, mentores e incubadoras) un análisis de situación que permita identificar riesgos o debilidades, fortalezas y oportunidades.",
   "population": "Startups en fases iniciales, desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.",
   "source": "Instrumento V2.3 revisado el 11 de septiembre de 2026. Banco de 19 ítems; pendiente de validación experta. La matriz de fuentes distingue referencias verificadas y localizadores pendientes.",
   "expertCriteria": {

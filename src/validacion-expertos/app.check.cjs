@@ -37,7 +37,6 @@ function start(ui) {
   ui.input('[data-path="consent"]', true);
   ui.click('[data-action="next"]');
   ui.input('[data-path="profile.email"]', 'experto@example.org');
-  ui.input('[data-path="initial.text"]', 'Clientes y ejecución');
   ui.click('[data-action="next"]');
   ui.click('[data-action="next"]');
 }
@@ -215,20 +214,20 @@ test('summary feedback survives navigation and stays out of the final questions'
   assert.equal(ui.document.querySelector('[data-path="final.v2"]').value, 'No eliminaría ninguna');
   ui.dom.window.close();
 });
-test('the UI does not expose the instrument before the initial view has been sealed', () => {
+test('the UI does not expose the instrument until the profile is complete and omits the initial free-text question', () => {
   const ui = boot();
   assert.equal(ui.document.querySelector('[data-action="next"]').disabled, true);
   ui.input('[data-path="consent"]', true); ui.click('[data-action="next"]');
   assert.equal(ui.document.querySelector('[data-step="3"]').disabled, true);
-  ui.input('[data-path="profile.email"]', 'experto@example.org'); ui.input('[data-path="initial.text"]', 'Mi mirada inicial'); ui.click('[data-action="next"]');
-  ui.click('[data-step="1"]');
-  assert.equal(ui.document.querySelector('[data-path="initial.text"]').disabled, true);
+  assert.equal(ui.document.querySelector('[data-path="initial.text"]'), null);
+  ui.input('[data-path="profile.email"]', 'experto@example.org'); ui.click('[data-action="next"]');
+  assert.equal(ui.stored().step, 2);
   ui.dom.window.close();
 });
 test('omission hides scoring controls and the review separately counts skipped blocks', () => {
   const ui = boot(); start(ui);
   ui.input('input[data-path="items.T1.relevance"][value="4"]', true);
-  ui.input('[data-path="dimensions.D1.skipReason"]', 'experience');
+  ui.input('[data-path="dimensions.D1.skipReason"]', 'prefer');
   assert.equal(ui.document.querySelector('[data-dimension-content="D1"]').hidden, true);
   ui.click('[data-step="9"]');
   assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '5');
@@ -406,17 +405,21 @@ test('welcome explains the expert task, target population and scope without a ti
  assert.equal(ui.document.querySelector('.brand-sub'),null);
  assert.match(text,/Objetivo del diagnóstico/);
  assert.match(text,/riesgos o debilidades, fortalezas y oportunidades/);
- assert.match(text,/inversores, mentores e incubadoras/);
+ assert.match(text,/\(inversores, mentores e incubadoras\)/);
  assert.doesNotMatch(text,/Google Sheets|Vercel|Google Apps Script|contadores agregados|hoja de información/);
  assert.doesNotMatch(text,/20[–-]30|minutos/);
  assert.doesNotMatch(text,/Una omisión nunca cuenta como 0/);
  ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
- assert.match(ui.document.querySelector('label[for="initial-text"]').textContent,/qué dimensiones evaluarías/i);
+ assert.equal(ui.document.querySelector('[data-path="initial.text"]'),null);
  ui.dom.window.close();
 });
 test('profile uses numeric experience, pivot wording and no conflict field',()=>{
  const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
- assert.equal(ui.document.querySelector('[data-path="profile.years"]').type,'number');
+ const years=ui.document.querySelector('[data-path="profile.years"]');
+ assert.equal(years.type,'number');
+ assert.equal(years.placeholder,'0');
+ assert.equal(years.value,'');
+ assert.equal(ui.stored().profile.years,'');
  assert.match(ui.document.querySelector('label[for="profile-pivot"]').textContent,/pivote/i);
  assert.equal(ui.document.querySelector('[data-path="profile.conflict"]'),null);
  ui.dom.window.close();
@@ -439,7 +442,14 @@ test('expert guide contains only the essential instructions',()=>{
  assert.equal(ui.document.querySelector('[data-guide-reference]'),null);
  assert.equal(ui.document.querySelector('[data-screening-design]'),null);
  assert.equal(ui.document.querySelector('.code-guide'),null);
- assert.doesNotMatch(ui.document.querySelector('.guide-sheet').textContent,/códigos|cribado|omisión nunca/i);
+ assert.doesNotMatch(ui.document.querySelector('.guide-sheet').textContent,/códigos|cribado|omisión nunca|Solo la relevancia es obligatoria/i);
+ ui.dom.window.close();
+});
+test('omission controls offer only valuation or a preference not to respond',()=>{
+ const ui=boot();start(ui);
+ const choices=[...ui.document.querySelector('[data-path="dimensions.D1.skipReason"]').options].map(option=>[option.value,option.textContent]);
+ assert.deepEqual(choices,[['','Voy a valorarla'],['prefer','Prefiero no responder']]);
+ assert.equal(ui.document.querySelector('#app').textContent.includes('No tengo suficiente experiencia'),false);
  ui.dom.window.close();
 });
 test('visible question labels avoid internal codes and rating choices use four distinct tones',()=>{
