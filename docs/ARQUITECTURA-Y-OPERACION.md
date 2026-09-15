@@ -60,6 +60,8 @@ No deben añadirse al repositorio, al HTML, a capturas o a mensajes. El secreto 
 
 La rama `main` está conectada a Vercel. Cada push ejecuta el constructor definido en `vercel.json` y publica `public/` junto con las funciones de `api/`.
 
+Todo cambio de código o configuración debe llevar una actualización documental en el mismo commit. El control se aplica localmente mediante `.githooks/pre-commit` tras ejecutar `node scripts/enable-git-hooks.mjs`, y en GitHub mediante `.github/workflows/documentation.yml`. El control exige modificar `README.md`, `CHANGELOG.md`, algún archivo de `docs/` o `google-apps-script/LEEME.md`.
+
 ```sh
 node src/validacion-expertos/build.mjs
 node --test src/validacion-expertos/*.check.cjs

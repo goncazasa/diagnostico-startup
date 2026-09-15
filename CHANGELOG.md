@@ -1,5 +1,10 @@
 # Registro de cambios
 
+## Pendiente de publicar
+
+- Sincronizada la documentación operativa y de UX con V2.4: 22 preguntas y cinco dimensiones.
+- Añadido un control local y en GitHub que exige actualizar la documentación en cada commit con cambios de código o configuración.
+
 ## V2.4 — revisión del banco y ampliación de adaptación al mercado (septiembre de 2026)
 
 - El banco mantiene cinco dimensiones y pasa de 19 a 22 preguntas, con distribución 4/9/3/4/2.

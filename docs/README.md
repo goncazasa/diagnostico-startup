@@ -9,7 +9,8 @@ Esta carpeta reúne la memoria técnica y metodológica de **Diagnóstico de sta
 | [Arquitectura y operación](ARQUITECTURA-Y-OPERACION.md) | Describe el flujo navegador–Vercel–Google Sheets, los despliegues, la seguridad, las pruebas y la recuperación. |
 | [Revisión UX](REVISION-UX.md) | Traza la aplicación de los principios de Yablonski y Krug, los cambios realizados y la prueba pendiente con usuarios. |
 | [Referencias y trazabilidad conceptual](REFERENCIAS-Y-TRAZABILIDAD-CONCEPTUAL.md) | Conserva la relación entre ideas analizadas, decisiones de diseño, exclusiones y la revisión de Blitz Canvas / iVenture. |
+| [Plan de acción de auditoría](PLAN-ACCION-AUDITORIA.md) | Ordena las acciones técnicas, de calidad, operación y pilotaje posteriores a la auditoría. |
 | [Registro de cambios](../CHANGELOG.md) | Resume las modificaciones por versión. |
 | [Conexión con Google Sheets](../google-apps-script/LEEME.md) | Contiene el procedimiento específico para configurar o actualizar el receptor. |
 
-Estado documentado: **15 de septiembre de 2026**, aplicación e instrumento `2.4.0`, esquema `expert-validation/2.4`.
+Estado documentado: **16 de septiembre de 2026**, aplicación e instrumento `2.4.0`, esquema `expert-validation/2.4`.

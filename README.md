@@ -9,6 +9,7 @@ Formulario con una dimensión por página, veintidós preguntas, 54 juicios posi
 - [Arquitectura, despliegue y operación](docs/ARQUITECTURA-Y-OPERACION.md)
 - [Revisión UX basada en Yablonski y Krug](docs/REVISION-UX.md)
 - [Referencias y trazabilidad conceptual](docs/REFERENCIAS-Y-TRAZABILIDAD-CONCEPTUAL.md)
+- [Plan de acción de la auditoría](docs/PLAN-ACCION-AUDITORIA.md)
 - [Registro de cambios por versión](CHANGELOG.md)
 
 ## Configuración
@@ -72,6 +73,10 @@ npm install
 npm test
 ```
 
-Genera `Validacion_Expertos_Startup_V2_3.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
+Genera `Validacion_Expertos_Startup_V2_4.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
 
 Aplicación e instrumento `2.4.0`; esquema `expert-validation/2.4`; almacenamiento local `startup-expert-validation-v2.4`. V2.4 modifica materialmente el banco y, por ello, no recupera borradores ni importa copias de V2.3 o anteriores. Los HTML históricos se conservan como antecedentes.
+
+## Documentación obligatoria por commit
+
+Todo commit que cambie código o configuración debe actualizar al menos uno de estos documentos: `README.md`, `CHANGELOG.md`, `docs/` o `google-apps-script/LEEME.md`. Activa el control local una vez por clon con `node scripts/enable-git-hooks.mjs`; el flujo de GitHub revisa además cada commit de una propuesta o de `main`. Para comprobar el área preparada manualmente: `node scripts/check-documentation.mjs --staged`.

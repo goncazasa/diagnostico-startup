@@ -7,8 +7,10 @@
   },
   "scripts": {
     "build": "node src/validacion-expertos/build.mjs",
+    "docs:check": "node scripts/check-documentation.mjs --staged",
+    "hooks:enable": "node scripts/enable-git-hooks.mjs",
     "pretest": "npm run build",
-    "test": "node --test src/validacion-expertos/core.check.cjs src/validacion-expertos/app.check.cjs src/validacion-expertos/submit.check.cjs src/validacion-expertos/sheets.check.cjs src/validacion-expertos/v2.check.cjs src/validacion-expertos/progress.check.cjs",
+    "test": "node --test src/validacion-expertos/core.check.cjs src/validacion-expertos/app.check.cjs src/validacion-expertos/submit.check.cjs src/validacion-expertos/sheets.check.cjs src/validacion-expertos/v2.check.cjs src/validacion-expertos/progress.check.cjs scripts/check-documentation.check.cjs",
     "test:browser": "node --test test-support/browser.check.cjs"
   },
   "devDependencies": {
