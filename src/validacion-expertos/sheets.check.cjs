@@ -103,6 +103,6 @@ test('historical V1.9 archives stay intact and separate when rebuilding V2 table
  const row=[receipt,legacy.response.responseId,'1.9.0',legacy.response.revision,new Date().toISOString(),Buffer.from(raw).toString('base64')];
  x.tables.get('Entregas').push(row);x.ctx.actualizarAnalisis();
  assert.deepEqual(x.tables.get('Entregas')[2],row);
- const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.5.0').length,25);
+ const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.6.0').length,25);
  assert.equal(x.post(legacy).ok,false,'V2 receiver rejects new V1.9 submissions but preserves archived originals');
 });

@@ -47,7 +47,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.5');assert.equal(p.instrument.items.length,20);
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.6');assert.equal(p.instrument.items.length,20);
   assert.equal(p.response.items.MV2.usability,null);assert.equal(p.response.items.E3.relevance,null);assert.equal(p.response.items.AM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['MV2']);
   assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,26);
   assert.ok(await page.locator('#post-submit-results').isVisible());assert.equal(await page.locator('#post-submit-results svg[role="img"]').count(),1);

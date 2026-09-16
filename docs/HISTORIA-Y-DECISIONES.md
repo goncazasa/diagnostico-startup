@@ -18,6 +18,14 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.6: precisión editorial sin ampliar el banco
+
+La V2.6 conserva las cinco dimensiones, las 20 preguntas y el orden de V2.5. Hace visible en la bienvenida el alcance que ya formaba parte del instrumento y concreta formulaciones sobre dedicación del equipo, mercado alcanzable y economía del cliente.
+
+GR1 queda centrada en los recursos o ventajas que aporta directamente una colaboración; GR2, en la confianza ante terceros y las oportunidades que esa relación abre. AM8 retira la referencia a MoSCoW para medir el criterio y no una herramienta. Los niveles 0–3 conservan su progresión y MV1 no cambia porque ya separa interés, compromisos verificables y repetición comercial.
+
+Aunque no cambia el número de preguntas, sí cambia el texto que el panel debe validar. Para evitar mezclar valoraciones se utilizan `expert-validation/2.6` y `startup-expert-validation-v2.6`; V2.5 permanece histórica.
+
 ### V2.5: banco de 20 preguntas y devolución al experto
 
 La V2.5 retira AM7 y AM9, conserva sus identificadores como huecos históricos y presenta AM5 antes de AM4. AM4 se centra en monitorizar cambios del mercado, MV2 explicita el canal de venta y GR2 distingue la legitimidad y el acceso que pueden generar clientes o colaboradores. El banco queda en 20 preguntas con distribución 4/7/3/4/2.

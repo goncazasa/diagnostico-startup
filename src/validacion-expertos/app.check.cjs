@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v2.5', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.6', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.5')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.6')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -215,7 +215,7 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '2.5.0');
+  assert.equal(payload.instrumentVersion, '2.6.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
@@ -322,7 +322,7 @@ test('a full review resolves all 25 blocks when their relevance is answered', ()
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.5', newValue: '{"other":"response"}' }));
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.6', newValue: '{"other":"response"}' }));
   ui.input('[data-path="items.E1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
@@ -448,6 +448,7 @@ test('welcome explains the expert task, target population and scope without a ti
  assert.equal(ui.document.querySelector('.brand-sub'),null);
  assert.match(text,/Objetivo del diagnóstico/);
  assert.match(text,/riesgos o debilidades, fortalezas y oportunidades/);
+ assert.match(text,/desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial/i);
  assert.match(text,/\(inversores, mentores e incubadoras\)/);
  assert.doesNotMatch(text,/Google Sheets|Vercel|Google Apps Script|contadores agregados|hoja de información/);
  assert.doesNotMatch(text,/20[–-]30|minutos/);

@@ -1,4 +1,4 @@
-# Fuentes del panel V2.5
+# Fuentes del panel V2.6
 
 Documentación vigente en `../../README.md`. El envío usa `../../api/submit.mjs` y `../../google-apps-script/Code.gs`; las instrucciones están en `../../google-apps-script/LEEME.md`.
 

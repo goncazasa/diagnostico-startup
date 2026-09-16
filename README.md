@@ -73,9 +73,9 @@ npm install
 npm test
 ```
 
-Genera `Validacion_Expertos_Startup_V2_5.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
+Genera `Validacion_Expertos_Startup_V2_6.html` y `public/index.html`. JSDOM se usa solo en las pruebas. Las pruebas del servidor y de Apps Script usan transportes y hojas simulados: verifican validación, firma, justificantes, reintentos, historial, omisiones, Unicode, fallos de escritura y recuperación de tablas. No sustituyen una prueba real del despliegue.
 
-Aplicación e instrumento `2.5.0`; esquema `expert-validation/2.5`; almacenamiento local `startup-expert-validation-v2.5`. V2.5 modifica materialmente el banco y, por ello, no recupera borradores ni importa copias de V2.4 o anteriores. Los HTML históricos se conservan como antecedentes.
+Aplicación e instrumento `2.6.0`; esquema `expert-validation/2.6`; almacenamiento local `startup-expert-validation-v2.6`. V2.6 modifica textos que evalúa el panel y, por ello, no recupera borradores ni importa copias de V2.5 o anteriores. Los HTML históricos se conservan como antecedentes.
 
 ## Documentación obligatoria por commit
 

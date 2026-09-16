@@ -1,21 +1,21 @@
 # Referencias y trazabilidad conceptual
 
-## Alcance de V2.5
+## Alcance de V2.6
 
-Este documento conserva las decisiones conceptuales que acompañan al banco V2.5. Distingue cuatro capas: una fuente o framework puede aportar **inspiración conceptual**; el investigador decide el **diseño del instrumento**; la literatura aporta **evidencia científica** sobre constructos; y el panel de expertos y los estudios posteriores aportarán la **validación**. Ninguna capa sustituye a otra.
+Este documento conserva las decisiones conceptuales que acompañan al banco V2.6. Distingue cuatro capas: una fuente o framework puede aportar **inspiración conceptual**; el investigador decide el **diseño del instrumento**; la literatura aporta **evidencia científica** sobre constructos; y el panel de expertos y los estudios posteriores aportarán la **validación**. Ninguna capa sustituye a otra.
 
-V2.5 mantiene cinco dimensiones y 20 preguntas. Todas se presentan a cada experto; no hay rutas condicionales ni pesos. El resultado posterior al envío resume la relevancia que el experto atribuye al cuestionario y señala dimensiones del instrumento que conviene revisar; no es una puntuación diagnóstica de una startup. En un autodiagnóstico futuro las reglas de puntuación y recomendaciones deberán validarse de forma independiente.
+V2.6 mantiene cinco dimensiones y 20 preguntas. Todas se presentan a cada experto; no hay rutas condicionales ni pesos. El resultado posterior al envío resume la relevancia que el experto atribuye al cuestionario y señala dimensiones del instrumento que conviene revisar; no es una puntuación diagnóstica de una startup. En un autodiagnóstico futuro las reglas de puntuación y recomendaciones deberán validarse de forma independiente.
 
 ## Blitz Canvas / iVenture
 
 Blitz Canvas / iVenture se revisó como referencia externa y fuente de ideas durante la revisión conceptual. El instrumento no es una adaptación de esa herramienta, dicha herramienta no valida científicamente las preguntas y no todas las preguntas proceden de ella. La referencia bibliográfica verificable no estaba disponible en el repositorio en el momento de esta actualización: **TODO: verificar autores, título, año y publicación antes de incorporarla a la bibliografía de la tesis.**
 
-| Idea analizada | Decisión y adaptación en V2.5 | Estado |
+| Idea analizada | Decisión y adaptación en V2.6 | Estado |
 |---|---|---|
 | Foundation y capacidades iniciales | E1 cubre perfiles y capacidades; E3 disponibilidad; E4 aprendizaje que cambia decisiones. | Incorporada y reformulada |
 | Comprensión de usuario, sector y mercado | E2, AM1, AM2 y AM3 exigen contacto o evidencia directa, no solo una descripción interna. | Incorporada y reforzada |
 | Solución, feedback y validación | AM2 prioriza comportamiento observado para evidenciar el problema; AM8 pide priorización y comprobación posterior del impacto. | Incorporada y reforzada |
-| Priorización de funcionalidades / MoSCoW | MoSCoW figura solo como ejemplo en AM8; se evalúa la priorización basada en evidencia. | Incorporada y generalizada |
+| Priorización de funcionalidades / MoSCoW | AM8 evalúa la priorización basada en evidencia sin exigir ni nombrar una metodología concreta. | Incorporada y generalizada |
 | USP, competidores y dificultad de copia | AM5 integra alternativas, diferenciación y barreras difíciles de reproducir. | Incorporada y fusionada |
 | Modelo de negocio y compromiso comercial | AM6 distingue pagador y condiciones; MV1 verifica compromiso; MV2 y MV3 estudian proceso y seguimiento. | Incorporada y separada |
 | Colaboraciones y sinergias | GR1 convierte sinergia en recursos o ventajas obtenidas por colaboraciones activas. | Incorporada y reformulada |

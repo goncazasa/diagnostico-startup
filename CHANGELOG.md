@@ -7,6 +7,16 @@
 - Corregidos los contadores del menú lateral: ahora cuentan únicamente las preguntas de cada dimensión (4/7/3/4/2) y no suman como una pregunta adicional la valoración global de la dimensión.
 - Revisada la secuencia interna del banco V2.5. Se mantiene el orden actual porque conduce de capacidades a aprendizaje en Equipo; de segmento y problema a mercado, diferenciación, entorno, monetización y producto en Adaptación al mercado; de evidencia comercial a canal y seguimiento en Marketing y ventas; de caja actual a previsión, financiación del hito y economía del cliente en Gestión financiera; y de aportación directa a legitimidad y acceso en Gestión de recursos y relaciones.
 
+## V2.6 — precisión editorial sin ampliar el banco (septiembre de 2026)
+
+- Se mantienen cinco dimensiones, 20 preguntas, su distribución 4/7/3/4/2 y el orden de V2.5; no se añade ninguna pregunta.
+- La bienvenida muestra el alcance ya definido: desde la exploración de una idea hasta las primeras ventas y señales de repetición comercial.
+- E3 explicita que la dedicación comprende tiempo y foco. AM3 pregunta directamente por clientes alcanzables, precio y frecuencia de compra, y su ayuda incorpora geografía y canales.
+- AM5 aclara desde el principio que la ventaja no exige patente y AM8 elimina la referencia innecesaria a una metodología concreta.
+- GF4 pasa de exigir conocimiento a preguntar por una estimación, coherente con proyectos sin ventas consolidadas.
+- GR1 se centra en la aportación directa de las colaboraciones y GR2 en su función como señal de confianza y acceso, reduciendo el solapamiento entre ambas.
+- El esquema pasa a `expert-validation/2.6` y el almacenamiento local a `startup-expert-validation-v2.6`; V2.5 queda preservada como versión histórica incompatible.
+
 ## V2.5 — revisión editorial y resultados tras el envío (septiembre de 2026)
 
 - Adaptación al mercado pasa de nueve a siete preguntas: se retiran AM7 y AM9, AM5 se presenta antes de AM4 y se reformula la monitorización de cambios del mercado.

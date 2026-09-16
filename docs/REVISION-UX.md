@@ -1,6 +1,6 @@
 # Revisión UX basada en Yablonski y Krug
 
-Fecha de actualización: 16 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.5 en escritorio y móvil. El banco contiene 20 preguntas agrupadas en cinco dimensiones. Esta revisión conserva los principios de diseño anteriores y actualiza las referencias al instrumento vigente.
+Fecha de actualización: 16 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.6 en escritorio y móvil. El banco contiene 20 preguntas agrupadas en cinco dimensiones. Esta revisión conserva los principios de diseño anteriores y actualiza las referencias al instrumento vigente.
 
 ## Criterio de diseño
 
