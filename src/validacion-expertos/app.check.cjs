@@ -477,6 +477,16 @@ test('sidebar dimension names match their page titles and question numbers are s
  });
  ui.dom.window.close();
 });
+test('sidebar counters count questions only and exclude the dimension-wide rating',()=>{
+ const ui=boot();start(ui);
+ const counts=()=>[3,4,5,6,7].map(step=>ui.document.querySelector(`[data-step="${step}"] [data-nav-count]`).textContent);
+ assert.deepEqual(counts(),['0/4','0/7','0/3','0/4','0/2']);
+ ui.input('input[data-path="items.E1.relevance"][value="3"]',true);
+ assert.deepEqual(counts(),['1/4','0/7','0/3','0/4','0/2']);
+ ui.input('input[data-path="dimensions.D1.relevance"][value="3"]',true);
+ assert.deepEqual(counts(),['1/4','0/7','0/3','0/4','0/2']);
+ ui.dom.window.close();
+});
 test('expert guide contains only the essential instructions',()=>{
  const ui=boot();ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');ui.input('[data-path="profile.email"]','expert@example.org');ui.click('[data-action="next"]');
  assert.equal(ui.document.querySelectorAll('.guide-steps > li').length,2);

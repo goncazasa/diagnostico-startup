@@ -48,6 +48,12 @@
     const plural = (count, singular, pluralForm) => `${count} ${count === 1 ? singular : pluralForm}`;
     return `${plural(pending, 'pregunta', 'preguntas')} por valorar${omitted ? ` · ${plural(omitted, 'omitida', 'omitidas')}` : ''}`;
   }
+  function dimensionQuestionProgress(id) {
+    const statuses = instrument.items.filter(item => item.dim === id).map(item => model.status(state, item.id));
+    const complete = statuses.filter(status => status === 'complete').length;
+    const skipped = statuses.filter(status => status === 'skipped').length;
+    return { complete, skipped, resolved: complete + skipped, total: statuses.length };
+  }
   function illustration(id) {
     const drawings = {
       D1: '<path d="M45 93h100M67 72l43-25 43 25"/><circle cx="110" cy="41" r="18"/><circle cx="59" cy="79" r="14"/><circle cx="161" cy="79" r="14"/><path d="M82 108V96a28 28 0 0 1 56 0v12M35 119v-11a24 24 0 0 1 44-13m62 0a24 24 0 0 1 44 13v11"/>',
@@ -326,7 +332,7 @@
     if (otherPhase) otherPhase.hidden = !state.profile.phases.includes('Otra');
     document.querySelectorAll('[data-status]').forEach(node => { const status = model.status(state, node.dataset.status); node.className = 'badge ' + status; node.textContent = statusLabels[status]; });
     document.querySelectorAll('#step-nav [data-step]').forEach(button => { button.disabled = !model.canVisit(state, Number(button.dataset.step)); });
-    document.querySelectorAll('[data-nav-count]').forEach(node => { const c = model.summary(state, node.dataset.navCount); node.textContent = `${c.resolved}/${c.total}`; node.setAttribute('aria-label', `${c.complete} completos y ${c.skipped} omitidos`); });
+    document.querySelectorAll('[data-nav-count]').forEach(node => { const c = dimensionQuestionProgress(node.dataset.navCount); node.textContent = `${c.resolved}/${c.total}`; node.setAttribute('aria-label', `${c.complete} preguntas completas y ${c.skipped} omitidas`); });
     document.querySelectorAll('[data-action="clear"]').forEach(button => { button.hidden = valueAt(button.dataset.target) === null; });
     if (state.step === 0) app.querySelector('[data-action="next"]').disabled = !state.consent;
     if (steps[state.step].type === 'final') {

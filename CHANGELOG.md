@@ -4,6 +4,8 @@
 
 - Añadido un control local y en GitHub que exige actualizar la documentación en cada commit con cambios de código o configuración.
 - Alineada la prueba de recorrido con las siete preguntas vigentes de Adaptación al mercado en V2.5.
+- Corregidos los contadores del menú lateral: ahora cuentan únicamente las preguntas de cada dimensión (4/7/3/4/2) y no suman como una pregunta adicional la valoración global de la dimensión.
+- Revisada la secuencia interna del banco V2.5. Se mantiene el orden actual porque conduce de capacidades a aprendizaje en Equipo; de segmento y problema a mercado, diferenciación, entorno, monetización y producto en Adaptación al mercado; de evidencia comercial a canal y seguimiento en Marketing y ventas; de caja actual a previsión, financiación del hito y economía del cliente en Gestión financiera; y de aportación directa a legitimidad y acceso en Gestión de recursos y relaciones.
 
 ## V2.5 — revisión editorial y resultados tras el envío (septiembre de 2026)
 
