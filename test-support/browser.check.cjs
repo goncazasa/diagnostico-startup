@@ -37,6 +37,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),4);
   await page.waitForFunction(()=>{const image=document.querySelector('.dimension-heading img.dimension-art');return image?.complete&&image.naturalWidth===1672&&image.naturalHeight===941;});
   assert.equal(await page.locator('.dimension-heading img.dimension-art').getAttribute('alt'),'Ilustración de los cuatro aspectos de la dimensión Equipo: perfiles, conocimiento, dedicación y aprendizaje.');
+  assert.equal(await page.locator('.dimension-visual').evaluate(element=>getComputedStyle(element).backgroundColor),'rgba(0, 0, 0, 0)','Dimension artwork must inherit the page background instead of rendering an opaque card');
   await page.screenshot({path:path.join(out,'v2-d1.png'),fullPage:true});
   await page.locator('#step-nav [data-step="9"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
   for(let step=3;step<=7;step++) {

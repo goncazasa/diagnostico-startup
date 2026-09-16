@@ -116,7 +116,7 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .dimension-heading { display: grid; grid-template-columns: minmax(0,1fr) minmax(320px,420px); align-items: center; gap: 32px; padding-bottom: 8px; }
 .dimension-heading .page-heading { margin-bottom: 0; }
 .dimension-heading .page-heading p { font-size: .9375rem; margin-top: 14px; }
-.dimension-visual { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.dimension-visual { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: transparent; }
 .dimension-art { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
 .step-context { color: var(--teal); font-size: .8125rem; margin-bottom: 12px; }
 .step-context span { margin-left: 14px; color: var(--muted); }
