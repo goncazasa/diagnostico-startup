@@ -2,8 +2,16 @@
 
 ## Pendiente de publicar
 
-- Sincronizada la documentación operativa y de UX con V2.4: 22 preguntas y cinco dimensiones.
 - Añadido un control local y en GitHub que exige actualizar la documentación en cada commit con cambios de código o configuración.
+
+## V2.5 — revisión editorial y resultados tras el envío (septiembre de 2026)
+
+- Adaptación al mercado pasa de nueve a siete preguntas: se retiran AM7 y AM9, AM5 se presenta antes de AM4 y se reformula la monitorización de cambios del mercado.
+- MV2 pregunta por un canal de venta concreto; GR2 diferencia la legitimidad y el acceso generados por clientes o colaboradores.
+- Las aclaraciones vacías dejan de mostrarse y se refuerzan las ayudas útiles de E4, AM2, AM4, AM6 y GF1.
+- Se retira de la interfaz la hora del último cambio.
+- Tras un envío confirmado se muestra un gráfico de radar con la relevancia media por dimensión y recomendaciones para medias inferiores a 3. El resultado evalúa el cuestionario y no el desempeño de una startup.
+- El banco queda en cinco dimensiones y 20 preguntas, con distribución 4/7/3/4/2. El esquema pasa a `expert-validation/2.5` y el almacenamiento local a `startup-expert-validation-v2.5`; V2.4 queda como versión histórica incompatible.
 
 ## V2.4 — revisión del banco y ampliación de adaptación al mercado (septiembre de 2026)
 

@@ -39,7 +39,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
    for(const label of await page.locator('#app label:has(input[data-path$=".relevance"][value="3"])').all())if(await label.isVisible())await label.click();
    if(step===3){assert.ok(await page.locator('label[for="items-E2-usability-4"]').isVisible());await page.locator('label[for="items-E2-usability-4"]').click();}
   }
-  await page.locator('#step-nav [data-step="8"]').click();assert.equal(await page.locator('[data-summary-item]').count(),22);
+  await page.locator('#step-nav [data-step="8"]').click();assert.equal(await page.locator('[data-summary-item]').count(),20);
   await page.locator('.discrimination-groups > details').nth(2).locator('summary').click();
   await page.locator('input[data-path="designReview.discrimination"][value="MV2"]').check();
   await page.locator('#designReview-discriminationComment').fill('La estrategia comercial puede variar según el segmento.');
@@ -47,11 +47,13 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.4');assert.equal(p.instrument.items.length,22);
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.5');assert.equal(p.instrument.items.length,20);
   assert.equal(p.response.items.MV2.usability,null);assert.equal(p.response.items.E3.relevance,null);assert.equal(p.response.items.AM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['MV2']);
-  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,28);
+  assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,26);
+  assert.ok(await page.locator('#post-submit-results').isVisible());assert.equal(await page.locator('#post-submit-results svg[role="img"]').count(),1);
+  assert.equal(await page.locator('[data-result-dimension]').count(),5);assert.match(await page.locator('#post-submit-results').innerText(),/no mide el desempeño de una startup/i);
   assert.equal(events.length,0,'The public form no longer sends navigation telemetry');
   await page.reload();assert.ok(await page.locator('[data-action="submit"]').isDisabled());assert.equal(await page.locator('#final-v9').inputValue(),'Prueba local del bloque A.');
-  assert.deepEqual(errors,[]);await page.screenshot({path:path.join(out,'v2-sent-mobile.png')});
+  assert.deepEqual(errors,[]);await page.screenshot({path:path.join(out,'v2-5-sent-mobile.png'),fullPage:true});
  } finally {await browser.close();await new Promise(resolve=>server.close(resolve));}
 });

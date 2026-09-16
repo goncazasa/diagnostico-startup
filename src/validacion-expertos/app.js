@@ -2,7 +2,7 @@
   'use strict';
   const instrument = globalThis.ValidationInstrument;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.4';
+  const STORAGE_KEY = 'startup-expert-validation-v2.5';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const statusLabels = { complete: 'Completo', partial: 'Parcial', pending: 'Pendiente', skipped: 'Omitido' };
@@ -34,10 +34,10 @@
   const optional = '<span class="optional">Opcional</span>';
   const questionNames = {
     E1:'Perfiles complementarios',E2:'Conocimiento del cliente y sector',E3:'Disponibilidad',E4:'Aprendizaje y toma de decisiones',
-    AM1:'Segmento prioritario',AM2:'Importancia del problema',AM3:'Conocimiento del mercado',AM4:'Evolución del mercado',AM5:'Competencia y defensibilidad',AM6:'Monetización',AM7:'Validación de la solución',AM8:'Priorización y mejora del producto',AM9:'Cuellos de botella para crecer',
-    MV1:'Compromiso comercial',MV2:'Estrategia de llegada y venta',MV3:'Seguimiento comercial',
+    AM1:'Segmento prioritario',AM2:'Importancia del problema',AM3:'Conocimiento del mercado',AM4:'Cambios del mercado',AM5:'Competencia y defensibilidad',AM6:'Monetización',AM8:'Priorización y mejora del producto',
+    MV1:'Compromiso comercial',MV2:'Canal de venta',MV3:'Seguimiento comercial',
     GF1:'Control de caja',GF2:'Previsión de caja',GF3:'Recursos para el siguiente hito',GF4:'Economía del cliente',
-    GR1:'Colaboraciones estratégicas',GR2:'Confianza y legitimidad'
+    GR1:'Colaboraciones estratégicas',GR2:'Legitimidad y acceso'
   };
   const dimensionLabel = id => 'Dimensión ' + (instrument.dimensions.findIndex(dimension => dimension.id === id) + 1);
   const questionLabel = item => `Pregunta ${instrument.items.filter(candidate => candidate.dim === item.dim).findIndex(candidate => candidate.id === item.id) + 1}`;
@@ -87,7 +87,6 @@
     const text = ok ? 'Cambios guardados en este navegador' : 'No se puede guardar aquí. Descarga una copia antes de cerrar.';
     if (node.textContent !== text) node.textContent = text;
     node.classList.toggle('error', !ok);
-    document.getElementById('save-time').textContent = ok ? 'Último cambio: ' + new Date(state.updatedAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : '';
   }
   function persist() {
     if (writeBlocked) { setSaveStatus(false); return false; }
@@ -154,12 +153,13 @@
   function itemDesign(item) {
     return (item.designFields || []).map(field => `<aside class="design-note"><strong>${esc(field.label)}</strong><p>${esc(field.description)}</p></aside>`).join('');
   }
-  function glossary(item) {
+  function itemHelp(item) {
     const text = (item.q + ' ' + item.note + ' ' + item.levels.join(' ') + ' ' + (item.conditional || '')).toLowerCase();
     const words = new Set(text.split(/[^0-9a-zà-ÿ]+/).filter(Boolean));
     const matches = term => term.split(' ').every(part => words.has(part) || words.has(part + 's') || words.has(part + 'es'));
     const terms = instrument.glossary.filter(g => matches(g.term));
-    return terms.length ? `<details class="help" open><summary>Términos de esta pregunta</summary><dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl></details>` : '';
+    if (!item.note && !terms.length) return '';
+    return `<details class="help" open><summary>Qué tener en cuenta</summary>${item.note ? `<p>${esc(item.note)}</p>` : ''}${terms.length ? `<dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl>` : ''}</details>`;
   }
   function observation(path, hint = '') {
     return `<details class="item-observation" ${valueAt(path) ? 'open' : ''}><summary>Añadir observaciones ${optional}</summary><div class="observation-content">${field(path, 'Observaciones', hint)}</div></details>`;
@@ -167,7 +167,7 @@
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
-      <h2 id="title-${item.id}">${esc(item.q)}</h2><details class="help" open><summary>Qué tener en cuenta</summary><p>${esc(item.note)}</p>${glossary(item)}</details>
+      <h2 id="title-${item.id}">${esc(item.q)}</h2>${itemHelp(item)}
       <p class="level-caption">Respuestas previstas para la persona emprendedora</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
       ${item.conditional ? `<aside class="conditional-note"><p>${esc(item.conditional)}</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
@@ -192,7 +192,51 @@
   }
   function final() {
     return heading('Envía tu revisión', 'Gracias por aportar tu experiencia. Puedes añadir un último comentario antes de enviar.') +
-      `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>`;
+      `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>${postSubmissionResults()}`;
+  }
+  const resultRecommendations = {
+    D1: 'Revisar si las preguntas distinguen bien capacidades complementarias, dedicación, conocimiento directo del cliente y decisiones basadas en evidencia.',
+    D2: 'Revisar la cobertura del cliente y el problema, el mercado accesible, la defensibilidad, los cambios del entorno, la monetización y la priorización del producto.',
+    D4: 'Revisar si el bloque recoge con claridad el compromiso comercial, el canal de venta y el aprendizaje derivado de las oportunidades.',
+    D5: 'Revisar el equilibrio entre caja actual, previsión, recursos para el siguiente hito y economía del cliente.',
+    D6: 'Revisar la diferencia entre el valor directo de las colaboraciones y la legitimidad o el acceso que aportan clientes y colaboradores.'
+  };
+  function dimensionResults() {
+    return instrument.dimensions.map(dim => {
+      const dimensionRecord = state.dimensions[dim.id];
+      const values = dimensionRecord.skipReason ? [] : [dimensionRecord.relevance, ...instrument.items
+        .filter(item => item.dim === dim.id && !state.items[item.id].skipReason)
+        .map(item => state.items[item.id].relevance)]
+        .filter(Number.isFinite);
+      return { ...dim, score: values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null };
+    });
+  }
+  function radarChart(results) {
+    const center = 160, radius = 105;
+    const chartLabels = { D1: 'Equipo', D2: 'Mercado', D4: 'Ventas', D5: 'Finanzas', D6: 'Relaciones' };
+    const point = (index, value) => {
+      const angle = -Math.PI / 2 + index * Math.PI * 2 / results.length;
+      const distance = radius * value / 4;
+      return `${(center + Math.cos(angle) * distance).toFixed(1)},${(center + Math.sin(angle) * distance).toFixed(1)}`;
+    };
+    const grids = [1,2,3,4].map(level => `<polygon class="radar-grid" points="${results.map((_, index) => point(index, level)).join(' ')}"/>`).join('');
+    const axes = results.map((_, index) => `<line class="radar-axis" x1="${center}" y1="${center}" x2="${point(index, 4).replace(',', '" y2="')}"/>`).join('');
+    const values = results.map(result => result.score ?? 0);
+    const labels = results.map((result, index) => {
+      const [x, y] = point(index, 4.75).split(',').map(Number);
+      const anchor = x < center - 8 ? 'end' : x > center + 8 ? 'start' : 'middle';
+      return `<text x="${x}" y="${y}" text-anchor="${anchor}">${esc(chartLabels[result.id])}</text>`;
+    }).join('');
+    return `<svg class="radar-chart" viewBox="0 0 320 320" role="img" aria-labelledby="radar-title radar-description"><title id="radar-title">Valoración media del cuestionario por dimensión</title><desc id="radar-description">Gráfico de uno a cuatro que resume la relevancia asignada por la persona experta a cada dimensión y sus preguntas.</desc>${grids}${axes}<polygon class="radar-value" points="${values.map((value, index) => point(index, value)).join(' ')}"/>${labels}</svg>`;
+  }
+  function postSubmissionResults() {
+    const results = dimensionResults();
+    const low = results.filter(result => result.score !== null && result.score < 3);
+    return `<section class="surface post-submit-results" id="post-submit-results" ${currentSubmission() ? '' : 'hidden'} aria-labelledby="results-title">
+      <div class="results-heading"><p class="eyebrow">Revisión enviada</p><h2 id="results-title">Resultado de tu revisión del cuestionario</h2><p>Este gráfico resume tu evaluación del cuestionario a partir de la relevancia de cada dimensión y sus preguntas. No mide el desempeño de una startup.</p></div>
+      <div class="results-layout">${radarChart(results)}<div class="result-list" aria-label="Puntuaciones por dimensión">${results.map(result => `<div class="result-row" data-result-dimension="${result.id}"><span>${esc(result.name)}</span><strong data-result-score>${result.score === null ? 'Sin valoración' : result.score.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></div>`).join('')}</div></div>
+      <div class="recommendations"><h3>${low.length ? 'Dimensiones que conviene revisar' : 'Valoración favorable'}</h3>${low.length ? `<p>Se muestran las dimensiones con una media inferior a 3 sobre 4.</p><ul>${low.map(result => `<li data-recommendation="${result.id}"><strong>${esc(result.name)}.</strong> ${esc(resultRecommendations[result.id])}</li>`).join('')}</ul>` : '<p>No hay dimensiones por debajo de 3 sobre 4. Las observaciones cualitativas siguen siendo importantes para interpretar la revisión.</p>'}</div>
+    </section>`;
   }
   function scoreText(record, criteria) { return criteria.map(key => criteriaLabels[key] + ': ' + (record[key] ?? 'sin respuesta')).join(' · '); }
   function delivery() {
@@ -205,7 +249,7 @@
       <details class="extra-fields"><summary>Guardar una copia (opcional)</summary>
       <p class="fine">Puedes importar la copia descargada desde el menú «Tu respuesta».</p>
       <div class="actions"><button type="button" class="button secondary" data-action="export">Descargar copia</button><button type="button" class="button secondary" data-action="print">Imprimir revisión</button><button type="button" class="text-button" data-action="copy">Copiar respuestas</button></div>
-      <p class="response-id">Identificador: ${esc(state.responseId)}<br><span data-last-change></span></p>
+      <p class="response-id">Identificador: ${esc(state.responseId)}</p>
       <p id="copy-status" role="status"></p><div id="manual-copy-wrapper" hidden></div>
       <div class="notice" id="export-receipt" role="status" hidden>Copia preparada para descargar. Para entregar tu revisión, pulsa «Enviar revisión».</div>
       <div class="notice" id="export-stale" hidden>Has cambiado respuestas desde la última copia descargada.</div>
@@ -290,7 +334,7 @@
       button.disabled = sending || !!currentSubmission();
       button.textContent = sending ? 'Enviando…' : currentSubmission() ? 'Revisión enviada' : state.submission ? 'Enviar cambios' : 'Enviar revisión';
       document.getElementById('submit-status').textContent = sending ? 'Guardando tu revisión de forma segura… No cierres esta página.' : submissionError || (currentSubmission() ? 'Tu revisión se ha enviado. Gracias por colaborar.' : state.submission ? 'Has cambiado respuestas después del envío. Puedes enviar la versión actualizada.' : '');
-      document.querySelector('[data-last-change]').textContent = 'Último cambio: ' + new Date(state.updatedAt).toLocaleString('es-ES');
+      document.getElementById('post-submit-results').hidden = !currentSubmission();
       const currentExport = model.hasCurrentExport(state);
       document.getElementById('export-receipt').hidden = !currentExport;
       document.getElementById('export-stale').hidden = state.exportedRevision < 0 || currentExport;
@@ -425,7 +469,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_4_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_5_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -460,10 +504,10 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.4 · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.5 · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.4</p><p class="print-note">Respuesta ${esc(state.responseId)} · Último cambio: ${esc(new Date(state.updatedAt).toLocaleString('es-ES'))} · ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.5</p><p class="print-note">Respuesta ${esc(state.responseId)} · Copia generada: ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

@@ -27,6 +27,8 @@
   .welcome-art p { font-size: .875rem; }
   .dimension-heading { grid-template-columns: minmax(0,1fr) 135px; }
   .discrimination-groups { grid-template-columns: 1fr; }
+  .results-layout { grid-template-columns: 1fr; gap: 18px; }
+  .radar-chart { max-width: 340px; }
 }
 @media (max-width: 560px) {
   .masthead { padding: 20px 18px; }
@@ -79,6 +81,10 @@
   .summary-map { gap: 16px; }
   .review-counts { gap: 10px 18px; }
   .actions { flex-direction: column; align-items: stretch; }
+  .post-submit-results { padding-inline: 18px; }
+  .results-heading h2 { font-size: 1.25rem; }
+  .radar-chart { max-width: 300px; }
+  .recommendations { padding: 18px; }
   .site-footer { margin: 0 18px; font-size: .6875rem; gap: 12px; }
   input:not([type=checkbox]):not([type=radio]), select, textarea { font-size: 16px; }
 }

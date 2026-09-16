@@ -18,6 +18,14 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.5: banco de 20 preguntas y devolución al experto
+
+La V2.5 retira AM7 y AM9, conserva sus identificadores como huecos históricos y presenta AM5 antes de AM4. AM4 se centra en monitorizar cambios del mercado, MV2 explicita el canal de venta y GR2 distingue la legitimidad y el acceso que pueden generar clientes o colaboradores. El banco queda en 20 preguntas con distribución 4/7/3/4/2.
+
+Las aclaraciones se muestran únicamente cuando contienen información útil. Se retira la hora del último cambio, que no ayudaba a responder. Tras una entrega confirmada se ofrece una devolución visual: media de relevancia de cada dimensión y sus preguntas, radar accesible, puntuaciones textuales y recomendaciones para dimensiones inferiores a 3. Esta devolución evalúa el cuestionario; no debe interpretarse como desempeño o madurez de una startup.
+
+El cambio es incompatible con V2.4. Se utilizan `expert-validation/2.5` y `startup-expert-validation-v2.5`, mientras el receptor conserva la capacidad de archivar entregas históricas.
+
 ### V2.4: banco universal de 22 preguntas
 
 La V2.4 mantiene las cinco dimensiones y adopta los IDs funcionales E, AM, MV, GF y GR. El cambio es incompatible con V2.3 y se acompaña de `expert-validation/2.4` y una clave de almacenamiento nueva; por tanto, los borradores, exportaciones y análisis V2.3 permanecen históricos y no se reinterpretan.
