@@ -417,7 +417,7 @@ test('each dimension shows all its questions and continues to the next dimension
   assert.ok(ui.document.querySelector('[data-path="dimensions.D1.coverage"]'));
   ui.input('[data-path="items.E4.comment"]', 'Observación al final de la dimensión');
   ui.click('[data-action="next"]');
-  assert.equal(ui.document.querySelectorAll('#app article.item').length, 9);
+  assert.equal(ui.document.querySelectorAll('#app article.item').length, 7);
   assert.ok(ui.document.querySelector('#item-AM1'));
   ui.click('[data-action="back"]');
   assert.equal(ui.document.querySelector('[data-path="items.E4.comment"]').value, 'Observación al final de la dimensión');

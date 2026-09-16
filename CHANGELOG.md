@@ -3,6 +3,7 @@
 ## Pendiente de publicar
 
 - Añadido un control local y en GitHub que exige actualizar la documentación en cada commit con cambios de código o configuración.
+- Alineada la prueba de recorrido con las siete preguntas vigentes de Adaptación al mercado en V2.5.
 
 ## V2.5 — revisión editorial y resultados tras el envío (septiembre de 2026)
 
