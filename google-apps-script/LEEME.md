@@ -11,7 +11,7 @@ Configuración una sola vez. Los expertos no necesitan una cuenta de Google ni a
 
 Si se modifica `Code.gs`, actualizar la implementación a una **nueva versión**, manteniendo la misma URL. Guardar el editor no cambia por sí solo el código publicado.
 
-La versión actual del receptor procesa el esquema `expert-validation/2.6` y mantiene compatibilidad de recepción con V2.1, V2.2, V2.3, V2.4 y V2.5 para conservar los archivos históricos. Después de actualizar el instrumento hay que publicar también `Code.gs` antes de abrir la recogida de respuestas.
+La versión actual del receptor procesa el esquema `expert-validation/2.7` y mantiene compatibilidad de recepción con V2.1, V2.2, V2.3, V2.4, V2.5 y V2.6 para conservar los archivos históricos. Después de actualizar el instrumento hay que publicar también `Code.gs` antes de abrir la recogida de respuestas.
 
 Las pestañas de análisis se generan tras la primera entrega. Se pueden reconstruir desde la hoja con **Validación de expertos → Actualizar tablas de análisis** (recargar la hoja para ver el menú). No escribir anotaciones propias en estas pestañas porque se reemplazan; usar otra pestaña. No modificar ni borrar `Entregas`.
 

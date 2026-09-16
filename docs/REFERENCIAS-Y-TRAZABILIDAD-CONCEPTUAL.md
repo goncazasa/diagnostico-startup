@@ -1,16 +1,16 @@
 # Referencias y trazabilidad conceptual
 
-## Alcance de V2.6
+## Alcance de V2.7
 
-Este documento conserva las decisiones conceptuales que acompañan al banco V2.6. Distingue cuatro capas: una fuente o framework puede aportar **inspiración conceptual**; el investigador decide el **diseño del instrumento**; la literatura aporta **evidencia científica** sobre constructos; y el panel de expertos y los estudios posteriores aportarán la **validación**. Ninguna capa sustituye a otra.
+Este documento conserva las decisiones conceptuales que acompañan al banco V2.7. Distingue cuatro capas: una fuente o framework puede aportar **inspiración conceptual**; el investigador decide el **diseño del instrumento**; la literatura aporta **evidencia científica** sobre constructos; y el panel de expertos y los estudios posteriores aportarán la **validación**. Ninguna capa sustituye a otra.
 
-V2.6 mantiene cinco dimensiones y 20 preguntas. Todas se presentan a cada experto; no hay rutas condicionales ni pesos. El resultado posterior al envío resume la relevancia que el experto atribuye al cuestionario y señala dimensiones del instrumento que conviene revisar; no es una puntuación diagnóstica de una startup. En un autodiagnóstico futuro las reglas de puntuación y recomendaciones deberán validarse de forma independiente.
+V2.7 mantiene cinco dimensiones y 20 preguntas. Todas se presentan a cada participante del panel; no hay rutas condicionales ni pesos. El resultado posterior al envío resume la relevancia atribuida al cuestionario y señala dimensiones del instrumento que conviene revisar; no es una puntuación diagnóstica de una startup. En un autodiagnóstico futuro las reglas de puntuación y recomendaciones deberán validarse de forma independiente.
 
 ## Blitz Canvas / iVenture
 
 Blitz Canvas / iVenture se revisó como referencia externa y fuente de ideas durante la revisión conceptual. El instrumento no es una adaptación de esa herramienta, dicha herramienta no valida científicamente las preguntas y no todas las preguntas proceden de ella. La referencia bibliográfica verificable no estaba disponible en el repositorio en el momento de esta actualización: **TODO: verificar autores, título, año y publicación antes de incorporarla a la bibliografía de la tesis.**
 
-| Idea analizada | Decisión y adaptación en V2.6 | Estado |
+| Idea analizada | Decisión y adaptación en V2.7 | Estado |
 |---|---|---|
 | Foundation y capacidades iniciales | E1 cubre perfiles y capacidades; E3 disponibilidad; E4 aprendizaje que cambia decisiones. | Incorporada y reformulada |
 | Comprensión de usuario, sector y mercado | E2, AM1, AM2 y AM3 exigen contacto o evidencia directa, no solo una descripción interna. | Incorporada y reforzada |

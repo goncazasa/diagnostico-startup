@@ -1,8 +1,9 @@
 (function () {
   'use strict';
   const instrument = globalThis.ValidationInstrument;
+  const dimensionImages = globalThis.ValidationDimensionImages;
   const model = globalThis.ValidationCore.createModel(instrument);
-  const STORAGE_KEY = 'startup-expert-validation-v2.6';
+  const STORAGE_KEY = 'startup-expert-validation-v2.7';
   const repository = globalThis.ValidationCore.createRepository({ getItem: key => localStorage.getItem(key), setItem: (key, value) => localStorage.setItem(key, value) }, STORAGE_KEY);
   const app = document.getElementById('app');
   const statusLabels = { complete: 'Completo', partial: 'Parcial', pending: 'Pendiente', skipped: 'Omitido' };
@@ -64,6 +65,10 @@
       D6: '<path d="M110 23l37 15v32c0 24-17 39-37 50-20-11-37-26-37-50V38zM93 67l12 13 23-27M42 54l31 7m74 0 31-7M65 114l18-17m54 0 18 17"/><circle cx="33" cy="51" r="9"/><circle cx="187" cy="51" r="9"/><circle cx="59" cy="123" r="9"/><circle cx="161" cy="123" r="9"/>'
     };
     return `<svg class="dimension-art" viewBox="0 0 220 150" aria-hidden="true"><ellipse cx="110" cy="85" rx="96" ry="58" fill="#eaf0f9"/><circle cx="176" cy="29" r="18" fill="#e5efd0"/><g fill="white" stroke="#29577b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${drawings[id] || drawings.D1}</g></svg>`;
+  }
+  function dimensionImage(id) {
+    const image = dimensionImages[id];
+    return `<figure class="dimension-visual"><img class="dimension-art" src="${esc(image.src)}" alt="${esc(image.alt)}" width="1672" height="941" decoding="async"></figure>`;
   }
   let state = model.createState(globalThis.crypto?.randomUUID?.() || ('response-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2)));
   let writeBlocked = false;
@@ -129,8 +134,8 @@
     return `<div class="nav-row"><button type="button" class="button secondary" data-action="back" ${state.step === 0 ? 'disabled' : ''}>Atrás</button><button type="button" class="button" data-action="next" ${state.step === 0 && !state.consent ? 'disabled' : ''}>${esc(nextLabel)}</button></div>`;
   }
   function intro() {
-    return `<div class="welcome-hero"><div>${heading('Diagnóstico de startups en fases iniciales', 'Como experto o experta en emprendimiento, ayúdanos a validar un cuestionario dirigido a startups en fases iniciales.')}<p class="intro-lead">Analizarás si las preguntas y el contenido del diagnóstico son relevantes para evaluar la situación de una startup.</p><p class="key-instruction">Puedes omitir los temas que queden fuera de tu experiencia.</p><div class="welcome-facts"><span><strong>${instrument.items.length}</strong> preguntas</span><span><strong>${instrument.dimensions.length}</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
-      `<section class="surface welcome-start"><div class="welcome-objective"><h2>Objetivo del diagnóstico</h2><p>${esc(instrument.purpose)}</p><p><strong>Alcance:</strong> ${esc(instrument.population)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></div>
+    return `<div class="welcome-hero"><div>${heading('Diagnóstico de startups en fases iniciales', 'En base a tu experiencia en emprendimiento, ayúdanos a validar una herramienta de diagnóstico de startups en fases iniciales.')}<p class="intro-lead">Para ello, podrás analizar si las preguntas y el contenido del diagnóstico son relevantes para evaluar la situación de una startup.</p><p class="key-instruction">Puedes omitir los temas que queden fuera de tu experiencia.</p><div class="welcome-facts"><span><strong>${instrument.items.length}</strong> preguntas</span><span><strong>${instrument.dimensions.length}</strong> dimensiones</span></div></div><div class="welcome-art">${illustration('D1')}</div></div>` +
+      `<section class="surface welcome-start"><div class="welcome-objective"><h2>Objetivo del diagnóstico</h2><p>${esc(instrument.purpose)}</p><p><strong>Alcance:</strong> ${esc(instrument.population)}</p><p>En esta fase del estudio necesitamos comprobar si las preguntas del cuestionario son relevantes, claras y suficientes. El diagnóstico no predice el éxito ni sustituye una decisión de inversión.</p></div>
       <details class="privacy"><summary>Participación y uso de las respuestas</summary>
       <p>Investigación doctoral vinculada a la Universidad Rey Juan Carlos. Participar es voluntario y puedes abandonar el formulario en cualquier momento.</p>
       <p>El correo permite identificar tu revisión y contactar contigo sobre ella. El nombre es opcional. La participación no es anónima, pero los resultados se publicarán de forma agregada y anonimizada, sin tu nombre ni tu correo.</p></details>
@@ -141,7 +146,7 @@
     return heading('Tu experiencia', 'Solo el correo es obligatorio. El resto nos ayuda a interpretar tu revisión.') +
       `<section class="surface profile-form"><div class="form-grid">${field('profile.email', 'Correo electrónico', 'Para identificar tu revisión y contactar contigo sobre ella.', 'email')}${field('profile.name', 'Nombre', '', 'text')}</div>${checks('profile.roles', '¿Cuál es tu relación con las startups? (puedes marcar varias)', model.roles)}
       ${field('profile.years', 'Años de experiencia con startups', '', 'number', [], '0')}
-      <details class="extra-fields" ${state.profile.ventures || state.profile.phases.length || state.profile.sectors || state.profile.pivot ? 'open' : ''}><summary>Más sobre tu experiencia (opcional)</summary>
+      <details class="extra-fields" open><summary>Más sobre tu experiencia (opcional)</summary>
       ${field('profile.ventures', 'Startups fundadas, evaluadas o acompañadas', '', 'select', ['0–10', '11–25', '26–50', '51–100', '>100'].map(x => [x, x]))}
       ${checks('profile.phases', 'Fases con las que tienes experiencia (puedes marcar varias)', model.phases)}
       <div data-other-phase ${state.profile.phases.includes('Otra') ? '' : 'hidden'}>${field('profile.phasesOther', '¿Qué otra fase?', 'Por ejemplo: crecimiento internacional o consolidación.', 'text')}</div>
@@ -153,7 +158,7 @@
     return heading('Cómo responder', 'Para cada pregunta, valora el cuestionario desde tu experiencia.') +
       `<section class="surface guide-sheet"><ol class="guide-steps">
       <li><strong>Lee la pregunta y las cuatro respuestas posibles.</strong><span>Son las opciones que verá la persona emprendedora.</span></li>
-      <li><strong>Valora su calidad.</strong><span>Indica si es relevante. Si lo necesitas, valora también su claridad y escribe una observación.</span></li></ol>
+      <li><strong>Valora su calidad y claridad.</strong><span>Para ello, indica si es relevante, su nivel de claridad y escribe una observación con tus comentarios.</span></li></ol>
       ${nav('Revisar la primera dimensión')}</section>`;
   }
   function itemDesign(item) {
@@ -186,7 +191,7 @@
   }
   function dimension(id) {
     const dim = instrument.dimensions.find(d => d.id === id), items = instrument.items.filter(i => i.dim === id), record = state.dimensions[id], base = 'dimensions.' + id;
-    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de ${instrument.dimensions.length} <span data-dimension-question-count="${id}">${dimensionQuestionCount(id)}</span></p>${heading(dim.name, dim.desc)}</div>${illustration(id)}</div>` +
+    return `<div class="dimension-heading"><div><p class="step-context">${dimensionLabel(id)} de ${instrument.dimensions.length} <span data-dimension-question-count="${id}">${dimensionQuestionCount(id)}</span></p>${heading(dim.name, dim.desc)}</div>${dimensionImage(id)}</div>` +
       `<section class="dimension-intro" id="dimension-${id}">${omission('dimensions', id)}</section>
       <p class="notice" data-dimension-omitted="${id}" ${record.skipReason ? '' : 'hidden'}>Has dejado esta dimensión sin valorar. Pulsa «Continuar» para seguir.</p>
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
@@ -308,6 +313,7 @@
   function render() {
     const step = steps[state.step];
     document.body.dataset.screen = step.type;
+    document.querySelector('.masthead').hidden = step.type === 'intro';
     document.querySelector('.sidebar').hidden = state.step === 0;
     document.querySelector('.save-footer').hidden = state.step === 0;
     printMode = step.type === 'review' ? 'map' : 'full';
@@ -475,7 +481,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `validacion_experto_V2_6_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
+    link.download = `validacion_experto_V2_7_${state.responseId}_${payload.exportedAt.replace(/[-:.]/g, '')}.json`;
     document.body.appendChild(link);
     try {
       link.click(); state = model.markExport(state); persist();
@@ -510,10 +516,10 @@
     const payload = model.exportPayload(state), response = payload.response;
     document.body.dataset.printMode = printMode;
     if (printMode === 'map') {
-      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.6 · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
+      document.getElementById('print-view').innerHTML = `<h1>Resumen de tus respuestas</h1><p class="print-note">Validación de expertos V2.7 · ${esc(state.responseId)}<br>Valoraciones del experto de 1 a 4. — = sin responder. Omitida = excluida del análisis.</p>${summaryMap(false)}`;
       return;
     }
-    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.6</p><p class="print-note">Respuesta ${esc(state.responseId)} · Copia generada: ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
+    document.getElementById('print-view').innerHTML = `<h1>Diagnóstico de startups en fases iniciales</h1><p>Instrumento V2.7</p><p class="print-note">Respuesta ${esc(state.responseId)} · Copia generada: ${esc(new Date().toLocaleString('es-ES'))}<br>Esta copia no acredita envío ni recepción.</p><p>${payload.summary.complete} bloques completos; ${payload.summary.partial} parciales; ${payload.summary.pending} pendientes; ${payload.summary.skipped} omitidos.</p><h2>Perfil y criterio inicial</h2><p class="pre-wrap">${esc(profileText())}</p><p class="pre-wrap">${esc(state.initial.text || 'Criterio inicial sin respuesta')}</p>
       ${instrument.dimensions.map(dim => `<h2>${dimensionLabel(dim.id)} · ${esc(dim.name)}</h2><p>${model.status(response, dim.id) === 'skipped' ? 'Dimensión omitida' : esc(scoreText(response.dimensions[dim.id], model.dimCriteria))}</p><p class="pre-wrap">${esc(response.dimensions[dim.id].comment)}</p>${instrument.items.filter(i => i.dim === dim.id).map(item => `<article><strong>${questionLabel(item)} · ${esc(item.q)}</strong><p>${model.status(response, item.id) === 'skipped' ? 'Pregunta omitida: sus puntuaciones se excluyen.' : esc(scoreText(response.items[item.id], model.itemCriteria))}</p><p class="pre-wrap">${esc(response.items[item.id].comment || 'Sin comentario')}</p></article>`).join('')}`).join('')}
       <h2>Revisión del diseño</h2><p class="pre-wrap">${esc(designReviewText())}</p><h2>Valoración final</h2>${finalQuestions.map(([key, label]) => `<article><strong>${esc(label)}</strong><p class="pre-wrap">${esc(state.final[key] || 'Sin respuesta')}</p></article>`).join('')}`;
   }

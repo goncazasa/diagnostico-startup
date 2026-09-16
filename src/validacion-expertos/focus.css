@@ -7,7 +7,7 @@
   .summary-table thead th { font-size: .75rem; }
   .summary-table tbody th button { font-size: .8125rem; }
   .site-footer { margin: 0 28px; }
-  .dimension-heading { grid-template-columns: minmax(0,1fr) 115px; gap: 16px; }
+  .dimension-heading { grid-template-columns: minmax(0,1fr) minmax(280px,340px); gap: 24px; }
 }
 @media (max-width: 800px) {
   .masthead { padding: 20px 22px; }
@@ -25,7 +25,7 @@
   .welcome-hero { gap: 24px; grid-template-columns: minmax(0,1fr) 180px; }
   .welcome-art { padding-left: 16px; }
   .welcome-art p { font-size: .875rem; }
-  .dimension-heading { grid-template-columns: minmax(0,1fr) 135px; }
+  .dimension-heading { grid-template-columns: minmax(0,1fr) 320px; }
   .discrimination-groups { grid-template-columns: 1fr; }
   .results-layout { grid-template-columns: 1fr; gap: 18px; }
   .radar-chart { max-width: 340px; }
@@ -40,7 +40,7 @@
   .page-heading h1 { font-size: 2rem; }
   .page-heading p { font-size: .9375rem; }
   .surface { padding: 22px 18px; border-radius: 12px; }
-  .welcome-hero { display: block; padding: 8px 2px 28px; }
+  .welcome-hero { display: block; padding: 8px 22px 28px; }
   .welcome-hero h1 { font-size: 2.5rem; max-width: 18ch; }
   .welcome-art { display: none; }
   .welcome-facts { gap: 14px 22px; }
@@ -53,8 +53,8 @@
   .guide-row h2 { font-size: 1rem; margin-top: 0; }
   .guide-note { padding: 16px; }
   .guide-steps { grid-template-columns: 1fr; gap: 18px; }
-  .dimension-heading { grid-template-columns: minmax(0,1fr) 82px; gap: 8px; align-items: start; }
-  .dimension-heading .dimension-art { margin-top: 18px; }
+  .dimension-heading { grid-template-columns: 1fr; gap: 16px; align-items: start; }
+  .dimension-visual { width: 100%; border-radius: 11px; }
   .dimension-heading h1 { font-size: 1.8125rem; }
   .dimension-heading .page-heading p { font-size: .875rem; }
   .step-context { font-size: .75rem; }

@@ -12,6 +12,11 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
    res.status=n=>{res.statusCode=n;return res};res.json=obj=>{res.setHeader('Content-Type','application/json');res.end(JSON.stringify(obj));return res;};
    if(req.url==='/api/submit'){requests.push(JSON.parse(req.body));return submit(req,res);}if(req.url==='/api/progress'){events.push(JSON.parse(req.body));return progress(req,res);}res.statusCode=404;return res.end();
   }
+  if(req.url.startsWith('/assets/dimensions/')) {
+   const asset=path.join('public',decodeURIComponent(req.url));
+   if(!fs.existsSync(asset)){res.statusCode=404;return res.end();}
+   res.setHeader('Content-Type','image/png');return res.end(fs.readFileSync(asset));
+  }
   res.setHeader('Content-Type','text/html; charset=utf-8');res.end(fs.readFileSync('public/index.html'));
  });
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -30,6 +35,8 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   assert.equal(await page.locator('[data-guide-reference],[data-screening-design],.code-guide').count(),0);
   await page.screenshot({path:path.join(out,'v2-guide.png'),fullPage:true});
   await page.locator('[data-action="next"]').click();assert.equal(await page.locator('.item').count(),4);
+  await page.waitForFunction(()=>{const image=document.querySelector('.dimension-heading img.dimension-art');return image?.complete&&image.naturalWidth===1672&&image.naturalHeight===941;});
+  assert.equal(await page.locator('.dimension-heading img.dimension-art').getAttribute('alt'),'Ilustración de los cuatro aspectos de la dimensión Equipo: perfiles, conocimiento, dedicación y aprendizaje.');
   await page.screenshot({path:path.join(out,'v2-d1.png'),fullPage:true});
   await page.locator('#step-nav [data-step="9"]').click();await page.locator('[data-action="submit"]').click();assert.equal(requests.length,0);assert.match(await page.locator('#submit-status').innerText(),/relevancia/);
   for(let step=3;step<=7;step++) {
@@ -47,7 +54,7 @@ test('isolated browser: expert design, mandatory relevance, optional usability, 
   await page.screenshot({path:path.join(out,'v2-summary-mobile.png')});
   await page.locator('[data-action="next"]').click();await page.locator('#final-v9').fill('Prueba local del bloque A.');
   await page.locator('[data-action="submit"]').click();await page.waitForFunction(()=>document.querySelector('#submit-status').textContent.includes('se ha enviado'));
-  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.6');assert.equal(p.instrument.items.length,20);
+  assert.equal(requests.length,1);const p=requests[0];assert.equal(p.format,'expert-validation/2.7');assert.equal(p.instrument.items.length,20);
   assert.equal(p.response.items.MV2.usability,null);assert.equal(p.response.items.E3.relevance,null);assert.equal(p.response.items.AM1.skipReason,'dimension');assert.deepEqual(p.response.designReview.discrimination,['MV2']);
   assert.equal(sheets.tables.get('Entregas').length,2);assert.equal(sheets.tables.get('Valoraciones').length,26);
   assert.ok(await page.locator('#post-submit-results').isVisible());assert.equal(await page.locator('#post-submit-results svg[role="img"]').count(),1);

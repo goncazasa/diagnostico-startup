@@ -1,5 +1,13 @@
 # Registro de cambios
 
+## V2.7 — lenguaje directo y alineación visual (septiembre de 2026)
+
+- La bienvenida elimina el título duplicado, adopta lenguaje impersonal basado en la experiencia y alinea titular, cifras y objetivo sobre una misma línea de contenido.
+- El bloque «Más sobre tu experiencia» permanece abierto y «Cómo responder» explica de forma directa la valoración de relevancia, calidad y claridad.
+- E2 simplifica la formulación sobre cliente, sector y problema; GF2 elimina referencias a códigos internos; GF3 sitúa primero el siguiente hito; GF4 desarrolla CAC y LTV; GR2 utiliza «señal de legitimidad».
+- Se conservan cinco dimensiones, 20 preguntas y la distribución 4/7/3/4/2. El esquema pasa a `expert-validation/2.7` y el almacenamiento local a `startup-expert-validation-v2.7` para no mezclar valoraciones de textos distintos.
+- Las cinco cabeceras de dimensión incorporan las ilustraciones facilitadas, editadas como PNG con transparencia real para eliminar el fondo blanco. Mantienen el encuadre completo, texto alternativo específico y una disposición adaptable: columna derecha en escritorio y ancho completo en móvil.
+
 ## Pendiente de publicar
 
 - Añadido un control local y en GitHub que exige actualizar la documentación en cada commit con cambios de código o configuración.

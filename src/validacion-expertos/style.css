@@ -31,7 +31,7 @@ h3 { font-size: 1.05rem; }
 .workspace { max-width: 1320px; margin: auto; padding: 44px 48px 64px; display: grid; grid-template-columns: 208px minmax(0, 1fr); gap: 52px; }
 main { min-width: 0; }
 body[data-screen=intro] .workspace { display: block; max-width: 1180px; }
-body[data-screen=profile] main, body[data-screen=guide] main, body[data-screen=final] main { max-width: 850px; }
+body[data-screen=profile] main, body[data-screen=guide] main, body[data-screen=final] main { width: 100%; max-width: 850px; margin-inline: auto; }
 .sidebar { position: sticky; top: 28px; align-self: start; font-size: .875rem; }
 .outline > summary { font-weight: 650; padding: 0 0 14px; }
 #step-nav { display: grid; gap: 3px; }
@@ -57,7 +57,7 @@ progress::-moz-progress-bar { background: var(--teal); }
 .surface { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 32px; margin-bottom: 24px; }
 .surface > h2 { margin-bottom: 22px; }
 .fine, .subtle { font-size: .8125rem; line-height: 1.55; color: var(--muted); }
-.welcome-hero { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 56px; align-items: center; padding: 12px 0 36px; }
+.welcome-hero { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 56px; align-items: center; width: 100%; max-width: 1080px; margin-inline: auto; padding: 12px 36px 36px; }
 .welcome-hero h1 { font-size: clamp(2.25rem, 4.5vw, 3.375rem); max-width: 18ch; }
 .welcome-hero .page-heading p { max-width: 54ch; font-size: 1.0625rem; }
 .welcome-hero .page-heading { margin-bottom: 20px; }
@@ -69,7 +69,7 @@ progress::-moz-progress-bar { background: var(--teal); }
 .welcome-art { border-left: 1px solid var(--line); padding: 20px 0 20px 28px; }
 .welcome-art p { font-size: 1rem; color: var(--muted); text-align: center; margin-top: 12px; }
 .welcome-art strong { font-weight: 600; color: var(--ink); }
-.welcome-start { max-width: 100%; padding: 30px 36px; }
+.welcome-start { width: 100%; max-width: 1080px; margin-inline: auto; padding: 30px 36px; }
 .welcome-objective { max-width: 76ch; }
 .welcome-objective h2 { margin-bottom: 10px; }
 .welcome-objective p { color: var(--muted); font-size: .9375rem; line-height: 1.65; }
@@ -113,10 +113,11 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .guide-steps li::before { content: counter(guide); grid-row: 1 / 3; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--soft); color: var(--teal-dark); font-weight: 700; }
 .guide-steps strong { padding-top: 4px; }
 .guide-steps span { grid-column: 2; color: var(--muted); font-size: .9375rem; }
-.dimension-heading { display: grid; grid-template-columns: minmax(0,1fr) 155px; align-items: center; gap: 24px; }
+.dimension-heading { display: grid; grid-template-columns: minmax(0,1fr) minmax(320px,420px); align-items: center; gap: 32px; padding-bottom: 8px; }
 .dimension-heading .page-heading { margin-bottom: 0; }
 .dimension-heading .page-heading p { font-size: .9375rem; margin-top: 14px; }
-.dimension-art { display: block; width: 100%; height: auto; }
+.dimension-visual { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.dimension-art { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
 .step-context { color: var(--teal); font-size: .8125rem; margin-bottom: 12px; }
 .step-context span { margin-left: 14px; color: var(--muted); }
 .dimension-intro { margin: 22px 0 30px; }

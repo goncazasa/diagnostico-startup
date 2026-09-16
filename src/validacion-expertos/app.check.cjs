@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v2.6', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.7', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.6')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.7')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -215,7 +215,7 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '2.6.0');
+  assert.equal(payload.instrumentVersion, '2.7.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
@@ -322,7 +322,7 @@ test('a full review resolves all 25 blocks when their relevance is answered', ()
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.6', newValue: '{"other":"response"}' }));
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.7', newValue: '{"other":"response"}' }));
   ui.input('[data-path="items.E1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
@@ -424,6 +424,26 @@ test('each dimension shows all its questions and continues to the next dimension
   ui.dom.window.close();
 });
 
+test('each dimension header uses its assigned accessible visual instead of the former icon',()=>{
+ const ui=boot();start(ui);
+ const expected=[
+  ['dimension-1-equipo.png',/equipo/i],
+  ['dimension-2-mercado.png',/mercado/i],
+  ['dimension-3-marketing.png',/marketing y ventas/i],
+  ['dimension-4-gestion-financiera.png',/gestión financiera/i],
+  ['dimension-5-gestion-recursos-relaciones.png',/recursos y relaciones/i]
+ ];
+ expected.forEach(([filename,alt],index)=>{
+  ui.click(`[data-step="${index+3}"]`);
+  const image=ui.document.querySelector('.dimension-heading img.dimension-art');
+  assert.ok(image,`Image for dimension ${index+1}`);
+  assert.match(image.getAttribute('src'),new RegExp(filename.replace('.','\\.')));
+  assert.match(image.getAttribute('alt'),alt);
+  assert.equal(ui.document.querySelector('.dimension-heading svg.dimension-art'),null);
+ });
+ ui.dom.window.close();
+});
+
 test('summary hides stale omitted scores and updates after a focused correction', () => {
   const ui = boot(); start(ui);
   ui.input('input[data-path="items.E1.relevance"][value="4"]', true);
@@ -439,9 +459,12 @@ test('summary hides stale omitted scores and updates after a focused correction'
   ui.dom.window.close();
 });
 
-test('welcome explains the expert task, target population and scope without a time estimate',()=>{
+test('welcome uses impersonal language, a single visible title and the approved scope',()=>{
  const ui=boot();const text=ui.document.querySelector('#app').textContent;
- assert.match(text,/Como experto/i);
+ assert.match(text,/En base a tu experiencia en emprendimiento, ayúdanos a validar una herramienta de diagnóstico de startups en fases iniciales\./i);
+ assert.match(text,/Para ello, podrás analizar si las preguntas y el contenido del diagnóstico/i);
+ assert.match(text,/si las preguntas del cuestionario son relevantes, claras y suficientes/i);
+ assert.equal(ui.document.querySelector('.masthead').hidden,true);
  assert.match(text,/startups en fases iniciales/i);
  assert.match(ui.document.querySelector('#page-title').textContent,/^Diagnóstico de startups en fases iniciales$/);
  assert.equal(ui.document.querySelector('.brand').textContent,'Diagnóstico de startups en fases iniciales');
@@ -454,6 +477,7 @@ test('welcome explains the expert task, target population and scope without a ti
  assert.doesNotMatch(text,/20[–-]30|minutos/);
  assert.doesNotMatch(text,/Una omisión nunca cuenta como 0/);
  ui.input('[data-path="consent"]',true);ui.click('[data-action="next"]');
+ assert.equal(ui.document.querySelector('.masthead').hidden,false);
  assert.equal(ui.document.querySelector('[data-path="initial.text"]'),null);
  ui.dom.window.close();
 });
@@ -464,6 +488,7 @@ test('profile uses numeric experience, pivot wording and no conflict field',()=>
  assert.equal(years.placeholder,'0');
  assert.equal(years.value,'');
  assert.equal(ui.stored().profile.years,'');
+ assert.equal(ui.document.querySelector('.extra-fields').open,true);
  assert.match(ui.document.querySelector('label[for="profile-pivot"]').textContent,/pivote/i);
  assert.equal(ui.document.querySelector('[data-path="profile.conflict"]'),null);
  ui.dom.window.close();
@@ -496,6 +521,8 @@ test('expert guide contains only the essential instructions',()=>{
  assert.equal(ui.document.querySelector('[data-guide-reference]'),null);
  assert.equal(ui.document.querySelector('[data-screening-design]'),null);
  assert.equal(ui.document.querySelector('.code-guide'),null);
+ assert.match(ui.document.querySelector('.guide-steps li:nth-child(2) strong').textContent,/Valora su calidad y claridad/i);
+ assert.match(ui.document.querySelector('.guide-steps li:nth-child(2) span').textContent,/indica si es relevante, su nivel de claridad y escribe una observación con tus comentarios/i);
  assert.doesNotMatch(ui.document.querySelector('.guide-sheet').textContent,/códigos|cribado|omisión nunca|Solo la relevancia es obligatoria/i);
  ui.dom.window.close();
 });

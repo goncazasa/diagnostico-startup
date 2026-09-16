@@ -18,6 +18,14 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.7: lenguaje directo y alineación visual
+
+La V2.7 mantiene cinco dimensiones, 20 preguntas y la distribución 4/7/3/4/2. La bienvenida evita repetir el título entre cabecera y contenido, adopta una formulación impersonal basada en la experiencia y alinea las cifras con el contenido del objetivo. El bloque ampliado del perfil permanece visible y las instrucciones aclaran que se valora relevancia, calidad y claridad.
+
+E2 simplifica la referencia al problema que el equipo desea resolver. GF2 sustituye la comparación basada en códigos por una explicación de la previsión de caja; GF3 sitúa el siguiente hito al principio; GF4 desarrolla CAC y LTV; GR2 habla de legitimidad. Como cambia texto sometido a validación, se utilizan `expert-validation/2.7` y `startup-expert-validation-v2.7`.
+
+Las cinco ilustraciones facilitadas sustituyen a los iconos lineales de las cabeceras de dimensión. Sus fondos blancos se extrajeron mediante edición de imagen y los activos finales conservan canal alfa, de modo que se integran con el fondo de la interfaz sin un rectángulo blanco. Se mantiene el encuadre 16:9 completo porque los rótulos forman parte de la explicación; en escritorio ocupan la columna derecha y en móvil pasan debajo del título a ancho completo. Cada imagen incorpora un texto alternativo específico. El HTML autónomo las integra como datos y la publicación web las sirve como archivos separados para evitar una descarga inicial conjunta.
+
 ### V2.6: precisión editorial sin ampliar el banco
 
 La V2.6 conserva las cinco dimensiones, las 20 preguntas y el orden de V2.5. Hace visible en la bienvenida el alcance que ya formaba parte del instrumento y concreta formulaciones sobre dedicación del equipo, mercado alcanzable y economía del cliente.

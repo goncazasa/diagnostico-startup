@@ -1,10 +1,10 @@
 # Revisión UX basada en Yablonski y Krug
 
-Fecha de actualización: 16 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.6 en escritorio y móvil. El banco contiene 20 preguntas agrupadas en cinco dimensiones. Esta revisión conserva los principios de diseño anteriores y actualiza las referencias al instrumento vigente.
+Fecha de actualización: 16 de septiembre de 2026. Alcance: recorrido del panel de expertos V2.7 en escritorio y móvil. El banco contiene 20 preguntas agrupadas en cinco dimensiones. Esta revisión conserva los principios de diseño anteriores y actualiza las referencias al instrumento vigente.
 
 ## Criterio de diseño
 
-La interfaz utiliza convenciones conocidas de formularios, una sola acción principal por pantalla, controles táctiles amplios y lenguaje directo. La identidad visual se mantiene sobria: azul institucional, fondos claros, tipografía instalada en el sistema e ilustraciones lineales por dimensión. La ilustración orienta y da ritmo; las respuestas no utilizan iconos emocionales que puedan sesgar la elección.
+La interfaz utiliza convenciones conocidas de formularios, una sola acción principal por pantalla, controles táctiles amplios y lenguaje directo. La identidad visual se mantiene sobria: azul institucional, fondos claros, tipografía instalada en el sistema e ilustraciones explicativas por dimensión. En la bienvenida se muestra un único título y el contenido comparte un eje de alineación; las pantallas estrechas quedan centradas dentro del área disponible. Las ilustraciones conservan su encuadre completo y un fondo transparente, se sitúan a la derecha en escritorio y debajo del título en móvil. Orientan y anticipan el contenido; las respuestas no utilizan iconos emocionales que puedan sesgar la elección.
 
 La complejidad esencial permanece visible cuando forma parte del objeto que se valida: enunciado, aclaración y niveles 0–3. La información auxiliar y los campos opcionales utilizan divulgación progresiva.
 
@@ -31,6 +31,7 @@ La complejidad esencial permanece visible cuando forma parte del objeto que se v
 - La portada explica la tarea experta, la población emprendedora y el alcance sin mostrar una estimación de tiempo no contrastada.
 - Los códigos internos permanecen en el conjunto de datos para conservar la trazabilidad, pero se sustituyen por «Pregunta 1», «Pregunta 2», etc. en la interfaz.
 - Cada dimensión conserva todas sus preguntas en una página, con aclaraciones y respuestas previstas visibles.
+- Las cinco imágenes de dimensión cargan con texto alternativo propio, sin recortes y sin provocar desbordamiento horizontal en móvil.
 - Los campos de observación cerrados reducen altura sin perder datos existentes.
 - En móvil, las valoraciones se organizan en una matriz 2 × 2 y la revisión de discriminación presenta cinco grupos, no 22 opciones simultáneas.
 - El resumen permite volver directamente a una pregunta o dimensión.
