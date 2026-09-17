@@ -4,22 +4,22 @@ Actualizado el 16 de septiembre de 2026. Este plan excluye deliberadamente cambi
 
 ## Objetivo
 
-Preparar la V2.8 para un piloto cerrado y, tras evidencias de funcionamiento y usabilidad, para la recogida formal. El plan distingue cambios técnicos de decisiones de investigación para no alterar el instrumento sin trazabilidad.
+Preparar la V2.9 para un piloto cerrado y, tras evidencias de funcionamiento y usabilidad, para la recogida formal. El plan distingue cambios técnicos de decisiones de investigación para no alterar el instrumento sin trazabilidad.
 
 ## Fase 1 · Validar la cadena de datos
 
-1. Publicar en Apps Script una nueva versión que incluya `google-apps-script/Code.gs` para el esquema `expert-validation/2.8`.
+1. Publicar en Apps Script una nueva versión que incluya `google-apps-script/Code.gs` para el esquema `expert-validation/2.9`.
 2. Confirmar en Vercel las variables privadas `GOOGLE_SHEETS_WEBHOOK_URL` y `GOOGLE_SHEETS_SECRET` de producción, sin copiarlas fuera de la configuración segura.
 3. Enviar una respuesta marcada como prueba y comprobar el justificante, `Entregas`, `Valoraciones`, `CalidadDatos`, `Comentarios` y `ValidezContenido`.
 4. Verificar que la prueba queda marcada como `es_testing=true` y no entra en los cálculos de validez.
 
-**Criterio de salida:** una entrega V2.8 confirmada, archivada y reconstruida correctamente en la hoja privada.
+**Criterio de salida:** una entrega V2.9 confirmada, archivada y reconstruida correctamente en la hoja privada.
 
 ## Fase 2 · Proteger la calidad del panel
 
 1. Configurar una regla de rate limiting o WAF en Vercel para `POST /api/submit` y `POST /api/progress`.
 2. Decidir el mecanismo de acceso del panel: invitaciones con identificador único o una lista de participantes autorizados. El correo por sí solo no evita duplicados ni respuestas ajenas.
-3. Retirar `/api/progress` si no va a utilizarse; V2.8 no envía telemetría de recorrido.
+3. Retirar `/api/progress` si no va a utilizarse; V2.9 no envía telemetría de recorrido.
 
 **Criterio de salida:** se documenta quién puede responder, cómo se controlan duplicados y qué límite frena envíos automatizados.
 

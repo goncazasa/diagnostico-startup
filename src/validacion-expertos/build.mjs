@@ -4,7 +4,7 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
-const output = path.resolve(dir, '../..', 'Validacion_Expertos_Startup_V2_8.html');
+const output = path.resolve(dir, '../..', 'Validacion_Expertos_Startup_V2_9.html');
 const imageDefinitions = [
   ['D1', 'dimension-1-equipo.png', 'Ilustración de los cuatro aspectos de la dimensión Equipo: perfiles, conocimiento, dedicación y aprendizaje.'],
   ['D2', 'dimension-2-mercado.png', 'Ilustración del recorrido de Adaptación al mercado: clientes, problema, mercado, competencia, monitorización, pago y mejora.'],

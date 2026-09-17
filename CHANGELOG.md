@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## V2.9 — market timing y códigos correlativos (septiembre de 2026)
+
+- Se separan dos constructos: AM5 justifica con evidencia por qué el momento actual favorece al proyecto y AM6 evalúa la monitorización periódica del entorno.
+- Adaptación al mercado adopta códigos correlativos AM1–AM8: alternativas AM4, market timing AM5, monitorización AM6, pagador AM7 y producto AM8.
+- E3 recupera la aclaración extensa del documento maestro, corrigiendo las erratas de «disponibilidad».
+- El banco pasa a 22 preguntas, distribución 5/8/3/4/2 y 54 juicios posibles. El esquema y el almacenamiento pasan a V2.9.
+
 ## V2.8 — gobierno del reparto de participaciones (septiembre de 2026)
 
 - Equipo incorpora E5 para valorar si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas clave o inversores.

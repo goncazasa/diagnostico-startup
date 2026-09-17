@@ -18,6 +18,12 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.9: market timing separado y códigos correlativos
+
+La V2.9 distingue la justificación del momento de mercado de su seguimiento posterior. AM5 pregunta si existe evidencia externa de que las condiciones actuales favorecen al proyecto; AM6 pregunta si los cambios del entorno se monitorizan y afectan a decisiones. De este modo cada ítem mide un solo constructo.
+
+Los códigos de Adaptación al mercado quedan correlativos de AM1 a AM8: segmento, problema, mercado alcanzable, alternativas y ventaja, market timing, monitorización, pagador y mejora del producto. El banco pasa a 22 preguntas y distribución 5/8/3/4/2. Se adoptan `expert-validation/2.9` y `startup-expert-validation-v2.9` para evitar mezclar respuestas con V2.8.
+
 ### V2.8: gobierno del reparto de participaciones
 
 La V2.8 incorpora E5 en Equipo para evaluar si el reparto de participaciones permite tomar decisiones sin bloqueos y conserva margen para incorporar personas clave o inversores. La aclaración incluye porcentajes, vesting, participaciones ajenas a la actividad diaria y la situación previa en la que todavía no existe sociedad o reparto acordado.
