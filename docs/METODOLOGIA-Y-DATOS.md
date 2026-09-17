@@ -4,7 +4,7 @@
 
 El panel revisa un instrumento de diagnóstico de startups tempranas. Cada experto evalúa:
 
-- la relevancia de cinco dimensiones y 20 preguntas;
+- la relevancia de cinco dimensiones y 21 preguntas;
 - la cobertura de cada dimensión;
 - la claridad del enunciado y de las respuestas de cada pregunta;
 - posibles omisiones, redundancias y problemas de discriminación;
@@ -63,7 +63,7 @@ Se muestran siempre `n_validas`, `n_relevantes`, `omisiones` y `faltantes`. La d
 ### S-CVI/Ave y S-CVI/UA
 
 ```text
-S-CVI/Ave = media de los I-CVI de las 20 preguntas
+S-CVI/Ave = media de los I-CVI de las 21 preguntas
 S-CVI/UA  = preguntas con I-CVI = 1 / preguntas evaluadas
 ```
 

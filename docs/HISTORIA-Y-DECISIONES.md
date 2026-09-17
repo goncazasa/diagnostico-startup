@@ -18,6 +18,12 @@ La aplicación actual no diagnostica startups ni produce una puntuación de madu
 
 ## Evolución
 
+### V2.8: gobierno del reparto de participaciones
+
+La V2.8 incorpora E5 en Equipo para evaluar si el reparto de participaciones permite tomar decisiones sin bloqueos y conserva margen para incorporar personas clave o inversores. La aclaración incluye porcentajes, vesting, participaciones ajenas a la actividad diaria y la situación previa en la que todavía no existe sociedad o reparto acordado.
+
+El banco pasa de 20 a 21 preguntas y adopta la distribución 5/7/3/4/2. El cambio es incompatible con borradores anteriores: se utilizan `expert-validation/2.8` y `startup-expert-validation-v2.8`; el receptor mantiene la lectura histórica de V2.7 y versiones previas.
+
 ### V2.7: lenguaje directo y alineación visual
 
 La V2.7 mantiene cinco dimensiones, 20 preguntas y la distribución 4/7/3/4/2. La bienvenida evita repetir el título entre cabecera y contenido, adopta una formulación impersonal basada en la experiencia y alinea las cifras con el contenido del objetivo. El bloque ampliado del perfil permanece visible y las instrucciones aclaran que se valora relevancia, calidad y claridad.

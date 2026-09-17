@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## V2.8 — gobierno del reparto de participaciones (septiembre de 2026)
+
+- Equipo incorpora E5 para valorar si el reparto de participaciones permite decidir sin bloqueos y deja margen para incorporar personas clave o inversores.
+- El banco pasa a 21 preguntas con distribución 5/7/3/4/2 y 52 juicios posibles, manteniendo cinco dimensiones y la escala 0–3.
+- El esquema pasa a `expert-validation/2.8` y el almacenamiento local a `startup-expert-validation-v2.8`; el receptor conserva compatibilidad con V2.7 y anteriores.
+- Se actualizan interfaz, exportaciones, API, Google Apps Script, pruebas y documentación para reflejar el nuevo contrato.
+
 ## V2.7 — lenguaje directo y alineación visual (septiembre de 2026)
 
 - Incorporados los 40 cambios editoriales revisados en el libro maestro: cuatro descripciones de dimensión y 36 ajustes en enunciados, aclaraciones y niveles de respuesta.

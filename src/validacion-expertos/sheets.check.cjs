@@ -27,7 +27,7 @@ test('analysis uses latest revision, preserves numeric scores and missingness, e
   const x=boot();assert.equal(x.post(payload(2)).ok,true);assert.equal(x.post(payload(1)).ok,true);
   assert.equal(x.tables.get('Entregas').length,3);
   const rows=x.tables.get('Valoraciones'), header=rows[0];
-  assert.equal(rows.length,26);
+  assert.equal(rows.length,27);
   const t1=rows.find(r=>r[header.indexOf('elemento_id')]==='E1');
   assert.equal(t1[header.indexOf('revision')],2);
   assert.equal(t1[header.indexOf('relevancia')],4);
@@ -41,7 +41,7 @@ test('archive survives analysis failure and retry repairs derived tables',()=>{
   const x=boot(),p=payload();x.setFailAnalysis(true);
   assert.equal(x.post(p).ok,true);assert.equal(x.props.ANALYSIS_PENDING,'true');
   x.setFailAnalysis(false);assert.equal(x.post(p).ok,true);
-  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,26);
+  assert.equal(x.tables.get('Entregas').length,2);assert.equal(x.tables.get('Valoraciones').length,27);
   assert.equal(x.props.ANALYSIS_PENDING,undefined);
 });
 test('large unicode observations round trip across archive cells',()=>{
@@ -103,6 +103,6 @@ test('historical V1.9 archives stay intact and separate when rebuilding V2 table
  const row=[receipt,legacy.response.responseId,'1.9.0',legacy.response.revision,new Date().toISOString(),Buffer.from(raw).toString('base64')];
  x.tables.get('Entregas').push(row);x.ctx.actualizarAnalisis();
  assert.deepEqual(x.tables.get('Entregas')[2],row);
- const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.7.0').length,25);
+ const ratings=x.tables.get('Valoraciones');assert.equal(ratings.filter(r=>r[1]==='1.9.0').length,27);assert.equal(ratings.filter(r=>r[1]==='2.8.0').length,26);
  assert.equal(x.post(legacy).ok,false,'V2 receiver rejects new V1.9 submissions but preserves archived originals');
 });

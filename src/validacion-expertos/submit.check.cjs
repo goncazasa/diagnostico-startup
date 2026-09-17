@@ -50,7 +50,7 @@ test('delivery signs validated data and verifies a stable content receipt', asyn
   assert.equal(sent[0].url,env.GOOGLE_SHEETS_WEBHOOK_URL);
   assert.equal(envelope.signature,createHmac('sha256',env.GOOGLE_SHEETS_SECRET).update(envelope.payload).digest('hex'));
   const attached=JSON.parse(envelope.payload);
-  assert.equal(attached.instrument.items.length,20); assert.equal(attached.response.items.E1.relevance,null);
+  assert.equal(attached.instrument.items.length,21); assert.equal(attached.response.items.E1.relevance,null);
   assert.equal(sent[0].body,sent[1].body);
   assert.equal(attached.response.profile.email,'expert@example.org');
 });

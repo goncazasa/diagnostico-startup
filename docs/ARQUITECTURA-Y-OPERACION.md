@@ -4,19 +4,19 @@
 
 ```mermaid
 flowchart LR
-    E[Participante en el navegador] -->|HTTPS · JSON V2.7| V[Vercel /api/submit]
+    E[Participante en el navegador] -->|HTTPS · JSON V2.8| V[Vercel /api/submit]
     V -->|Validación y firma HMAC| G[Google Apps Script]
     G -->|Original inmutable| A[(Entregas)]
     A --> R[Tablas derivadas]
     R --> S[Resumen y análisis]
-    E -->|Borrador| L[(localStorage V2.7)]
+    E -->|Borrador| L[(localStorage V2.8)]
 ```
 
 - `src/validacion-expertos/`: fuente del instrumento, modelo de estado, interfaz y estilos.
 - `src/validacion-expertos/build.mjs`: genera el HTML autónomo y `public/index.html`.
 - `public/`: artefacto servido por Vercel.
 - `api/submit.mjs`: valida la entrega, utiliza la versión del instrumento del servidor, firma el contenido y comprueba el justificante.
-- `api/progress.mjs`: receptor histórico de contadores agregados. El formulario V2.7 no envía telemetría de navegación.
+- `api/progress.mjs`: receptor histórico de contadores agregados. El formulario V2.8 no envía telemetría de navegación.
 - `google-apps-script/Code.gs`: receptor vinculado al libro privado y generador de tablas.
 - `test-support/`: instrumentos históricos y simuladores usados en pruebas.
 
@@ -39,7 +39,7 @@ Los reintentos del mismo contenido devuelven el mismo justificante. Un contenido
 - Repositorio: [https://github.com/goncazasa/diagnostico-startup](https://github.com/goncazasa/diagnostico-startup)
 - Libro privado de resultados: [Google Sheets](https://docs.google.com/spreadsheets/d/18ONMnSUKiRuK51pZVoy8FiaZWkiurZ_Nxsh5jBrJXpY/edit)
 - Proyecto de Apps Script: identificador `1-w3kckEUjLOBmSKskhFMKoWdeQsxdMfVnWpuI-a1mQBS35jmo8rwHlL1`
-- Implementación web de Apps Script: se mantiene el mismo identificador para no cambiar la variable de Vercel; antes de abrir V2.7 debe publicarse una versión que incluya `Code.gs` actualizado.
+- Implementación web de Apps Script: se mantiene el mismo identificador para no cambiar la variable de Vercel; antes de abrir V2.8 debe publicarse una versión que incluya `Code.gs` actualizado.
 
 El libro y Apps Script deben permanecer privados. La aplicación web de Apps Script acepta peticiones anónimas porque los expertos no inician sesión en Google, pero no expone ninguna operación de lectura y rechaza contenido sin firma válida.
 
@@ -84,7 +84,7 @@ Guardar el editor sin actualizar la implementación no modifica el receptor que 
 
 ## Pruebas y controles
 
-La suite cubre modelo, interfaz, API, receptor y contrato V2.7. Entre otros casos verifica:
+La suite cubre modelo, interfaz, API, receptor y contrato V2.8. Entre otros casos verifica:
 
 - validación de importación, versión y puntuaciones;
 - navegación, guardado, concurrencia de pestañas y recuperación;

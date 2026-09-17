@@ -19,7 +19,7 @@ function boot(saved, denyStorage = false) {
     window.URL.createObjectURL = blob => { window.downloadBlob = blob; return 'blob:test'; };
     window.URL.revokeObjectURL = () => {};
     window.HTMLAnchorElement.prototype.click = function () {};
-    if (saved) window.localStorage.setItem('startup-expert-validation-v2.7', saved);
+    if (saved) window.localStorage.setItem('startup-expert-validation-v2.8', saved);
     if (denyStorage) Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
     window.addEventListener('error', e => errors.push(e.message));
   } });
@@ -31,7 +31,7 @@ function boot(saved, denyStorage = false) {
     if (node.type === 'checkbox' || node.type === 'radio') node.checked = value;
     else node.value = value;
     node.dispatchEvent(new dom.window.Event(node.tagName === 'SELECT' || ['checkbox', 'radio'].includes(node.type) ? 'change' : 'input', { bubbles: true }));
-  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.7')); } };
+  }, click(selector) { const node = document.querySelector(selector); assert.ok(node, selector); node.click(); }, stored() { return JSON.parse(dom.window.localStorage.getItem('startup-expert-validation-v2.8')); } };
 }
 function start(ui) {
   ui.input('[data-path="consent"]', true);
@@ -215,7 +215,7 @@ test('backup clipboard export contains pending answers', async () => {
   await until(() => !!copied);
   const payload = JSON.parse(copied);
   assert.equal(payload.response.final.v9, 'Observación copiada');
-  assert.equal(payload.instrumentVersion, '2.7.0');
+  assert.equal(payload.instrumentVersion, '2.8.0');
   assert.equal(ui.stored().exportedRevision, -1, 'Copy is not a download receipt');
   assert.equal(ui.document.querySelector('#export-receipt').hidden, true);
   ui.dom.window.close();
@@ -263,18 +263,18 @@ test('omission hides scoring controls and the review separately counts skipped b
   ui.input('[data-path="dimensions.D1.skipReason"]', 'prefer');
   assert.equal(ui.document.querySelector('[data-dimension-content="D1"]').hidden, true);
   ui.click('[data-step="9"]');
-  assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '5');
+  assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '6');
   assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '0');
   ui.dom.window.close();
 });
 test('dimension heading distinguishes questions to assess from omitted questions', () => {
   const ui = boot(); start(ui);
   const count = () => ui.document.querySelector('[data-dimension-question-count="D1"]').textContent;
-  assert.equal(count(), '4 preguntas por valorar');
+  assert.equal(count(), '5 preguntas por valorar');
   ui.input('[data-path="items.E1.skipReason"]', 'prefer');
-  assert.equal(count(), '3 preguntas por valorar · 1 omitida');
+  assert.equal(count(), '4 preguntas por valorar · 1 omitida');
   ui.input('[data-path="items.E2.skipReason"]', 'prefer');
-  assert.equal(count(), '2 preguntas por valorar · 2 omitidas');
+  assert.equal(count(), '3 preguntas por valorar · 2 omitidas');
   ui.dom.window.close();
 });
 test('visible error replaces the save promise when browser storage is unavailable', () => {
@@ -303,7 +303,7 @@ test('downloading preserves keyboard focus on the export button', () => {
   assert.equal(ui.document.activeElement, button);
   ui.dom.window.close();
 });
-test('a full review resolves all 25 blocks when their relevance is answered', () => {
+test('a full review resolves all 26 blocks when their relevance is answered', () => {
   const ui = boot(); start(ui);
   const blocks = ['E1','E2','E3','E4','D1','AM1','AM2','AM3','AM5','AM4','AM6','AM8','D2','MV1','MV2','MV3','D4','GF1','GF2','GF3','GF4','D5','GR1','GR2','D6'];
   for (const block of blocks) {
@@ -313,7 +313,7 @@ test('a full review resolves all 25 blocks when their relevance is answered', ()
     }
   }
   ui.click('[data-step="9"]');
-  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '25');
+  assert.equal(ui.document.querySelector('[data-count="complete"]').textContent, '26');
   assert.equal(ui.document.querySelector('[data-count="pending"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="partial"]').textContent, '0');
   assert.equal(ui.document.querySelector('[data-count="skipped"]').textContent, '0');
@@ -322,7 +322,7 @@ test('a full review resolves all 25 blocks when their relevance is answered', ()
 test('a competing tab cannot be silently overwritten', () => {
   const ui = boot(); start(ui);
   const before = JSON.stringify(ui.stored());
-  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.7', newValue: '{"other":"response"}' }));
+  ui.dom.window.dispatchEvent(new ui.dom.window.StorageEvent('storage', { key: 'startup-expert-validation-v2.8', newValue: '{"other":"response"}' }));
   ui.input('[data-path="items.E1.comment"]', 'Mi copia local');
   assert.equal(JSON.stringify(ui.stored()), before);
   assert.equal(ui.document.querySelector('#save-state').classList.contains('error'), true);
@@ -347,7 +347,7 @@ test('the downloaded JSON contains normalized answers and restores through the r
   const payload = JSON.parse(raw);
   assert.equal(payload.response.items.E1.relevance, null);
   assert.equal(payload.response.items.E1.skipReason, 'prefer');
-  assert.equal(payload.instrument.items.length, 20);
+  assert.equal(payload.instrument.items.length, 21);
   const id = payload.response.responseId;
   ui.click('#reset-button');
   assert.notEqual(ui.stored().responseId, id);
@@ -401,7 +401,7 @@ test('summary precedes the final step and shows every question with the entered 
   openBlock(ui, 'D6'); ui.click('[data-action="next"]');
   assert.ok(ui.document.querySelector('#summary-map'));
   assert.equal(ui.document.querySelectorAll('[data-summary-dimension]').length, 5);
-  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 20);
+  assert.equal(ui.document.querySelectorAll('[data-summary-item]').length, 21);
   assert.equal(ui.document.querySelector('[data-summary-value="items.E1.relevance"]').textContent, '4');
   assert.equal(ui.document.querySelector('[data-summary-value="items.E1.usability"]').textContent, '2');
   assert.equal(ui.document.querySelector('[data-summary-value="items.E1.anchors"]'), null);
@@ -413,7 +413,7 @@ test('summary precedes the final step and shows every question with the entered 
 });
 test('each dimension shows all its questions and continues to the next dimension', () => {
   const ui = boot(); start(ui);
-  assert.equal(ui.document.querySelectorAll('#app article.item').length, 4);
+  assert.equal(ui.document.querySelectorAll('#app article.item').length, 5);
   assert.ok(ui.document.querySelector('[data-path="dimensions.D1.coverage"]'));
   ui.input('[data-path="items.E4.comment"]', 'Observación al final de la dimensión');
   ui.click('[data-action="next"]');
@@ -506,11 +506,11 @@ test('sidebar dimension names match their page titles and question numbers are s
 test('sidebar counters count questions only and exclude the dimension-wide rating',()=>{
  const ui=boot();start(ui);
  const counts=()=>[3,4,5,6,7].map(step=>ui.document.querySelector(`[data-step="${step}"] [data-nav-count]`).textContent);
- assert.deepEqual(counts(),['0/4','0/7','0/3','0/4','0/2']);
+ assert.deepEqual(counts(),['0/5','0/7','0/3','0/4','0/2']);
  ui.input('input[data-path="items.E1.relevance"][value="3"]',true);
- assert.deepEqual(counts(),['1/4','0/7','0/3','0/4','0/2']);
+ assert.deepEqual(counts(),['1/5','0/7','0/3','0/4','0/2']);
  ui.input('input[data-path="dimensions.D1.relevance"][value="3"]',true);
- assert.deepEqual(counts(),['1/4','0/7','0/3','0/4','0/2']);
+ assert.deepEqual(counts(),['1/5','0/7','0/3','0/4','0/2']);
  ui.dom.window.close();
 });
 test('expert guide contains only the essential instructions',()=>{
