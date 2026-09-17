@@ -86,7 +86,7 @@ test('a confirmed submission reveals an accessible radar and targeted instrument
 test('question help is shown only when it contains useful guidance', () => {
   const ui=boot(); start(ui);
   assert.match(ui.document.querySelector('#item-E1 .help').textContent,/producto|tecnología/i);
-  assert.equal(ui.document.querySelector('#item-E3 .help'),null);
+  assert.match(ui.document.querySelector('#item-E3 .help').textContent,/disponibilidad y foco/i);
   assert.equal([...ui.document.querySelectorAll('.help')].some(node=>node.textContent.trim()==='Qué tener en cuenta'),false);
   ui.dom.window.close();
 });

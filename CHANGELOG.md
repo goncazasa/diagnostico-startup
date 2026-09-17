@@ -2,6 +2,9 @@
 
 ## V2.7 — lenguaje directo y alineación visual (septiembre de 2026)
 
+- Incorporados los 40 cambios editoriales revisados en el libro maestro: cuatro descripciones de dimensión y 36 ajustes en enunciados, aclaraciones y niveles de respuesta.
+- Equipo explicita experiencia y conocimiento del sector; Adaptación al mercado refuerza la evidencia del problema y separa la estimación de clientes alcanzables; Marketing y ventas habla de validación del canal; Gestión de recursos y relaciones distingue aportación directa y credibilidad ante terceros.
+- Se corrigen erratas, concordancias, espacios finales y puntuación del texto recibido sin alterar sus códigos, orden, número de preguntas ni escala 0–3.
 - La bienvenida elimina el título duplicado, adopta lenguaje impersonal basado en la experiencia y alinea titular, cifras y objetivo sobre una misma línea de contenido.
 - El bloque «Más sobre tu experiencia» permanece abierto y «Cómo responder» explica de forma directa la valoración de relevancia, calidad y claridad.
 - E2 simplifica la formulación sobre cliente, sector y problema; GF2 elimina referencias a códigos internos; GF3 sitúa primero el siguiente hito; GF4 desarrolla CAC y LTV; GR2 utiliza «señal de legitimidad».
