@@ -16,7 +16,7 @@
   const finalQuestions = [
     ['v2', '¿Eliminarías alguna dimensión? ¿Por qué?', 'Puedes responder «Ninguna».'],
     ['v3', '¿Falta alguna dimensión o área importante?', 'Piensa en el propósito y las fases del diagnóstico.'],
-    ['v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?']
+    ['v9', 'Observaciones finales', '¿Añadirías, eliminarías o modificarías alguna pregunta o dimensión? ¿Qué cambio concreto propondrías y por qué?']
   ];
   const shortScales = {
     relevance: ['Nada', 'Poco', 'Bastante', 'Mucho'],
@@ -173,20 +173,19 @@
     return `<details class="help" open><summary>Qué tener en cuenta</summary>${item.note ? `<p>${esc(item.note)}</p>` : ''}${terms.length ? `<dl>${terms.map(g => `<dt>${esc(g.label)}</dt><dd>${esc(g.definition)}</dd>`).join('')}</dl>` : ''}</details>`;
   }
   function observation(path, hint = '') {
-    return `<details class="item-observation" ${valueAt(path) ? 'open' : ''}><summary>Añadir observaciones ${optional}</summary><div class="observation-content">${field(path, 'Observaciones', hint)}</div></details>`;
+    return `<details class="item-observation" ${valueAt(path) ? 'open' : ''}><summary>Añadir observaciones ${optional}</summary><div class="observation-content">${field(path, 'Observaciones', hint)}</div></details>${hint ? `<p class="observation-prompt">${esc(hint)}</p>` : ''}`;
   }
   function itemHtml(item) {
     const record = state.items[item.id], base = 'items.' + item.id;
     return `<article class="surface item" id="item-${item.id}" aria-labelledby="title-${item.id}"><div class="item-header"><span class="item-id">${questionLabel(item)}</span>${badge(item.id)}</div>
-      <h2 id="title-${item.id}">${esc(item.q)}</h2>${itemHelp(item)}
+      <h2 id="title-${item.id}">${esc(item.q)}</h2>${omission('items', item.id)}${itemHelp(item)}
       <p class="level-caption">Respuestas previstas para la persona emprendedora</p><div class="levels">${item.levels.map((text, i) => `<div class="level"><b aria-label="Nivel ${i}">${i}</b><span>${esc(text)}</span></div>`).join('')}</div>
       ${item.conditional ? `<aside class="conditional-note"><p>${esc(item.conditional)}</p></aside>` : ''}
       ${item.applicabilityNote ? `<p class="applicability-note">${esc(item.applicabilityNote)}</p>` : ''}
       ${itemDesign(item)}
       <div class="expert-response" data-item-content="${item.id}" ${record.skipReason ? 'hidden' : ''}><p class="eval-label">Tu valoración <span>Escala de 1 a 4</span></p>
       ${rating(base + '.relevance', '¿Es relevante esta pregunta?', 'relevance')}${rating(base + '.usability', '¿Se entiende la pregunta y son adecuadas sus respuestas?', 'usability')}
-      ${observation(base + '.comment')}</div>
-      ${omission('items', item.id)}
+      ${observation(base + '.comment', '¿Qué cambiarías del enunciado o de las respuestas? ¿Falta o sobra algún aspecto? Puedes proponer una redacción concreta.')}</div>
       <p class="omitted-message" data-item-omitted="${item.id}" ${record.skipReason ? '' : 'hidden'}>Pregunta omitida. Tus puntuaciones no se incluirán en el análisis.</p></article>`;
   }
   function dimension(id) {
@@ -197,13 +196,13 @@
       <div data-dimension-content="${id}" ${record.skipReason ? 'hidden' : ''}>${items.map(itemHtml).join('')}
       <section class="surface dimension-top"><h2>La dimensión en conjunto</h2>
       ${rating(base + '.relevance', '¿Es relevante evaluar este tema?', 'relevance')}${rating(base + '.coverage', '¿Las preguntas cubren lo necesario?', 'coverage')}
-      ${observation(base + '.comment', '¿Falta algún aspecto o cambiarías algo en esta dimensión?')}</section></div>
+      ${observation(base + '.comment', '¿Falta alguna pregunta para evaluar esta dimensión? ¿Hay preguntas que sobran, se repiten o cambiarías? Indica cuáles y por qué.')}</section></div>
       <button type="button" class="text-button" data-action="return-summary">Ver resumen de tu revisión</button>
       ${nav(record.skipReason ? 'Continuar' : steps[state.step + 1]?.type === 'review' ? 'Ver resumen' : 'Siguiente dimensión')}`;
   }
   function final() {
     return heading('Envía tu revisión', 'Gracias por aportar tu experiencia. Puedes añadir un último comentario antes de enviar.') +
-      `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Hay algo importante que debamos cambiar o tener en cuenta?')}${delivery()}</section>${postSubmissionResults()}`;
+      `<section class="surface">${field('final.v9', 'Observaciones finales', '¿Añadirías, eliminarías o modificarías alguna pregunta o dimensión? ¿Qué cambio concreto propondrías y por qué?')}${delivery()}</section>${postSubmissionResults()}`;
   }
   const resultRecommendations = {
     D1: 'Revisar si las preguntas distinguen bien capacidades complementarias, dedicación, conocimiento directo del cliente y decisiones basadas en evidencia.',

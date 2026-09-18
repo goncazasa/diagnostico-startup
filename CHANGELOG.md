@@ -1,5 +1,11 @@
 # Registro de cambios
 
+## Ajustes de participación — 18 de septiembre de 2026
+
+- «Esta valoración» se sitúa después del enunciado de cada pregunta, antes de las aclaraciones, niveles y puntuaciones; permanece accesible al omitir.
+- Las observaciones incluyen preguntas orientativas específicas para cada ítem, dimensión y revisión final. La pista se muestra también con el desplegable cerrado.
+- Se mantiene el contrato V2.9: cambian la presentación y las ayudas para comentarios, sin modificar los ítems ni las escalas.
+
 ## V2.9 — market timing y códigos correlativos (septiembre de 2026)
 
 - Se separan dos constructos: AM5 justifica con evidencia por qué el momento actual favorece al proyecto y AM6 evalúa la monitorización periódica del entorno.

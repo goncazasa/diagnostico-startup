@@ -173,7 +173,9 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .item-observation .field, .summary-optional .field { margin-top: 0; }
 .observation-content { padding-top: 2px; }
 .item textarea, .dimension-top textarea { min-height: 72px; }
-.item > .omission { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 16px; }
+.item > .omission { margin: 16px 0 20px; }
+.observation-prompt { color: var(--muted); font-size: .875rem; line-height: 1.6; margin: 10px 0 0; }
+.item-observation[open] + .observation-prompt { display: none; }
 .omitted-message { font-size: .875rem; margin-top: 16px; }
 .dimension-top { background: #eef3f9; border-color: #d8e3ef; }
 .dimension-top > h2 { font-size: 1.125rem; }
