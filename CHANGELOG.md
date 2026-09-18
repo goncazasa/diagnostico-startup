@@ -2,7 +2,8 @@
 
 ## Ajustes de participación — 18 de septiembre de 2026
 
-- «Esta valoración» se sitúa después del enunciado de cada pregunta, antes de las aclaraciones, niveles y puntuaciones; permanece accesible al omitir.
+- El selector para valorar u omitir se sitúa después del enunciado de cada pregunta, antes de las aclaraciones, niveles y puntuaciones.
+- Se elimina la etiqueta visible «Esta valoración:» y se conserva una descripción accesible para el desplegable.
 - Las observaciones incluyen preguntas orientativas específicas para cada ítem, dimensión y revisión final. La pista se muestra también con el desplegable cerrado.
 - Se mantiene el contrato V2.9: cambian la presentación y las ayudas para comentarios, sin modificar los ítems ni las escalas.
 

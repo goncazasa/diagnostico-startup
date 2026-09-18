@@ -121,7 +121,7 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .step-context { color: var(--teal); font-size: .8125rem; margin-bottom: 12px; }
 .step-context span { margin-left: 14px; color: var(--muted); }
 .dimension-intro { margin: 22px 0 30px; }
-.omission { display: flex; align-items: center; justify-content: space-between; gap: 18px; font-size: .8125rem; color: var(--muted); }
+.omission { display: flex; align-items: center; justify-content: flex-end; gap: 18px; font-size: .8125rem; color: var(--muted); }
 .omission label { max-width: 42ch; }
 .omission select { flex: 0 1 265px; width: 265px; min-height: 42px; font-size: .8125rem; padding: 8px 10px; }
 .item { padding: 30px 32px; scroll-margin-top: 24px; }

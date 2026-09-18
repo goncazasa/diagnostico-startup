@@ -129,7 +129,7 @@ textarea:disabled { background: #f0f3f7; color: var(--muted); }
 .step-context { color: var(--teal); font-size: .8125rem; margin-bottom: 12px; }
 .step-context span { margin-left: 14px; color: var(--muted); }
 .dimension-intro { margin: 22px 0 30px; }
-.omission { display: flex; align-items: center; justify-content: space-between; gap: 18px; font-size: .8125rem; color: var(--muted); }
+.omission { display: flex; align-items: center; justify-content: flex-end; gap: 18px; font-size: .8125rem; color: var(--muted); }
 .omission label { max-width: 42ch; }
 .omission select { flex: 0 1 265px; width: 265px; min-height: 42px; font-size: .8125rem; padding: 8px 10px; }
 .item { padding: 30px 32px; scroll-margin-top: 24px; }
@@ -772,7 +772,7 @@ body[data-screen=final] [data-action=submit] { margin-top: 20px; }
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Esta valoración:</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option></select></div>`;
+    return `<div class="omission"><label class="sr-only" for="${idFor(path)}">Indica si vas a valorar este contenido</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option></select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }

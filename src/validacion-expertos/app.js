@@ -126,7 +126,7 @@
   }
   function omission(kind, id) {
     const path = `${kind}.${id}.skipReason`, current = valueAt(path);
-    return `<div class="omission"><label for="${idFor(path)}">Esta valoración:</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option></select></div>`;
+    return `<div class="omission"><label class="sr-only" for="${idFor(path)}">Indica si vas a valorar este contenido</label><select id="${idFor(path)}" data-path="${path}"><option value="" ${!current ? 'selected' : ''}>Voy a valorarla</option><option value="prefer" ${current === 'prefer' ? 'selected' : ''}>Prefiero no responder</option></select></div>`;
   }
   function badge(id) { const status = model.status(state, id); return `<span class="badge ${status}" data-status="${id}">${statusLabels[status]}</span>`; }
   function heading(title, subtitle = '') { return `<div class="page-heading"><h1 id="page-title" tabindex="-1">${esc(title)}</h1>${subtitle ? `<p>${esc(subtitle)}</p>` : ''}</div>`; }
